@@ -56,6 +56,7 @@ export default function Home() {
           SWL Training Hub
         </h1>
 
+
         <p className="text-center text-zinc-600 dark:text-zinc-400 mb-12">
           Select a module to begin your learning journey
         </p>
