@@ -76,6 +76,28 @@ type PageDocumentDataSlicesSlice = never;
  */
 interface PageDocumentData {
   /**
+   * Title field in *Page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: page.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Body field in *Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: page.body
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  body: prismic.RichTextField;
+
+  /**
    * Slice Zone field in *Page*
    *
    * - **Field Type**: Slice Zone
@@ -130,7 +152,52 @@ interface PageDocumentData {
 export type PageDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<PageDocumentData>, "page", Lang>;
 
-export type AllDocumentTypes = PageDocument;
+interface SettingsDocumentData {}
+
+/**
+ * Settings document from Prismic
+ *
+ * - **API ID**: `settings`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type SettingsDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithoutUID<
+    Simplify<SettingsDocumentData>,
+    "settings",
+    Lang
+  >;
+
+export type AllDocumentTypes = PageDocument | SettingsDocument;
+
+/**
+ * Default variation for Video Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type VideoSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Record<string, never>,
+  never
+>;
+
+/**
+ * Slice variation for *Video*
+ */
+type VideoSliceVariation = VideoSliceDefault;
+
+/**
+ * Video Shared Slice
+ *
+ * - **API ID**: `video`
+ * - **Description**: Video
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type VideoSlice = prismic.SharedSlice<"video", VideoSliceVariation>;
 
 declare module "@prismicio/client" {
   interface CreateClient {
@@ -156,7 +223,12 @@ declare module "@prismicio/client" {
       PageDocument,
       PageDocumentData,
       PageDocumentDataSlicesSlice,
+      SettingsDocument,
+      SettingsDocumentData,
       AllDocumentTypes,
+      VideoSlice,
+      VideoSliceVariation,
+      VideoSliceDefault,
     };
   }
 }
