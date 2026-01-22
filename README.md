@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SWL Training Hub
+
+A modern, interactive learning platform built with Next.js. Features an intuitive module-based course structure with animated card sliders and progress tracking.
+
+## Features
+
+- **Module Slider** - Horizontal scrollable cards displaying training modules
+- **Interactive Hover Effects** - Cards reveal details and expand color bars on hover
+- **Zoom Modal** - Clicking a module opens an animated detail view with progress indicator
+- **Lesson Navigation** - Each module contains its own lesson slider
+- **Progress Tracking** - Visual progress indicators for each module
+- **Responsive Design** - Works across desktop and mobile devices
+
+## Tech Stack
+
+- [Next.js 16](https://nextjs.org/) - React framework with App Router
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS
+- [CSS Modules](https://github.com/css-modules/css-modules) - Scoped component styles
+- [Prismic CMS](https://prismic.io/) - Headless content management
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18.17 or later
+- npm, yarn, or pnpm
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/swl-training-hub.git
+cd swl-training-hub
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.local.example .env.local
+# Edit .env.local with your Prismic repository name
+```
+
+### Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/                    # Next.js App Router pages
+│   ├── page.tsx           # Homepage
+│   └── module/[uid]/      # Module and lesson routes
+├── components/            # React components
+│   ├── ModuleCard/        # Module card with hover effects
+│   ├── ModuleSlider/      # Horizontal module carousel
+│   ├── ModuleDetail/      # Module detail modal
+│   ├── LessonCard/        # Lesson card component
+│   ├── LessonSlider/      # Lesson carousel
+│   └── LessonDetail/      # Lesson detail modal
+└── prismicio.ts           # Prismic CMS configuration
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Configuration
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Prismic CMS
 
-## Deploy on Vercel
+1. Create a [Prismic](https://prismic.io/) repository
+2. Add your repository name to `.env.local`:
+   ```
+   NEXT_PUBLIC_PRISMIC_REPOSITORY=your-repo-name
+   ```
+3. Configure content types: `homepage`, `module`, `lesson`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contributing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+
+## Security
+
+See [SECURITY.md](SECURITY.md) for security policy and reporting vulnerabilities.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for version history.

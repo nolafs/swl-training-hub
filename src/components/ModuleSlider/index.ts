@@ -1,0 +1,1 @@
+export { ModuleSlider } from "./ModuleSlider";
