@@ -30,7 +30,7 @@ A modern, interactive learning platform built with Next.js. Features an intuitiv
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/swl-training-hub.git
+git clone https://github.com/nolafs/swl-training-hub.git
 cd swl-training-hub
 
 # Install dependencies
