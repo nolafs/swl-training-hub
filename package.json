@@ -41,6 +41,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.4",
     "husky": "^9.1.7",
+    "prismic-cli": "^4.2.3",
     "semantic-release": "^24.2.9",
     "slice-machine-ui": "^2.21.0",
     "tailwindcss": "^4",

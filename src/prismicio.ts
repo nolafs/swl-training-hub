@@ -5,7 +5,7 @@ import * as prismicNext from "@prismicio/next";
  * The project's Prismic repository name.
  */
 export const repositoryName =
-  process.env.NEXT_PUBLIC_PRISMIC_REPOSITORY || "your-repo-name";
+  process.env.NEXT_PUBLIC_PRISMIC_REPOSITORY || "swltaininghub";
 
 /**
  * A list of Route Resolver objects that define how a document's `url` field is resolved.
