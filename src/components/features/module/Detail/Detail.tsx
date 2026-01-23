@@ -3,15 +3,7 @@
 import { useRouter } from "next/navigation";
 import styles from "./Detail.module.css";
 
-interface Module {
-  id: string;
-  moduleNumber: number;
-  title: string;
-  description: string;
-  color: string;
-  lessons?: { id: string; title: string }[];
-  progress?: number;
-}
+
 
 interface ModuleDetailProps {
   module: Module;
@@ -36,7 +28,7 @@ export function ModuleDetail({ module, onClose }: ModuleDetailProps) {
               className={styles.progressFill}
               style={{
                 width: `${module.progress || 0}%`,
-                backgroundColor: module.color,
+                backgroundColor: module.colour,
               }}
             />
           </div>
@@ -47,9 +39,9 @@ export function ModuleDetail({ module, onClose }: ModuleDetailProps) {
         <div className={styles.moduleCard}>
           <div
             className={styles.cardHeader}
-            style={{ backgroundColor: module.color }}
+            style={{ backgroundColor: module.colour }}
           >
-            <span className={styles.moduleNumber}>{module.moduleNumber}</span>
+            <span className={styles.moduleNumber}>{module.position}</span>
           </div>
           <div className={styles.cardContent}>
             <h2 className={styles.title}>{module.title}</h2>

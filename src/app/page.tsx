@@ -1,4 +1,5 @@
 import { ModuleSlider } from "@/components/features/module";
+import {createClient} from "@/prismicio";
 
 
 // Placeholder data - will be replaced with Prismic CMS data
@@ -49,11 +50,21 @@ const mockModules = [
   },
 ];
 
-export default function Home() {
+export default async function  Home() {
+
+    const client = createClient();
+    const modules = await client.getAllByType('module', {
+      orderings: {
+        field: 'my.module.position',
+        direction: 'asc',
+      },
+    });
+
+
   return (
     <main className="w-full h-full flex-1">
       <div className="container mx-auto py-12">
-        <ModuleSlider modules={mockModules} />
+        <ModuleSlider modules={modules} />
       </div>
     </main>
 );

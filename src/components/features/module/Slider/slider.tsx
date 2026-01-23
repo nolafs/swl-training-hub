@@ -4,20 +4,18 @@ import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { ModuleCard } from "../Card";
 import { ModuleDetail } from "../Detail";
-import styles from "./Slider.module.css";
+import { ModuleDocument } from "../../../../../prismicio-types";
 
 interface Module {
   id: string;
-  moduleNumber: number;
+  position: number;
   title: string;
   description: string;
-  color: string;
-  lessons?: { id: string; title: string }[];
-  progress?: number;
+  colour: string;
 }
 
 interface ModuleSliderProps {
-  modules: Module[];
+  modules: ModuleDocument[];
 }
 
 const containerVariants = {
@@ -56,9 +54,9 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
   };
 
   return (
-    <div className={styles.container} ref={constraintsRef}>
+    <div className="w-full relative overflow-hidden" ref={constraintsRef}>
       <motion.div
-        className={styles.slider}
+        className="flex gap-6 p-10 cursor-grab active:cursor-grabbing [&>*]:shrink-0"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -67,18 +65,28 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
         dragElastic={0.1}
         dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
       >
-        {modules.map((module) => (
-          <motion.div key={module.id} variants={itemVariants}>
-            <ModuleCard
-              moduleNumber={module.moduleNumber}
-              title={module.title}
-              description={module.description}
-              color={module.color}
-              isSelected={selectedModule?.id === module.id}
-              onClick={() => handleModuleClick(module)}
-            />
-          </motion.div>
-        ))}
+        {modules.map((module) => {
+          const moduleData: Module = {
+            id: module.id,
+            position: module.data.position ?? 0,
+            title: module.data.title ?? "",
+            description: module.data.description ?? "",
+            colour: module.data.colour ?? "#000000",
+          };
+
+          return (
+            <motion.div key={module.id} variants={itemVariants}>
+              <ModuleCard
+                moduleNumber={moduleData.position ?? 0}
+                title={moduleData.title ?? ""}
+                description={moduleData.description ?? ""}
+                color={moduleData.colour ?? "#000000"}
+                isSelected={selectedModule?.id === module.id}
+                onClick={() => handleModuleClick(moduleData)}
+              />
+            </motion.div>
+          );
+        })}
       </motion.div>
 
       {selectedModule && (

@@ -4,7 +4,6 @@ import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { LessonCard } from "../Card";
 import { LessonDetail } from "../Detail";
-import styles from "./Slider.module.css";
 
 interface Lesson {
   id: string;
@@ -56,9 +55,9 @@ export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderPro
   };
 
   return (
-    <div className={styles.container} ref={constraintsRef}>
+    <div className="w-full relative overflow-hidden" ref={constraintsRef}>
       <motion.div
-        className={styles.slider}
+        className="flex gap-6 p-10 cursor-grab active:cursor-grabbing [&>*]:shrink-0"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
