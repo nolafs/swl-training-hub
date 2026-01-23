@@ -31,7 +31,7 @@ export function SliderNavigation({
         <ChevronLeft className="w-10 h-10 text-gray-600" />
       </motion.button>
 
-      <div className="flex items-end gap-5">
+      <div className="flex items-end gap-10">
         {Array.from({ length: maxIndex + 1 }).map((_, index) => (
           <motion.button
             key={index}
