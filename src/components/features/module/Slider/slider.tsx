@@ -143,6 +143,8 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
         </motion.div>
       </div>
 
+      <div className={'grid grid-cols-1 md:grid-cols-2 gap-6'}>
+      <div>Progress here</div>
       <SliderNavigation
         currentIndex={currentIndex}
         maxIndex={maxIndex}
@@ -150,6 +152,7 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
         onNext={handleNext}
         onSlide={slideTo}
       />
+      </div>
 
       {selectedModule && (
         <ModuleDetail
