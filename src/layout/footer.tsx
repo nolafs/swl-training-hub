@@ -12,7 +12,7 @@ export function Footer({ settings }: FooterProps) {
 
   return (
     <footer>
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-6 sm:flex-row sm:px-6 lg:px-8">
+      <div className="mx-auto flex flex-col items-center justify-between gap-4 px-4 py-6 sm:flex-row sm:px-6 lg:px-8">
         {/* Copyright - Left */}
         <p className="text-sm text-gray-900">{copyrightText}</p>
 

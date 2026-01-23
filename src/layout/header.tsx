@@ -9,14 +9,14 @@ export function Header({ settings }: HeaderProps) {
   const logo = settings?.data?.logo;
 
   return (
-    <header className="border-b border-gray-200 bg-white">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+    <header>
+      <div className="mx-auto flex items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         {/* Logo - Left */}
         <PrismicNextLink href="/" className="flex items-center">
           {logo?.url ? (
             <PrismicNextImage
               field={logo}
-              className="h-8 w-auto sm:h-10"
+              className="h-16 w-auto sm:h-16 md:h-26"
               fallbackAlt=""
             />
           ) : (

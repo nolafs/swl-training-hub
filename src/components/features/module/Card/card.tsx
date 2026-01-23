@@ -24,7 +24,7 @@ export function ModuleCard({
 
   return (
     <motion.div
-      className="relative w-[375px] h-[375px] bg-neutral-100 cursor-pointer overflow-hidden flex flex-col"
+      className="relative w-[375px] h-[375px] bg-white border border-black/20 cursor-pointer overflow-hidden flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
@@ -44,7 +44,10 @@ export function ModuleCard({
       whileHover={{ scale: isSelected ? 1.15 : 1.05 }}
     >
       <div className="flex-1 p-4 flex flex-col relative z-10">
-        <span className="text-2xl font-bold text-gray-800">{moduleNumber}</span>
+        <div className={'grid grid-cols-2 justify-center items-center gap-2'}>
+            <div className="text-5xl font-light" style={{ color: isSelected ? '#ffffff' : color }}>{ moduleNumber > 10 ?  moduleNumber : '0' + moduleNumber}</div>
+            <div className="text-2xl font-medium text-right" style={{ color: isSelected ? '#ffffff' : color }}>Module</div>
+        </div>
         {isHovered && (
           <motion.div
             className="mt-2"
@@ -52,7 +55,7 @@ export function ModuleCard({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <h3 className="text-sm font-semibold text-gray-800 mb-1">{title}</h3>
+            <h3 className="text-sm font-semibold text-gray-800 mb-1"  >{title}</h3>
             <p className="text-xs text-gray-500 leading-relaxed">{description}</p>
           </motion.div>
         )}
@@ -61,7 +64,7 @@ export function ModuleCard({
         className="absolute bottom-0 left-0 w-full h-1"
         style={{ backgroundColor: color }}
         animate={{
-          height: isSelected ? "100%" : isHovered ? 12 : 4,
+          height: isSelected ? "100%" : isHovered ? 60 : 16,
         }}
         transition={{
           duration: 0.3,
