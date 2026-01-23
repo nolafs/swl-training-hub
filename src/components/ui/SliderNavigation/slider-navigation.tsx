@@ -19,7 +19,7 @@ export function SliderNavigation({
   onSlide,
 }: SliderNavigationProps) {
   return (
-    <div className="flex justify-center items-end gap-4 mt-6">
+    <div className="flex justify-end items-end gap-4 mt-6">
       <motion.button
         onClick={onPrev}
         disabled={currentIndex === 0}

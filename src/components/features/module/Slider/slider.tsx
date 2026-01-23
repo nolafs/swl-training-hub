@@ -104,7 +104,7 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
       <div className="overflow-hidden">
         <motion.div
           ref={sliderRef}
-          className="flex gap-6 p-10 cursor-grab active:cursor-grabbing"
+          className="flex gap-6 p-20 cursor-grab active:cursor-grabbing"
           animate={controls}
           drag="x"
           dragConstraints={{ left: -maxIndex * (CARD_WIDTH + GAP), right: 0 }}
@@ -143,7 +143,7 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
         </motion.div>
       </div>
 
-      <div className={'grid grid-cols-1 md:grid-cols-2 gap-6'}>
+      <div className={'grid grid-cols-1 md:grid-cols-2 gap-6 items-center mt-4 px-5'}>
       <div>Progress here</div>
       <SliderNavigation
         currentIndex={currentIndex}

@@ -63,7 +63,7 @@ export default async function  Home() {
 
   return (
     <main className="w-full h-full flex-1">
-      <div className="pb-32 pt-20">
+      <div className="pb-32">
         <ModuleSlider modules={modules} />
       </div>
     </main>
