@@ -1,3 +1,11 @@
+# [1.1.0](https://github.com/nolafs/swl-training-hub/compare/v1.0.0...v1.1.0) (2026-01-23)
+
+
+### Features
+
+* prismic page setup ([9ac1a23](https://github.com/nolafs/swl-training-hub/commit/9ac1a23ca40378656594a90c96441fdd697b1a29))
+* prismic page setup ([1f81be7](https://github.com/nolafs/swl-training-hub/commit/1f81be7129e9aa1d8b8d6532f5dc3e586ee69cd8))
+
 # 1.0.0 (2026-01-22)
 
 
