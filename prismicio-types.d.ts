@@ -232,7 +232,7 @@ interface ModuleDocumentData {
 export type ModuleDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<ModuleDocumentData>, "module", Lang>;
 
-type PageDocumentDataSlicesSlice = never;
+type PageDocumentDataSlicesSlice = TextSlice | HeroSlice;
 
 /**
  * Content for Page documents
