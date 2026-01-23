@@ -15,10 +15,10 @@ const Text: FC<TextProps> = ({ slice }) => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="container mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8"
+      className="container mx-auto px-4 py-16"
     >
       {slice.variation === 'default' && (
-        <div className="prose prose-lg max-w-none">
+        <div className="prose prose-lg mx-auto text-gray-500 lg:prose-xl">
           <PrismicRichText field={slice.primary.body} />
         </div>
       )}
