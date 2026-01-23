@@ -45,8 +45,8 @@ export function ModuleCard({
     >
       <div className="flex-1 p-4 flex flex-col relative z-10">
         <div className={'grid grid-cols-2 justify-center items-center gap-2'}>
-            <div className="text-5xl font-light" style={{ color: isSelected ? '#ffffff' : color }}>{ moduleNumber > 10 ?  moduleNumber : '0' + moduleNumber}</div>
-            <div className="text-2xl font-medium text-right" style={{ color: isSelected ? '#ffffff' : color }}>Module</div>
+            <div className="text-5xl font-extralight" style={{ color: isSelected ? '#ffffff' : color }}>{ moduleNumber > 10 ?  moduleNumber : '0' + moduleNumber}</div>
+            <div className="text-2xl font-light text-right" style={{ color: isSelected ? '#ffffff' : color }}>Module</div>
         </div>
         {isHovered && (
           <motion.div
