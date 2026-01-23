@@ -104,7 +104,7 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
       <div className="overflow-hidden">
         <motion.div
           ref={sliderRef}
-          className="flex justify-end gap-6 py-10 pr-10 cursor-grab active:cursor-grabbing"
+          className="flex gap-6 p-10 cursor-grab active:cursor-grabbing"
           animate={controls}
           drag="x"
           dragConstraints={{ left: -maxIndex * (CARD_WIDTH + GAP), right: 0 }}
