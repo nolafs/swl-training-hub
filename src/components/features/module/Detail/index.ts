@@ -1,0 +1,1 @@
+export { ModuleDetail } from "./Detail";
