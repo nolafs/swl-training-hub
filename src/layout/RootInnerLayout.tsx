@@ -21,7 +21,7 @@ export const RootInnerLayout = ({ children }: { children: ReactNode }) => {
   });
 
   return (
-    <>
+    <div className={'flex flex-col min-h-screen'}>
       {/* GTM only cares whether consent is granted */}
       <TooltipProvider>{children}</TooltipProvider>
       {IS_GTM_ENABLED && (
@@ -64,6 +64,6 @@ export const RootInnerLayout = ({ children }: { children: ReactNode }) => {
           </motion.div>
         </>
       )}
-    </>
+    </div>
   );
 };

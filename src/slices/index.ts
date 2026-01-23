@@ -3,5 +3,7 @@
 import dynamic from "next/dynamic";
 
 export const components = {
-  video: dynamic(() => import("./Video")),
+  hero: dynamic(() => import("./Hero")),
+  media: dynamic(() => import("./Media")),
+  text: dynamic(() => import("./Text")),
 };

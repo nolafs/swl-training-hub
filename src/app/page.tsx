@@ -1,5 +1,6 @@
 import { ModuleSlider } from "@/components/features/module";
 
+
 // Placeholder data - will be replaced with Prismic CMS data
 const mockModules = [
   {
@@ -50,18 +51,10 @@ const mockModules = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-zinc-50">
+    <main className="w-full h-full flex-1">
       <div className="container mx-auto py-12">
-        <h1 className="text-4xl font-bold text-center mb-4">
-          SWL Training Hub
-        </h1>
-
-
-        <p className="text-center text-zinc-600 dark:text-zinc-400 mb-12">
-          Select a module to begin your learning journey
-        </p>
         <ModuleSlider modules={mockModules} />
       </div>
     </main>
-  );
+);
 }

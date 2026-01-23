@@ -109,7 +109,18 @@ interface LessonDocumentData {
   cover_image: prismic.ImageField<never>;
 
   /**
-   * `slices` field in *Lesson*
+   * Type field in *Lesson*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson.type
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  type: prismic.SelectField<"Lesson" | "Lesson Video" | "Discussion">;
+
+  /**
+   * Slice Zone field in *Lesson*
    *
    * - **Field Type**: Slice Zone
    * - **Placeholder**: *None*
@@ -165,6 +176,17 @@ interface ModuleDocumentData {
   title: prismic.KeyTextField;
 
   /**
+   * Position field in *Module*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: module.position
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/number
+   */
+  position: prismic.NumberField;
+
+  /**
    * Description field in *Module*
    *
    * - **Field Type**: Text
@@ -174,6 +196,17 @@ interface ModuleDocumentData {
    * - **Documentation**: https://prismic.io/docs/fields/text
    */
   description: prismic.KeyTextField;
+
+  /**
+   * Colour field in *Module*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: module.colour
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  colour: prismic.ColorField;
 
   /**
    * Lesson field in *Module*
@@ -341,6 +374,28 @@ interface SettingsDocumentData {
   favicon: prismic.ImageField<never>;
 
   /**
+   * Share Image field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.share_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  share_image: prismic.ImageField<never>;
+
+  /**
+   * Site Title field in *Settings*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.site_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  site_title: prismic.KeyTextField;
+
+  /**
    * Site Description field in *Settings*
    *
    * - **Field Type**: Rich Text
@@ -350,6 +405,28 @@ interface SettingsDocumentData {
    * - **Documentation**: https://prismic.io/docs/fields/rich-text
    */
   site_description: prismic.RichTextField;
+
+  /**
+   * Site Keywords field in *Settings*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.site_keywords
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  site_keywords: prismic.KeyTextField;
+
+  /**
+   * Site canonical url field in *Settings*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.site_canonical_url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  site_canonical_url: prismic.KeyTextField;
 
   /**
    * Copyright line field in *Settings*
@@ -397,31 +474,295 @@ export type AllDocumentTypes =
   | SettingsDocument;
 
 /**
- * Default variation for Video Slice
+ * Primary content in *Hero → Default → Primary*
+ */
+export interface HeroSliceDefaultPrimary {
+  /**
+   * Title field in *Hero → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.title
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Subtitle field in *Hero → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  subtitle: prismic.RichTextField;
+}
+
+/**
+ * Default variation for Hero Slice
  *
  * - **API ID**: `default`
  * - **Description**: Default
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type VideoSliceDefault = prismic.SharedSliceVariation<
+export type HeroSliceDefault = prismic.SharedSliceVariation<
   "default",
-  Record<string, never>,
+  Simplify<HeroSliceDefaultPrimary>,
   never
 >;
 
 /**
- * Slice variation for *Video*
+ * Slice variation for *Hero*
  */
-type VideoSliceVariation = VideoSliceDefault;
+type HeroSliceVariation = HeroSliceDefault;
 
 /**
- * Video Shared Slice
+ * Hero Shared Slice
  *
- * - **API ID**: `video`
- * - **Description**: Video
+ * - **API ID**: `hero`
+ * - **Description**: Hero
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type VideoSlice = prismic.SharedSlice<"video", VideoSliceVariation>;
+export type HeroSlice = prismic.SharedSlice<"hero", HeroSliceVariation>;
+
+/**
+ * Primary content in *Media → Default → Primary*
+ */
+export interface MediaSliceDefaultPrimary {
+  /**
+   * Image field in *Media → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: media.default.primary.image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image: prismic.ImageField<never>;
+}
+
+/**
+ * Default variation for Media Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type MediaSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<MediaSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Primary content in *Media → Video → Primary*
+ */
+export interface MediaSliceVideoPrimary {
+  /**
+   * Poster field in *Media → Video → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: media.video.primary.image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * Video field in *Media → Video → Primary*
+   *
+   * - **Field Type**: Embed
+   * - **Placeholder**: *None*
+   * - **API ID Path**: media.video.primary.video
+   * - **Documentation**: https://prismic.io/docs/fields/embed
+   */
+  video: prismic.EmbedField;
+}
+
+/**
+ * Video variation for Media Slice
+ *
+ * - **API ID**: `video`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type MediaSliceVideo = prismic.SharedSliceVariation<
+  "video",
+  Simplify<MediaSliceVideoPrimary>,
+  never
+>;
+
+/**
+ * Primary content in *Media → Image with caption → Primary*
+ */
+export interface MediaSliceImageWithCaptionPrimary {
+  /**
+   * Image field in *Media → Image with caption → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: media.imageWithCaption.primary.image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image: prismic.ImageField<never>;
+}
+
+/**
+ * Image with caption variation for Media Slice
+ *
+ * - **API ID**: `imageWithCaption`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type MediaSliceImageWithCaption = prismic.SharedSliceVariation<
+  "imageWithCaption",
+  Simplify<MediaSliceImageWithCaptionPrimary>,
+  never
+>;
+
+/**
+ * Primary content in *Media → Hero Image → Primary*
+ */
+export interface MediaSliceHeroImagePrimary {
+  /**
+   * Image field in *Media → Hero Image → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: media.heroImage.primary.image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image: prismic.ImageField<never>;
+}
+
+/**
+ * Hero Image variation for Media Slice
+ *
+ * - **API ID**: `heroImage`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type MediaSliceHeroImage = prismic.SharedSliceVariation<
+  "heroImage",
+  Simplify<MediaSliceHeroImagePrimary>,
+  never
+>;
+
+/**
+ * Primary content in *Media → Hero Video → Primary*
+ */
+export interface MediaSliceHeroVideoPrimary {
+  /**
+   * Image field in *Media → Hero Video → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: media.heroVideo.primary.image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image: prismic.ImageField<never>;
+}
+
+/**
+ * Hero Video variation for Media Slice
+ *
+ * - **API ID**: `heroVideo`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type MediaSliceHeroVideo = prismic.SharedSliceVariation<
+  "heroVideo",
+  Simplify<MediaSliceHeroVideoPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *Media*
+ */
+type MediaSliceVariation =
+  | MediaSliceDefault
+  | MediaSliceVideo
+  | MediaSliceImageWithCaption
+  | MediaSliceHeroImage
+  | MediaSliceHeroVideo;
+
+/**
+ * Media Shared Slice
+ *
+ * - **API ID**: `media`
+ * - **Description**: Media
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type MediaSlice = prismic.SharedSlice<"media", MediaSliceVariation>;
+
+/**
+ * Primary content in *Text → Default → Primary*
+ */
+export interface TextSliceDefaultPrimary {
+  /**
+   * Body field in *Text → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: text.default.primary.body
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  body: prismic.RichTextField;
+}
+
+/**
+ * Default variation for Text Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TextSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<TextSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Primary content in *Text → Heading → Primary*
+ */
+export interface TextSliceHeadingPrimary {
+  /**
+   * Title field in *Text → Heading → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: text.heading.primary.title
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  title: prismic.KeyTextField;
+}
+
+/**
+ * Heading variation for Text Slice
+ *
+ * - **API ID**: `heading`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TextSliceHeading = prismic.SharedSliceVariation<
+  "heading",
+  Simplify<TextSliceHeadingPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *Text*
+ */
+type TextSliceVariation = TextSliceDefault | TextSliceHeading;
+
+/**
+ * Text Shared Slice
+ *
+ * - **API ID**: `text`
+ * - **Description**: Text
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TextSlice = prismic.SharedSlice<"text", TextSliceVariation>;
 
 declare module "@prismicio/client" {
   interface CreateClient {
@@ -457,9 +798,28 @@ declare module "@prismicio/client" {
       SettingsDocumentData,
       SettingsDocumentDataSecondaryNavigationItem,
       AllDocumentTypes,
-      VideoSlice,
-      VideoSliceVariation,
-      VideoSliceDefault,
+      HeroSlice,
+      HeroSliceDefaultPrimary,
+      HeroSliceVariation,
+      HeroSliceDefault,
+      MediaSlice,
+      MediaSliceDefaultPrimary,
+      MediaSliceVideoPrimary,
+      MediaSliceImageWithCaptionPrimary,
+      MediaSliceHeroImagePrimary,
+      MediaSliceHeroVideoPrimary,
+      MediaSliceVariation,
+      MediaSliceDefault,
+      MediaSliceVideo,
+      MediaSliceImageWithCaption,
+      MediaSliceHeroImage,
+      MediaSliceHeroVideo,
+      TextSlice,
+      TextSliceDefaultPrimary,
+      TextSliceHeadingPrimary,
+      TextSliceVariation,
+      TextSliceDefault,
+      TextSliceHeading,
     };
   }
 }

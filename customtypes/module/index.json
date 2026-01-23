@@ -19,10 +19,24 @@
           "label": "UID"
         }
       },
+      "position": {
+        "type": "Number",
+        "config": {
+          "label": "Position",
+          "placeholder": ""
+        }
+      },
       "description": {
         "type": "Text",
         "config": {
           "label": "Description",
+          "placeholder": ""
+        }
+      },
+      "colour": {
+        "type": "Color",
+        "config": {
+          "label": "Colour",
           "placeholder": ""
         }
       },

@@ -30,6 +30,21 @@
           "thumbnails": []
         }
       },
+      "share_image": {
+        "type": "Image",
+        "config": {
+          "label": "Share Image",
+          "constraint": {},
+          "thumbnails": []
+        }
+      },
+      "site_title": {
+        "type": "Text",
+        "config": {
+          "label": "Site Title",
+          "placeholder": ""
+        }
+      },
       "site_description": {
         "type": "StructuredText",
         "config": {
@@ -37,6 +52,20 @@
           "placeholder": "",
           "allowTargetBlank": true,
           "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "site_keywords": {
+        "type": "Text",
+        "config": {
+          "label": "Site Keywords",
+          "placeholder": ""
+        }
+      },
+      "site_canonical_url": {
+        "type": "Text",
+        "config": {
+          "label": "Site canonical url",
+          "placeholder": ""
         }
       },
       "copyright_line": {
