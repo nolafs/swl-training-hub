@@ -1,4 +1,4 @@
-import { ModuleSlider } from "@/components/ModuleSlider";
+import { ModuleSlider } from "@/components/features/module";
 
 // Placeholder data - will be replaced with Prismic CMS data
 const mockModules = [

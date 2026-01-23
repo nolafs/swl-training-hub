@@ -1,1 +1,0 @@
-export { ModuleDetail } from "./ModuleDetail";

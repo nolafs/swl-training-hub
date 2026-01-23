@@ -43,6 +43,7 @@
     "husky": "^9.1.7",
     "prismic-cli": "^4.2.3",
     "semantic-release": "^24.2.9",
+    "shadcn": "^3.7.0",
     "slice-machine-ui": "^2.21.0",
     "tailwindcss": "^4",
     "typescript": "^5"

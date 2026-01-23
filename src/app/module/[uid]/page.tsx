@@ -1,4 +1,4 @@
-import { LessonSlider } from "@/components/LessonSlider";
+import { LessonSlider } from "@/components/features/lesson";
 
 // Placeholder data - will be replaced with Prismic CMS data
 const mockLessons = [
