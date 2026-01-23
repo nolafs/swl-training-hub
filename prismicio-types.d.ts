@@ -69,6 +69,136 @@ type ContentRelationshipFieldWithData<
   >;
 }[Exclude<TCustomType[number], string>["id"]];
 
+type LessonDocumentDataSlicesSlice = never;
+
+/**
+ * Content for Lesson documents
+ */
+interface LessonDocumentData {
+  /**
+   * Title field in *Lesson*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Description field in *Lesson*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  description: prismic.KeyTextField;
+
+  /**
+   * Cover Image field in *Lesson*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson.cover_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  cover_image: prismic.ImageField<never>;
+
+  /**
+   * `slices` field in *Lesson*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/slices
+   */
+  slices: prismic.SliceZone<LessonDocumentDataSlicesSlice>;
+}
+
+/**
+ * Lesson document from Prismic
+ *
+ * - **API ID**: `lesson`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type LessonDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<Simplify<LessonDocumentData>, "lesson", Lang>;
+
+/**
+ * Item in *Module → Lesson*
+ */
+export interface ModuleDocumentDataLessonItem {
+  /**
+   * Lesson field in *Module → Lesson*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: module.lesson[].lesson
+   * - **Documentation**: https://prismic.io/docs/fields/content-relationship
+   */
+  lesson: ContentRelationshipFieldWithData<
+    [{ id: "lesson"; fields: ["title"] }]
+  >;
+}
+
+/**
+ * Content for Module documents
+ */
+interface ModuleDocumentData {
+  /**
+   * Title field in *Module*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: module.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Description field in *Module*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: module.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  description: prismic.KeyTextField;
+
+  /**
+   * Lesson field in *Module*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: module.lesson[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+   */
+  lesson: prismic.GroupField<Simplify<ModuleDocumentDataLessonItem>>;
+}
+
+/**
+ * Module document from Prismic
+ *
+ * - **API ID**: `module`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ModuleDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<Simplify<ModuleDocumentData>, "module", Lang>;
+
 type PageDocumentDataSlicesSlice = never;
 
 /**
@@ -152,7 +282,97 @@ interface PageDocumentData {
 export type PageDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<PageDocumentData>, "page", Lang>;
 
-interface SettingsDocumentData {}
+/**
+ * Item in *Settings → Secondary Navigation*
+ */
+export interface SettingsDocumentDataSecondaryNavigationItem {
+  /**
+   * Nav Item field in *Settings → Secondary Navigation*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.secondary_navigation[].nav_item
+   * - **Documentation**: https://prismic.io/docs/fields/link
+   */
+  nav_item: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
+}
+
+/**
+ * Content for Settings documents
+ */
+interface SettingsDocumentData {
+  /**
+   * Logo field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.logo
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  logo: prismic.ImageField<never>;
+
+  /**
+   * Logo Alt field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.logo_alt
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  logo_alt: prismic.ImageField<never>;
+
+  /**
+   * Favicon field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.favicon
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  favicon: prismic.ImageField<never>;
+
+  /**
+   * Site Description field in *Settings*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.site_description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  site_description: prismic.RichTextField;
+
+  /**
+   * Copyright line field in *Settings*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.copyright_line
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  copyright_line: prismic.KeyTextField; /**
+   * Secondary Navigation field in *Settings*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.secondary_navigation[]
+   * - **Tab**: Navigations
+   * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+   */
+  secondary_navigation: prismic.GroupField<
+    Simplify<SettingsDocumentDataSecondaryNavigationItem>
+  >;
+}
 
 /**
  * Settings document from Prismic
@@ -170,7 +390,11 @@ export type SettingsDocument<Lang extends string = string> =
     Lang
   >;
 
-export type AllDocumentTypes = PageDocument | SettingsDocument;
+export type AllDocumentTypes =
+  | LessonDocument
+  | ModuleDocument
+  | PageDocument
+  | SettingsDocument;
 
 /**
  * Default variation for Video Slice
@@ -220,11 +444,18 @@ declare module "@prismicio/client" {
 
   namespace Content {
     export type {
+      LessonDocument,
+      LessonDocumentData,
+      LessonDocumentDataSlicesSlice,
+      ModuleDocument,
+      ModuleDocumentData,
+      ModuleDocumentDataLessonItem,
       PageDocument,
       PageDocumentData,
       PageDocumentDataSlicesSlice,
       SettingsDocument,
       SettingsDocumentData,
+      SettingsDocumentDataSecondaryNavigationItem,
       AllDocumentTypes,
       VideoSlice,
       VideoSliceVariation,

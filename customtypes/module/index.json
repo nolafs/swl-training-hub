@@ -1,0 +1,54 @@
+{
+  "format": "custom",
+  "id": "module",
+  "label": "Module",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "uid": {
+        "type": "UID",
+        "config": {
+          "label": "UID"
+        }
+      },
+      "description": {
+        "type": "Text",
+        "config": {
+          "label": "Description",
+          "placeholder": ""
+        }
+      },
+      "lesson": {
+        "type": "Group",
+        "config": {
+          "label": "Lesson",
+          "repeat": true,
+          "fields": {
+            "lesson": {
+              "type": "Link",
+              "config": {
+                "label": "Lesson",
+                "select": "document",
+                "repeat": false,
+                "customtypes": [
+                  {
+                    "id": "lesson",
+                    "fields": ["title"]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
