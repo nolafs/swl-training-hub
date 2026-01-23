@@ -1,35 +1,20 @@
 .container {
   width: 100%;
   position: relative;
+  overflow: hidden;
 }
 
 .slider {
   display: flex;
   gap: 24px;
   padding: 40px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
+  cursor: grab;
+}
+
+.slider:active {
+  cursor: grabbing;
 }
 
 .slider > * {
-  scroll-snap-align: start;
   flex-shrink: 0;
-}
-
-.slider::-webkit-scrollbar {
-  height: 8px;
-}
-
-.slider::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-.slider::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 4px;
-}
-
-.slider::-webkit-scrollbar-thumb:hover {
-  background: #aaa;
 }
