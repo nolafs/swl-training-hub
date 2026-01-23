@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, useMotionValue, useAnimation, PanInfo } from "framer-motion";
+import { motion, useAnimation, PanInfo } from "framer-motion";
 import { ModuleCard } from "../Card";
 import { ModuleDetail } from "../Detail";
 import { ModuleDocument } from "../../../../../prismicio-types";
@@ -21,29 +21,19 @@ interface ModuleSliderProps {
 
 const CARD_WIDTH = 375;
 const GAP = 24;
-const PADDING = 40;
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-} as const;
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: {
+  visible: (i: number) => ({
     opacity: 1,
     y: 0,
     transition: {
+      delay: i * 0.1,
       type: "spring" as const,
       stiffness: 300,
       damping: 24,
     },
-  },
+  }),
 };
 
 export function ModuleSlider({ modules }: ModuleSliderProps) {
@@ -53,7 +43,6 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  const x = useMotionValue(0);
   const controls = useAnimation();
 
   useEffect(() => {
@@ -61,7 +50,7 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
       if (containerRef.current && sliderRef.current) {
         const containerWidth = containerRef.current.offsetWidth;
         const contentWidth = sliderRef.current.scrollWidth;
-        const maxScroll = contentWidth - containerWidth + PADDING;
+        const maxScroll = contentWidth - containerWidth;
         const totalSlides = Math.ceil(maxScroll / (CARD_WIDTH + GAP));
         setMaxIndex(Math.max(0, totalSlides));
       }
@@ -111,44 +100,18 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
 
   return (
     <div className="w-full relative" ref={containerRef}>
-      {/* Navigation Arrows */}
-      <button
-        onClick={handlePrev}
-        disabled={currentIndex === 0}
-        className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-        aria-label="Previous"
-      >
-        <ChevronLeft className="w-6 h-6 text-gray-800" />
-      </button>
-
-      <button
-        onClick={handleNext}
-        disabled={currentIndex >= maxIndex}
-        className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-        aria-label="Next"
-      >
-        <ChevronRight className="w-6 h-6 text-gray-800" />
-      </button>
-
       {/* Slider */}
       <div className="overflow-hidden">
         <motion.div
           ref={sliderRef}
           className="flex gap-6 p-10 cursor-grab active:cursor-grabbing"
-          variants={containerVariants}
-          initial="hidden"
           animate={controls}
-          style={{ x }}
           drag="x"
           dragConstraints={{ left: -maxIndex * (CARD_WIDTH + GAP), right: 0 }}
           dragElastic={0.1}
           onDragEnd={handleDragEnd}
-          onAnimationComplete={() => {
-            // Sync motion value with current position
-            x.set(-currentIndex * (CARD_WIDTH + GAP));
-          }}
         >
-          {modules.map((module) => {
+          {modules.map((module, index) => {
             const moduleData: Module = {
               id: module.id,
               position: module.data.position ?? 0,
@@ -158,7 +121,14 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
             };
 
             return (
-              <motion.div key={module.id} variants={itemVariants} className="shrink-0">
+              <motion.div
+                key={module.id}
+                custom={index}
+                variants={itemVariants}
+                initial="hidden"
+                animate="visible"
+                className="shrink-0"
+              >
                 <ModuleCard
                   moduleNumber={moduleData.position ?? 0}
                   title={moduleData.title ?? ""}
@@ -173,9 +143,18 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
         </motion.div>
       </div>
 
-      {/* Number Navigation */}
-      {maxIndex > 0 && (
-        <div className="flex justify-center gap-2 mt-4">
+      {/* Navigation - Arrows with Number Pagination */}
+      <div className="flex justify-center items-center gap-4 mt-6">
+        <button
+          onClick={handlePrev}
+          disabled={currentIndex === 0}
+          className="w-10 h-10 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+          aria-label="Previous"
+        >
+          <ChevronLeft className="w-5 h-5 text-gray-800" />
+        </button>
+
+        <div className="flex gap-2">
           {Array.from({ length: maxIndex + 1 }).map((_, index) => (
             <button
               key={index}
@@ -191,7 +170,16 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
             </button>
           ))}
         </div>
-      )}
+
+        <button
+          onClick={handleNext}
+          disabled={currentIndex >= maxIndex}
+          className="w-10 h-10 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+          aria-label="Next"
+        >
+          <ChevronRight className="w-5 h-5 text-gray-800" />
+        </button>
+      </div>
 
       {selectedModule && (
         <ModuleDetail

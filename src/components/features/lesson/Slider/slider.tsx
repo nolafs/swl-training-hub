@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, useMotionValue, useAnimation, PanInfo } from "framer-motion";
+import { motion, useAnimation, PanInfo } from "framer-motion";
 import { LessonCard } from "../Card";
 import { LessonDetail } from "../Detail";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -22,29 +22,19 @@ interface LessonSliderProps {
 
 const CARD_WIDTH = 180;
 const GAP = 24;
-const PADDING = 40;
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-} as const;
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: {
+  visible: (i: number) => ({
     opacity: 1,
     y: 0,
     transition: {
+      delay: i * 0.1,
       type: "spring" as const,
       stiffness: 300,
       damping: 24,
     },
-  },
+  }),
 };
 
 export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderProps) {
@@ -54,7 +44,6 @@ export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderPro
   const containerRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  const x = useMotionValue(0);
   const controls = useAnimation();
 
   useEffect(() => {
@@ -62,7 +51,7 @@ export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderPro
       if (containerRef.current && sliderRef.current) {
         const containerWidth = containerRef.current.offsetWidth;
         const contentWidth = sliderRef.current.scrollWidth;
-        const maxScroll = contentWidth - containerWidth + PADDING;
+        const maxScroll = contentWidth - containerWidth;
         const totalSlides = Math.ceil(maxScroll / (CARD_WIDTH + GAP));
         setMaxIndex(Math.max(0, totalSlides));
       }
@@ -112,44 +101,26 @@ export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderPro
 
   return (
     <div className="w-full relative" ref={containerRef}>
-      {/* Navigation Arrows */}
-      <button
-        onClick={handlePrev}
-        disabled={currentIndex === 0}
-        className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-        aria-label="Previous"
-      >
-        <ChevronLeft className="w-5 h-5 text-gray-800" />
-      </button>
-
-      <button
-        onClick={handleNext}
-        disabled={currentIndex >= maxIndex}
-        className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-        aria-label="Next"
-      >
-        <ChevronRight className="w-5 h-5 text-gray-800" />
-      </button>
-
       {/* Slider */}
       <div className="overflow-hidden">
         <motion.div
           ref={sliderRef}
           className="flex gap-6 p-10 cursor-grab active:cursor-grabbing"
-          variants={containerVariants}
-          initial="hidden"
           animate={controls}
-          style={{ x }}
           drag="x"
           dragConstraints={{ left: -maxIndex * (CARD_WIDTH + GAP), right: 0 }}
           dragElastic={0.1}
           onDragEnd={handleDragEnd}
-          onAnimationComplete={() => {
-            x.set(-currentIndex * (CARD_WIDTH + GAP));
-          }}
         >
-          {lessons.map((lesson) => (
-            <motion.div key={lesson.id} variants={itemVariants} className="shrink-0">
+          {lessons.map((lesson, index) => (
+            <motion.div
+              key={lesson.id}
+              custom={index}
+              variants={itemVariants}
+              initial="hidden"
+              animate="visible"
+              className="shrink-0"
+            >
               <LessonCard
                 lessonNumber={lesson.lessonNumber}
                 title={lesson.title}
@@ -164,9 +135,18 @@ export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderPro
         </motion.div>
       </div>
 
-      {/* Number Navigation */}
-      {maxIndex > 0 && (
-        <div className="flex justify-center gap-2 mt-4">
+      {/* Navigation - Arrows with Number Pagination */}
+      <div className="flex justify-center items-center gap-3 mt-6">
+        <button
+          onClick={handlePrev}
+          disabled={currentIndex === 0}
+          className="w-8 h-8 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+          aria-label="Previous"
+        >
+          <ChevronLeft className="w-4 h-4 text-gray-800" />
+        </button>
+
+        <div className="flex gap-2">
           {Array.from({ length: maxIndex + 1 }).map((_, index) => (
             <button
               key={index}
@@ -182,7 +162,16 @@ export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderPro
             </button>
           ))}
         </div>
-      )}
+
+        <button
+          onClick={handleNext}
+          disabled={currentIndex >= maxIndex}
+          className="w-8 h-8 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+          aria-label="Next"
+        >
+          <ChevronRight className="w-4 h-4 text-gray-800" />
+        </button>
+      </div>
 
       {selectedLesson && (
         <LessonDetail
