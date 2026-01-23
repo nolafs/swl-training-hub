@@ -36,7 +36,7 @@ export function SliderNavigation({
           <motion.button
             key={index}
             onClick={() => onSlide(index)}
-            className="font-medium text-6xl origin-bottom"
+            className="font-medium text-6xl origin-bottom leading-none"
             animate={{
               scale: currentIndex === index ? 1.5 : 1,
               color: currentIndex === index ? "#ef4444" : "#9ca3af",
