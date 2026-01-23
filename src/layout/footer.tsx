@@ -11,10 +11,10 @@ export function Footer({ settings }: FooterProps) {
   const secondaryNav = settings?.data?.secondary_navigation || [];
 
   return (
-    <footer className="border-t border-gray-200 bg-gray-50">
+    <footer>
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-6 sm:flex-row sm:px-6 lg:px-8">
         {/* Copyright - Left */}
-        <p className="text-sm text-gray-500">{copyrightText}</p>
+        <p className="text-sm text-gray-900">{copyrightText}</p>
 
         {/* Secondary Navigation - Right */}
         {secondaryNav.length > 0 && (
