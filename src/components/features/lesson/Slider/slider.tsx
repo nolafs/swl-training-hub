@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, useAnimation, PanInfo } from "framer-motion";
 import { LessonCard } from "../Card";
 import { LessonDetail } from "../Detail";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { SliderNavigation } from "@/components/ui/SliderNavigation";
 
 interface Lesson {
   id: string;
@@ -135,43 +135,13 @@ export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderPro
         </motion.div>
       </div>
 
-      {/* Navigation - Arrows with Number Pagination */}
-      <div className="flex justify-center items-center gap-3 mt-6">
-        <button
-          onClick={handlePrev}
-          disabled={currentIndex === 0}
-          className="w-8 h-8 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-          aria-label="Previous"
-        >
-          <ChevronLeft className="w-4 h-4 text-gray-800" />
-        </button>
-
-        <div className="flex gap-2">
-          {Array.from({ length: maxIndex + 1 }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => slideTo(index)}
-              className={`w-8 h-8 rounded-full text-xs font-medium transition-all ${
-                currentIndex === index
-                  ? "bg-gray-800 text-white"
-                  : "bg-gray-200 text-gray-600 hover:bg-gray-300"
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            >
-              {index + 1}
-            </button>
-          ))}
-        </div>
-
-        <button
-          onClick={handleNext}
-          disabled={currentIndex >= maxIndex}
-          className="w-8 h-8 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-          aria-label="Next"
-        >
-          <ChevronRight className="w-4 h-4 text-gray-800" />
-        </button>
-      </div>
+      <SliderNavigation
+        currentIndex={currentIndex}
+        maxIndex={maxIndex}
+        onPrev={handlePrev}
+        onNext={handleNext}
+        onSlide={slideTo}
+      />
 
       {selectedLesson && (
         <LessonDetail
