@@ -13,7 +13,10 @@ import { useEffect, useState } from "react";
 import {getAllDownloads} from "@/actions/downloads";
 import {DownloadDocument} from "../../../../prismicio-types";
 import {PrismicNextLink} from "@prismicio/next";
-import {Button} from "@/components/ui/button";
+import {ButtonHero} from "@/components/ui/button-hero";
+import {DownloadIcon} from "lucide-react";
+import {Badge} from "@/components/ui/badge";
+import {ScrollArea} from "@/components/ui/scroll-area";
 
 
 export const DownloadDialog = (props: DialogProps) => {
@@ -33,7 +36,7 @@ export const DownloadDialog = (props: DialogProps) => {
   return (
     <Dialog {...props}>
       <DialogTrigger asChild>
-        <Button size={'lg'}>Downloads</Button>
+        <ButtonHero  icon={<DownloadIcon />} textBgColor={'#331f1f'} textColor={'#fff'} iconBgColor={'#E55D5D'} >Downloads</ButtonHero>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
@@ -43,11 +46,24 @@ export const DownloadDialog = (props: DialogProps) => {
           </DialogDescription>
         </DialogHeader>
         {/* List of downloads.ts here */}
+        <ScrollArea className="h-[350px] w-full rounded-md border p-4">
+        <ul className={'space-y-2'}>
         {downloads.length && (
-          downloads.map((download) => (
-            <PrismicNextLink key={download.id} field={download.data.download}>{download.data.title}</PrismicNextLink>
+          downloads.map((download) => (<li key={download.id}  className={'block border border-gray-100 rounded-md bg-gray-50 hover:bg-gray-800 hover:text-white'}>
+            <PrismicNextLink field={download.data.download}className="flex items-center justify-between">
+                <div className={'p-4 flex flex-col space-y-2.5'}>
+                  <h4 className={'flex items-center space-x-1.5'}><span className={'font-semibold text-2xl'}>{download.data.title}</span><Badge >{download.data.file_type}</Badge></h4>
+                  <p className={'font-extralight text-sm'}>{download.data.description}</p>
+                </div>
+                <div className={'p-4'}>
+                <DownloadIcon />
+                </div>
+              </PrismicNextLink>
+          </li>
           ))
         )}
+        </ul>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   )
