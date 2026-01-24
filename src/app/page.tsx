@@ -1,10 +1,9 @@
 import { ModuleSlider } from '@/components/features/module';
 import { createClient } from '@/prismicio';
-import {SliceZone} from "@prismicio/react";
-import {components} from "@/slices";
-import {notFound} from "next/navigation";
-
-
+import { SliceZone } from "@prismicio/react";
+import { components } from "@/slices";
+import { notFound } from "next/navigation";
+import { PageColorSetter } from "@/components/features/page-color";
 
 export default async function Home() {
   const client = createClient();
@@ -19,6 +18,7 @@ export default async function Home() {
 
   return (
     <main className="flex flex-col h-full w-full flex-1">
+      <PageColorSetter color={null} />
       <ModuleSlider modules={modules} />
       <SliceZone slices={page.data.slices} components={components} />
     </main>

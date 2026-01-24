@@ -13,6 +13,7 @@ import Link from 'next/link';
 
 import { GoogleAnalytics } from '@/lib/tracking/GoogleAnalytics';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { PageColorProvider, PageColorTransition } from '@/components/features/page-color';
 
 export const RootInnerLayout = ({ children }: { children: ReactNode }) => {
   const [consent, setConsent] = useState<boolean>(() => {
@@ -23,9 +24,11 @@ export const RootInnerLayout = ({ children }: { children: ReactNode }) => {
   });
 
   return (
-    <div className={'flex min-h-screen flex-col'}>
-      {/* GTM only cares whether consent is granted */}
-      <TooltipProvider>{children}</TooltipProvider>
+    <PageColorProvider>
+      <div className={'flex min-h-screen flex-col'}>
+        <PageColorTransition />
+        {/* GTM only cares whether consent is granted */}
+        <TooltipProvider>{children}</TooltipProvider>
       {IS_GTM_ENABLED && (
         <>
           <GoogleAnalytics consented={consent} />
@@ -71,6 +74,7 @@ export const RootInnerLayout = ({ children }: { children: ReactNode }) => {
           </motion.div>
         </>
       )}
-    </div>
+      </div>
+    </PageColorProvider>
   );
 };

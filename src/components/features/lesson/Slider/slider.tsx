@@ -8,10 +8,12 @@ import { SliderNavigation } from '@/components/ui/SliderNavigation';
 
 interface Lesson {
   id: string;
+  uid: string;
   lessonNumber: number;
   title: string;
   description: string;
-  duration?: string;
+  coverImage: string;
+  coverImageAlt: string;
 }
 
 interface LessonSliderProps {
@@ -20,7 +22,7 @@ interface LessonSliderProps {
   moduleColor: string;
 }
 
-const CARD_WIDTH = 180;
+const CARD_WIDTH = 320;
 const GAP = 24;
 
 const itemVariants = {
@@ -125,7 +127,8 @@ export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderPro
                 lessonNumber={lesson.lessonNumber}
                 title={lesson.title}
                 description={lesson.description}
-                duration={lesson.duration}
+                coverImage={lesson.coverImage}
+                coverImageAlt={lesson.coverImageAlt}
                 color={moduleColor}
                 isSelected={selectedLesson?.id === lesson.id}
                 onClick={() => handleLessonClick(lesson)}

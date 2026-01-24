@@ -5,10 +5,12 @@ import styles from './Detail.module.css';
 
 interface Lesson {
   id: string;
+  uid: string;
   lessonNumber: number;
   title: string;
   description: string;
-  duration?: string;
+  coverImage: string;
+  coverImageAlt: string;
 }
 
 interface LessonDetailProps {
@@ -22,7 +24,7 @@ export function LessonDetail({ lesson, moduleId, color, onClose }: LessonDetailP
   const router = useRouter();
 
   const handleStart = () => {
-    router.push(`/module/${moduleId}/lesson/${lesson.id}`);
+    router.push(`/module/${moduleId}/lesson/${lesson.uid}`);
   };
 
   return (
@@ -35,7 +37,6 @@ export function LessonDetail({ lesson, moduleId, color, onClose }: LessonDetailP
           <div className={styles.cardContent}>
             <h2 className={styles.title}>{lesson.title}</h2>
             <p className={styles.description}>{lesson.description}</p>
-            {lesson.duration && <span className={styles.duration}>{lesson.duration}</span>}
           </div>
         </div>
 

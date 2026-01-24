@@ -1,19 +1,32 @@
+import { createClient } from "@/prismicio";
+import { notFound } from "next/navigation";
+import { PageColorSetter } from "@/components/features/page-color";
+
 interface LessonPageProps {
   params: Promise<{ uid: string; lessonId: string }>;
 }
 
 export default async function LessonPage({ params }: LessonPageProps) {
   const { uid, lessonId } = await params;
+  const client = createClient();
 
-  // TODO: Fetch lesson content from Prismic CMS
+  // Fetch module to get the color
+  const moduleDoc = await client.getByUID('module', uid).catch(() => null);
+
+  if (!moduleDoc) {
+    notFound();
+  }
+
+  const moduleColor = moduleDoc.data.colour || '#fff';
 
   return (
-    <main className="min-h-screen bg-zinc-50 dark:bg-black">
+    <main className="min-h-screen flex-1">
+      <PageColorSetter color={moduleColor} />
       <div className="container mx-auto px-6 py-12">
         <nav className="mb-8">
           <a
             href={`/module/${uid}`}
-            className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+            className="flex items-center gap-2 text-white/80 hover:text-white"
           >
             <svg
               width="16"
@@ -31,10 +44,10 @@ export default async function LessonPage({ params }: LessonPageProps) {
           </a>
         </nav>
 
-        <article className="mx-auto max-w-4xl rounded-xl bg-white p-8 shadow-lg dark:bg-zinc-900">
+        <article className="mx-auto max-w-4xl rounded-xl bg-white/95 p-8 shadow-lg backdrop-blur">
           <h1 className="mb-6 text-3xl font-bold">Lesson {lessonId}</h1>
-          <div className="prose dark:prose-invert max-w-none">
-            <p className="text-zinc-600 dark:text-zinc-400">
+          <div className="prose max-w-none">
+            <p className="text-zinc-600">
               Lesson content will be loaded from Prismic CMS.
             </p>
             {/* Video player, text content, and interactive elements will go here */}

@@ -1,29 +1,10 @@
 import { LessonSlider } from '@/components/features/lesson';
-
-// Placeholder data - will be replaced with Prismic CMS data
-const mockLessons = [
-  {
-    id: 'lesson-1',
-    lessonNumber: 1,
-    title: 'Introduction',
-    description: 'Getting started with the basics',
-    duration: '5 min',
-  },
-  {
-    id: 'lesson-2',
-    lessonNumber: 2,
-    title: 'Core Concepts',
-    description: 'Understanding the fundamentals',
-    duration: '10 min',
-  },
-  {
-    id: 'lesson-3',
-    lessonNumber: 3,
-    title: 'Advanced Topics',
-    description: 'Diving deeper into the subject',
-    duration: '15 min',
-  },
-];
+import { createClient } from "@/prismicio";
+import { notFound } from "next/navigation";
+import { isFilled } from "@prismicio/client";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
+import { PageColorSetter } from "@/components/features/page-color";
 
 interface ModulePageProps {
   params: Promise<{ uid: string }>;
@@ -31,15 +12,58 @@ interface ModulePageProps {
 
 export default async function ModulePage({ params }: ModulePageProps) {
   const { uid } = await params;
+  const client = createClient();
 
-  // TODO: Fetch module data from Prismic
-  const moduleColor = '#3B82F6'; // Placeholder - will come from CMS
+  const moduleDoc = await client.getByUID('module', uid, {
+    fetchLinks: ['lesson.title', 'lesson.type', 'lesson.description', 'lesson.cover_image'],
+  }).catch(() => null);
+
+  if (!moduleDoc) {
+    notFound();
+  }
+
+  const moduleColor = moduleDoc.data.colour || '#fff';
+
+  // Transform CMS lessons to the format expected by LessonSlider
+  const lessons = moduleDoc.data.lesson
+    .map((item, index) => {
+      if (!isFilled.contentRelationship(item.lesson)) return null;
+
+      const lessonData = item.lesson.data as {
+        title?: string;
+        description?: string;
+        cover_image?: { url?: string; alt?: string };
+      } | undefined;
+
+      return {
+        id: item.lesson.id,
+        uid: item.lesson.uid || '',
+        lessonNumber: index + 1,
+        title: lessonData?.title || 'Untitled Lesson',
+        description: lessonData?.description || '',
+        coverImage: lessonData?.cover_image?.url || '',
+        coverImageAlt: lessonData?.cover_image?.alt || '',
+      };
+    })
+    .filter((lesson): lesson is NonNullable<typeof lesson> => lesson !== null);
+
+  const hasLessons = lessons.length > 0;
 
   return (
-    <main className="min-h-screen bg-zinc-50 dark:bg-black">
+    <main className="flex flex-col h-full w-full flex-1">
+      <PageColorSetter color={moduleColor} />
       <div className="container mx-auto py-12">
-        <h1 className="mb-8 px-10 text-3xl font-bold">Module {uid}</h1>
-        <LessonSlider lessons={mockLessons} moduleId={uid} moduleColor={moduleColor} />
+        {hasLessons ? (
+          <LessonSlider lessons={lessons} moduleId={uid} moduleColor={moduleColor} />
+        ) : (
+          <Alert>
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>No lessons found</AlertTitle>
+            <AlertDescription>
+              There are no lessons available for this module yet.
+            </AlertDescription>
+          </Alert>
+        )}
       </div>
     </main>
   );
