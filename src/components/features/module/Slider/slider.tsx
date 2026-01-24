@@ -3,17 +3,8 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useAnimation, PanInfo } from "framer-motion";
 import { ModuleCard } from "../Card";
-import { ModuleDetail } from "../Detail";
 import { ModuleDocument } from "../../../../../prismicio-types";
 import { SliderNavigation } from "@/components/ui/SliderNavigation";
-
-interface Module {
-  id: string;
-  position: number;
-  title: string;
-  description: string;
-  colour: string;
-}
 
 interface ModuleSliderProps {
   modules: ModuleDocument[];
@@ -37,7 +28,6 @@ const itemVariants = {
 };
 
 export function ModuleSlider({ modules }: ModuleSliderProps) {
-  const [selectedModule, setSelectedModule] = useState<Module | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [maxIndex, setMaxIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -60,14 +50,6 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
     window.addEventListener("resize", updateMaxIndex);
     return () => window.removeEventListener("resize", updateMaxIndex);
   }, [modules.length]);
-
-  const handleModuleClick = (module: Module) => {
-    setSelectedModule(module);
-  };
-
-  const handleClose = () => {
-    setSelectedModule(null);
-  };
 
   const slideTo = (index: number) => {
     const newIndex = Math.max(0, Math.min(index, maxIndex));
@@ -111,55 +93,38 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
           dragElastic={0.1}
           onDragEnd={handleDragEnd}
         >
-          {modules.map((module, index) => {
-            const moduleData: Module = {
-              id: module.id,
-              position: module.data.position ?? 0,
-              title: module.data.title ?? "",
-              description: module.data.description ?? "",
-              colour: module.data.colour ?? "#000000",
-            };
-
-            return (
-              <motion.div
-                key={module.id}
-                custom={index}
-                variants={itemVariants}
-                initial="hidden"
-                animate="visible"
-                className="shrink-0"
-              >
-                <ModuleCard
-                  moduleNumber={moduleData.position ?? 0}
-                  title={moduleData.title ?? ""}
-                  description={moduleData.description ?? ""}
-                  color={moduleData.colour ?? "#000000"}
-                  isSelected={selectedModule?.id === module.id}
-                  onClick={() => handleModuleClick(moduleData)}
-                />
-              </motion.div>
-            );
-          })}
+          {modules.map((module, index) => (
+            <motion.div
+              key={module.id}
+              custom={index}
+              variants={itemVariants}
+              initial="hidden"
+              animate="visible"
+              className="shrink-0"
+            >
+              <ModuleCard
+                moduleNumber={module.data.position ?? 0}
+                title={module.data.title ?? ""}
+                description={module.data.description ?? ""}
+                color={module.data.colour ?? "#000000"}
+                progress={0}
+                href={`/module/${module.uid}`}
+              />
+            </motion.div>
+          ))}
         </motion.div>
       </div>
 
-      <div className={'grid grid-cols-1 md:grid-cols-2 gap-6 items-center mt-4 px-5'}>
-      <div>Progress here</div>
-      <SliderNavigation
-        currentIndex={currentIndex}
-        maxIndex={maxIndex}
-        onPrev={handlePrev}
-        onNext={handleNext}
-        onSlide={slideTo}
-      />
-      </div>
-
-      {selectedModule && (
-        <ModuleDetail
-          module={selectedModule}
-          onClose={handleClose}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center mt-4 px-5">
+        <div>Progress here</div>
+        <SliderNavigation
+          currentIndex={currentIndex}
+          maxIndex={maxIndex}
+          onPrev={handlePrev}
+          onNext={handleNext}
+          onSlide={slideTo}
         />
-      )}
+      </div>
     </div>
   );
 }
