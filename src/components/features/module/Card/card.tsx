@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Play } from "lucide-react";
+import {ArrowRight, Play} from "lucide-react";
 
 interface ModuleCardProps {
   moduleNumber: number;
@@ -33,7 +33,7 @@ export function ModuleCard({
     >
       {/* Progress bar - slides out from left */}
       <motion.div
-        className="absolute left-0 top-1/2 -translate-y-1/2 h-[300px] w-16 flex flex-col items-center justify-center gap-2"
+        className="absolute left-0 top-1/2 -translate-y-1/2 h-75 w-16 flex flex-col items-center justify-center gap-2"
         initial={{ x: 0, opacity: 0 }}
         animate={{
           x: isHovered ? -80 : 0,
@@ -60,7 +60,7 @@ export function ModuleCard({
 
       {/* Start button - slides out from right */}
       <motion.div
-        className="absolute right-0 top-1/2 -translate-y-1/2"
+        className="absolute right-0 bottom-3 -translate-y-1/2"
         initial={{ x: 0, opacity: 0 }}
         animate={{
           x: isHovered ? 80 : 0,
@@ -74,17 +74,17 @@ export function ModuleCard({
       >
         <Link
           href={href}
-          className="flex items-center justify-center w-16 h-16 rounded-full text-white shadow-lg hover:scale-110 transition-transform"
+          className="flex items-center justify-center w-24 h-20  text-white shadow-lg hover:scale-110 transition-transform"
           style={{ backgroundColor: color }}
         >
-          <Play className="w-6 h-6 ml-1" fill="white" />
+          <ArrowRight className="w-10 h-10 ml-4"   />
         </Link>
       </motion.div>
 
       {/* Main Card */}
       <Link href={href}>
         <motion.div
-          className="relative w-[375px] h-[375px] bg-white border border-black/20 cursor-pointer overflow-hidden flex flex-col"
+          className="relative w-93.75 h-93.75 bg-white border border-black/20 cursor-pointer overflow-hidden flex flex-col"
           animate={{
             boxShadow: isHovered
               ? "0 20px 50px rgba(0, 0, 0, 0.2)"
