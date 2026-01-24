@@ -1,8 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
 import Notification from '@/components/ui/notification';
-import {type EmbedField, ImageFieldImage} from '@prismicio/client';
-
+import { type EmbedField, ImageFieldImage } from '@prismicio/client';
 
 export interface ContentVideoProps {
   id: string;
@@ -13,13 +12,12 @@ export interface ContentVideoProps {
   controls?: boolean;
 }
 
-export function VideoPlayer({ id, video, loading, image}: ContentVideoProps) {
-
-  if(!video) {
+export function VideoPlayer({ id, video, loading, image }: ContentVideoProps) {
+  if (!video) {
     return <Notification body={'No video source found'} type={'error'} />;
   }
 
-  if(video.type !== 'video') {
+  if (video.type !== 'video') {
     return <Notification body={'No video source found'} type={'error'} />;
   }
 
@@ -32,17 +30,33 @@ export function VideoPlayer({ id, video, loading, image}: ContentVideoProps) {
   }
 
   if (video.provider_name === 'YouTube') {
-    const Youtube = dynamic(() => import('./video-players/youtube'), {ssr: false});
+    const Youtube = dynamic(() => import('./video-players/youtube'), { ssr: false });
 
     return (
-      <Youtube id={id} title={video.title ?? id} poster={image} src={video.embed_url} width={944} loading={loading} height={531} />
+      <Youtube
+        id={id}
+        title={video.title ?? id}
+        poster={image}
+        src={video.embed_url}
+        width={944}
+        loading={loading}
+        height={531}
+      />
     );
   }
 
   if (video.provider_name === 'Vimeo') {
-    const Vimeo = dynamic(() => import('./video-players/vimeo'), {ssr: false});
+    const Vimeo = dynamic(() => import('./video-players/vimeo'), { ssr: false });
 
-    return <Vimeo id={id} title={video.title ?? ''} poster={image} loading={loading} src={video.embed_url} />;
+    return (
+      <Vimeo
+        id={id}
+        title={video.title ?? ''}
+        poster={image}
+        loading={loading}
+        src={video.embed_url}
+      />
+    );
   }
 
   return <div className={'block w-full p-5'}>Type is undefined</div>;

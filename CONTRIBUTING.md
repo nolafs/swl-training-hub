@@ -24,11 +24,13 @@ Thank you for your interest in contributing! This document provides guidelines f
 This project uses [Conventional Commits](https://www.conventionalcommits.org/) for automated versioning and changelog generation.
 
 **Use the interactive commit tool:**
+
 ```bash
 npm run commit
 ```
 
 **Or write commits manually:**
+
 ```
 <type>(<scope>): <description>
 
@@ -54,6 +56,7 @@ npm run commit
 **Breaking changes:** Add `BREAKING CHANGE:` in the footer or `!` after type for major version bump.
 
 **Examples:**
+
 ```
 feat: add lesson progress indicator
 fix: resolve hover animation on mobile

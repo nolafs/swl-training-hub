@@ -14,11 +14,7 @@ export function Header({ settings }: HeaderProps) {
         {/* Logo - Left */}
         <PrismicNextLink href="/" className="flex items-center">
           {logo?.url ? (
-            <PrismicNextImage
-              field={logo}
-              className="h-16 w-auto sm:h-16 md:h-26"
-              fallbackAlt=""
-            />
+            <PrismicNextImage field={logo} className="h-16 w-auto sm:h-16 md:h-26" fallbackAlt="" />
           ) : (
             <span className="text-xl font-bold text-gray-900">SWL Training Hub</span>
           )}

@@ -21,13 +21,13 @@ const getGtag = (): Gtag.Gtag => {
   if (typeof window === 'undefined') {
     logGAWarning('Window is undefined – returning noop gtag');
     // SSR / non-browser: no-op
-     
+
     return (() => {}) as Gtag.Gtag;
   }
 
   if (!IS_GTM_ENABLED) {
     logGAWarning('Google Analytics is not enabled – returning noop gtag');
-     
+
     return (() => {}) as Gtag.Gtag;
   }
 

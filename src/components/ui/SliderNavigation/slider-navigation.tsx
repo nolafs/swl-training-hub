@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface SliderNavigationProps {
   currentIndex: number;
@@ -19,16 +19,16 @@ export function SliderNavigation({
   onSlide,
 }: SliderNavigationProps) {
   return (
-    <div className="flex justify-end items-end gap-4 mt-6">
+    <div className="mt-6 flex items-end justify-end gap-4">
       <motion.button
         onClick={onPrev}
         disabled={currentIndex === 0}
-        className="w-10 h-10 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed"
+        className="flex h-10 w-10 items-center justify-center disabled:cursor-not-allowed disabled:opacity-30"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         aria-label="Previous"
       >
-        <ChevronLeft className="w-10 h-10 text-gray-600" />
+        <ChevronLeft className="h-10 w-10 text-gray-600" />
       </motion.button>
 
       <div className="flex items-end gap-10">
@@ -36,14 +36,14 @@ export function SliderNavigation({
           <motion.button
             key={index}
             onClick={() => onSlide(index)}
-            className="font-semibold text-6xl origin-bottom leading-none"
+            className="origin-bottom text-6xl leading-none font-semibold"
             animate={{
               scale: currentIndex === index ? 1.5 : 1,
-              color: currentIndex === index ? "#ef4444" : "#9ca3af",
+              color: currentIndex === index ? '#ef4444' : '#9ca3af',
               lineHeight: currentIndex === index ? 0.9 : 1,
             }}
             transition={{
-              type: "spring",
+              type: 'spring',
               stiffness: 300,
               damping: 25,
             }}
@@ -59,12 +59,12 @@ export function SliderNavigation({
       <motion.button
         onClick={onNext}
         disabled={currentIndex >= maxIndex}
-        className="w-10 h-10 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed"
+        className="flex h-10 w-10 items-center justify-center disabled:cursor-not-allowed disabled:opacity-30"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         aria-label="Next"
       >
-        <ChevronRight className="w-10 h-10 text-gray-600" />
+        <ChevronRight className="h-10 w-10 text-gray-600" />
       </motion.button>
     </div>
   );

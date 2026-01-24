@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState, useRef, useEffect } from "react";
-import { motion, useAnimation, PanInfo } from "framer-motion";
-import { ModuleCard } from "../Card";
-import { ModuleDocument } from "../../../../../prismicio-types";
-import { SliderNavigation } from "@/components/ui/SliderNavigation";
+import { useState, useRef, useEffect } from 'react';
+import { motion, useAnimation, PanInfo } from 'framer-motion';
+import { ModuleCard } from '../Card';
+import { ModuleDocument } from '../../../../../prismicio-types';
+import { SliderNavigation } from '@/components/ui/SliderNavigation';
 
 interface ModuleSliderProps {
   modules: ModuleDocument[];
@@ -20,7 +20,7 @@ const itemVariants = {
     y: 0,
     transition: {
       delay: i * 0.1,
-      type: "spring" as const,
+      type: 'spring' as const,
       stiffness: 300,
       damping: 24,
     },
@@ -47,15 +47,15 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
     };
 
     updateMaxIndex();
-    window.addEventListener("resize", updateMaxIndex);
-    return () => window.removeEventListener("resize", updateMaxIndex);
+    window.addEventListener('resize', updateMaxIndex);
+    return () => window.removeEventListener('resize', updateMaxIndex);
   }, [modules.length]);
 
   const slideTo = (index: number) => {
     const newIndex = Math.max(0, Math.min(index, maxIndex));
     setCurrentIndex(newIndex);
     const targetX = -newIndex * (CARD_WIDTH + GAP);
-    controls.start({ x: targetX, transition: { type: "spring", stiffness: 300, damping: 30 } });
+    controls.start({ x: targetX, transition: { type: 'spring', stiffness: 300, damping: 30 } });
   };
 
   const handlePrev = () => {
@@ -81,12 +81,12 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
   };
 
   return (
-    <div className="w-full relative" ref={containerRef}>
+    <div className="relative w-full" ref={containerRef}>
       {/* Slider */}
       <div className="overflow-hidden">
         <motion.div
           ref={sliderRef}
-          className="flex gap-6 p-20 cursor-grab active:cursor-grabbing"
+          className="flex cursor-grab gap-6 p-20 active:cursor-grabbing"
           animate={controls}
           drag="x"
           dragConstraints={{ left: -maxIndex * (CARD_WIDTH + GAP), right: 0 }}
@@ -104,9 +104,9 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
             >
               <ModuleCard
                 moduleNumber={module.data.position ?? 0}
-                title={module.data.title ?? ""}
-                description={module.data.description ?? ""}
-                color={module.data.colour ?? "#000000"}
+                title={module.data.title ?? ''}
+                description={module.data.description ?? ''}
+                color={module.data.colour ?? '#000000'}
                 progress={0}
                 href={`/module/${module.uid}`}
               />
@@ -115,7 +115,7 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
         </motion.div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center mt-4 px-5">
+      <div className="mt-4 grid grid-cols-1 items-center gap-6 px-5 md:grid-cols-2">
         <div>Progress here</div>
         <SliderNavigation
           currentIndex={currentIndex}

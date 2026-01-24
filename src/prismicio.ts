@@ -1,20 +1,19 @@
-import * as prismic from "@prismicio/client";
-import * as prismicNext from "@prismicio/next";
+import * as prismic from '@prismicio/client';
+import * as prismicNext from '@prismicio/next';
 
 /**
  * The project's Prismic repository name.
  */
-export const repositoryName =
-  process.env.NEXT_PUBLIC_PRISMIC_REPOSITORY || "swltaininghub";
+export const repositoryName = process.env.NEXT_PUBLIC_PRISMIC_REPOSITORY || 'swltaininghub';
 
 /**
  * A list of Route Resolver objects that define how a document's `url` field is resolved.
  *
  * {@link https://prismic.io/docs/route-resolver#route-resolver}
  */
-const routes: prismic.ClientConfig["routes"] = [
-  { type: 'page', path: '/:uid'},
-  { type: "page", path: "/" , uid: 'home'},
+const routes: prismic.ClientConfig['routes'] = [
+  { type: 'page', path: '/:uid' },
+  { type: 'page', path: '/', uid: 'home' },
   //{ type: "module", path: "/module/:uid" },
   //{ type: "lesson", path: "/module/:module/lesson/:uid" },
 ];
@@ -27,8 +26,8 @@ export const createClient = (config: prismicNext.CreateClientConfig = {}) => {
   const client = prismic.createClient(repositoryName, {
     routes,
     fetchOptions:
-      process.env.NODE_ENV === "production"
-        ? { next: { tags: ["prismic"] }, cache: "force-cache" }
+      process.env.NODE_ENV === 'production'
+        ? { next: { tags: ['prismic'] }, cache: 'force-cache' }
         : { next: { revalidate: 5 } },
     ...config,
   });

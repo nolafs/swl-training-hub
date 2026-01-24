@@ -1,1 +1,1 @@
-export { ModuleDetail } from "./Detail";
+export { ModuleDetail } from './Detail';

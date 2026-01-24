@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import Link from "next/link";
+import { useEffect } from 'react';
+import Link from 'next/link';
 
 interface GlobalErrorProps {
   error: Error & { digest?: string };
@@ -11,7 +11,7 @@ interface GlobalErrorProps {
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
   useEffect(() => {
     // Log the error to an error reporting service
-    console.error("Global error:", error);
+    console.error('Global error:', error);
   }, [error]);
 
   return (
@@ -19,29 +19,29 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
       <body>
         <main
           style={{
-            minHeight: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#fafafa",
-            fontFamily: "system-ui, sans-serif",
+            minHeight: '100vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#fafafa',
+            fontFamily: 'system-ui, sans-serif',
           }}
         >
-          <div style={{ textAlign: "center", padding: "24px" }}>
+          <div style={{ textAlign: 'center', padding: '24px' }}>
             <div
               style={{
-                width: "64px",
-                height: "64px",
-                margin: "0 auto 24px",
-                borderRadius: "50%",
-                backgroundColor: "#fee2e2",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                width: '64px',
+                height: '64px',
+                margin: '0 auto 24px',
+                borderRadius: '50%',
+                backgroundColor: '#fee2e2',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
               <svg
-                style={{ width: "32px", height: "32px", color: "#dc2626" }}
+                style={{ width: '32px', height: '32px', color: '#dc2626' }}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -56,9 +56,9 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
             </div>
             <h1
               style={{
-                fontSize: "24px",
+                fontSize: '24px',
                 fontWeight: 600,
-                color: "#27272a",
+                color: '#27272a',
                 margin: 0,
               }}
             >
@@ -66,20 +66,19 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
             </h1>
             <p
               style={{
-                color: "#71717a",
-                marginTop: "8px",
-                maxWidth: "400px",
+                color: '#71717a',
+                marginTop: '8px',
+                maxWidth: '400px',
               }}
             >
-              A critical error occurred. Please refresh the page or try again
-              later.
+              A critical error occurred. Please refresh the page or try again later.
             </p>
             {error.digest && (
               <p
                 style={{
-                  color: "#a1a1aa",
-                  fontSize: "14px",
-                  marginTop: "8px",
+                  color: '#a1a1aa',
+                  fontSize: '14px',
+                  marginTop: '8px',
                 }}
               >
                 Error ID: {error.digest}
@@ -87,22 +86,22 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
             )}
             <div
               style={{
-                marginTop: "32px",
-                display: "flex",
-                gap: "16px",
-                justifyContent: "center",
+                marginTop: '32px',
+                display: 'flex',
+                gap: '16px',
+                justifyContent: 'center',
               }}
             >
               <button
                 onClick={reset}
                 style={{
-                  padding: "12px 24px",
-                  backgroundColor: "#18181b",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "8px",
+                  padding: '12px 24px',
+                  backgroundColor: '#18181b',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
                   fontWeight: 500,
-                  cursor: "pointer",
+                  cursor: 'pointer',
                 }}
               >
                 Try Again
@@ -110,12 +109,12 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               <Link
                 href="/"
                 style={{
-                  padding: "12px 24px",
-                  border: "1px solid #d4d4d8",
-                  color: "#3f3f46",
-                  borderRadius: "8px",
+                  padding: '12px 24px',
+                  border: '1px solid #d4d4d8',
+                  color: '#3f3f46',
+                  borderRadius: '8px',
                   fontWeight: 500,
-                  textDecoration: "none",
+                  textDecoration: 'none',
                 }}
               >
                 Go Home

@@ -1,0 +1,48 @@
+{
+  "format": "custom",
+  "id": "download",
+  "label": "Download",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "uid": {
+        "type": "UID",
+        "config": {
+          "label": "UID"
+        }
+      },
+      "title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "description": {
+        "type": "Text",
+        "config": {
+          "label": "Description",
+          "placeholder": ""
+        }
+      },
+      "download": {
+        "type": "Link",
+        "config": {
+          "label": "Download",
+          "placeholder": "",
+          "select": "media",
+          "allowText": true
+        }
+      },
+      "file_type": {
+        "type": "Select",
+        "config": {
+          "label": "File type",
+          "placeholder": "",
+          "options": ["PDF", "Word", "Powerpoint"]
+        }
+      }
+    }
+  }
+}

@@ -1,3 +1,3 @@
-export { ModuleCard } from "./Card";
-export { ModuleSlider } from "./Slider";
-export { ModuleDetail } from "./Detail";
+export { ModuleCard } from './Card';
+export { ModuleSlider } from './Slider';
+export { ModuleDetail } from './Detail';

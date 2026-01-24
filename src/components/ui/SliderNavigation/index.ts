@@ -1,1 +1,1 @@
-export { SliderNavigation } from "./slider-navigation";
+export { SliderNavigation } from './slider-navigation';

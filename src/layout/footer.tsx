@@ -7,7 +7,9 @@ interface FooterProps {
 
 export function Footer({ settings }: FooterProps) {
   const currentYear = new Date().getFullYear();
-  const copyrightText =  settings?.data?.copyright_line ? `© ${currentYear} ${settings?.data?.copyright_line}` : `© ${currentYear} SWL Training Hub`;
+  const copyrightText = settings?.data?.copyright_line
+    ? `© ${currentYear} ${settings?.data?.copyright_line}`
+    : `© ${currentYear} SWL Training Hub`;
   const secondaryNav = settings?.data?.secondary_navigation || [];
 
   return (

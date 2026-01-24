@@ -1,1 +1,1 @@
-export { ModuleSlider } from "./slider";
+export { ModuleSlider } from './slider';

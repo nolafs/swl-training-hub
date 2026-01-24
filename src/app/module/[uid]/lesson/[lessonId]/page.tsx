@@ -9,11 +9,11 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
   return (
     <main className="min-h-screen bg-zinc-50 dark:bg-black">
-      <div className="container mx-auto py-12 px-6">
+      <div className="container mx-auto px-6 py-12">
         <nav className="mb-8">
           <a
             href={`/module/${uid}`}
-            className="text-blue-600 hover:text-blue-800 flex items-center gap-2"
+            className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
           >
             <svg
               width="16"
@@ -31,8 +31,8 @@ export default async function LessonPage({ params }: LessonPageProps) {
           </a>
         </nav>
 
-        <article className="bg-white dark:bg-zinc-900 rounded-xl p-8 shadow-lg max-w-4xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6">Lesson {lessonId}</h1>
+        <article className="mx-auto max-w-4xl rounded-xl bg-white p-8 shadow-lg dark:bg-zinc-900">
+          <h1 className="mb-6 text-3xl font-bold">Lesson {lessonId}</h1>
           <div className="prose dark:prose-invert max-w-none">
             <p className="text-zinc-600 dark:text-zinc-400">
               Lesson content will be loaded from Prismic CMS.

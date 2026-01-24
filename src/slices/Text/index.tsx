@@ -18,7 +18,7 @@ const Text: FC<TextProps> = ({ slice }) => {
       className="container mx-auto px-4 py-16"
     >
       {slice.variation === 'default' && (
-        <div className="prose prose-lg mx-auto text-gray-500 lg:prose-xl">
+        <div className="prose prose-lg lg:prose-xl mx-auto text-gray-500">
           <PrismicRichText field={slice.primary.body} />
         </div>
       )}

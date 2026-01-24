@@ -1,22 +1,20 @@
 # [1.1.0](https://github.com/nolafs/swl-training-hub/compare/v1.0.0...v1.1.0) (2026-01-23)
 
-
 ### Features
 
-* prismic page setup ([9ac1a23](https://github.com/nolafs/swl-training-hub/commit/9ac1a23ca40378656594a90c96441fdd697b1a29))
-* prismic page setup ([1f81be7](https://github.com/nolafs/swl-training-hub/commit/1f81be7129e9aa1d8b8d6532f5dc3e586ee69cd8))
+- prismic page setup ([9ac1a23](https://github.com/nolafs/swl-training-hub/commit/9ac1a23ca40378656594a90c96441fdd697b1a29))
+- prismic page setup ([1f81be7](https://github.com/nolafs/swl-training-hub/commit/1f81be7129e9aa1d8b8d6532f5dc3e586ee69cd8))
 
 # 1.0.0 (2026-01-22)
 
-
 ### Features
 
-* initial project setup with Next.js 16 ([ec4bf62](https://github.com/nolafs/swl-training-hub/commit/ec4bf62bc67fe39cb74addc4b1862d5b7368897e))
-* prismic page setup ([99cc454](https://github.com/nolafs/swl-training-hub/commit/99cc454aa836e2e21a6801802ab471c9f01af1d3))
-* prismic page setup ([9dd4d11](https://github.com/nolafs/swl-training-hub/commit/9dd4d11d4ac21674cbedd37c3c4400adf5a2feff))
-* prismic page setup ([351c8e5](https://github.com/nolafs/swl-training-hub/commit/351c8e5beb22e76b17309166f75c294f14fa43bf))
-* test ([aac1207](https://github.com/nolafs/swl-training-hub/commit/aac12070b191924582233cf1c3750f646ecc1b47))
-* test ([6096f71](https://github.com/nolafs/swl-training-hub/commit/6096f71f8d1b7f74f891d6e6f3563a46a7c2ccec))
+- initial project setup with Next.js 16 ([ec4bf62](https://github.com/nolafs/swl-training-hub/commit/ec4bf62bc67fe39cb74addc4b1862d5b7368897e))
+- prismic page setup ([99cc454](https://github.com/nolafs/swl-training-hub/commit/99cc454aa836e2e21a6801802ab471c9f01af1d3))
+- prismic page setup ([9dd4d11](https://github.com/nolafs/swl-training-hub/commit/9dd4d11d4ac21674cbedd37c3c4400adf5a2feff))
+- prismic page setup ([351c8e5](https://github.com/nolafs/swl-training-hub/commit/351c8e5beb22e76b17309166f75c294f14fa43bf))
+- test ([aac1207](https://github.com/nolafs/swl-training-hub/commit/aac12070b191924582233cf1c3750f646ecc1b47))
+- test ([6096f71](https://github.com/nolafs/swl-training-hub/commit/6096f71f8d1b7f74f891d6e6f3563a46a7c2ccec))
 
 # Changelog
 

@@ -5,12 +5,14 @@ import { type ReactNode, useState } from 'react';
 import CookieConsent, { getCookieConsentValue } from 'react-cookie-consent';
 import { motion } from 'framer-motion';
 import { trackingConfig } from '@/lib/tracking/config.tracking';
-import { grantConsentForEverything, revokeConsentForEverything } from '@/lib/tracking/utils.tracking';
+import {
+  grantConsentForEverything,
+  revokeConsentForEverything,
+} from '@/lib/tracking/utils.tracking';
 import Link from 'next/link';
 
 import { GoogleAnalytics } from '@/lib/tracking/GoogleAnalytics';
 import { TooltipProvider } from '@/components/ui/tooltip';
-
 
 export const RootInnerLayout = ({ children }: { children: ReactNode }) => {
   const [consent, setConsent] = useState<boolean>(() => {
@@ -21,7 +23,7 @@ export const RootInnerLayout = ({ children }: { children: ReactNode }) => {
   });
 
   return (
-    <div className={'flex flex-col min-h-screen'}>
+    <div className={'flex min-h-screen flex-col'}>
       {/* GTM only cares whether consent is granted */}
       <TooltipProvider>{children}</TooltipProvider>
       {IS_GTM_ENABLED && (
@@ -31,7 +33,8 @@ export const RootInnerLayout = ({ children }: { children: ReactNode }) => {
             initial={{ y: '100vh', opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, ease: 'easeInOut' }}
-            className="fixed inset-x-0 bottom-0 z-50">
+            className="fixed inset-x-0 bottom-0 z-50"
+          >
             <CookieConsent
               disableStyles={true}
               cookieName={trackingConfig.cookieBannerCookieName}
@@ -51,11 +54,15 @@ export const RootInnerLayout = ({ children }: { children: ReactNode }) => {
               onDecline={() => {
                 setConsent(false);
                 revokeConsentForEverything();
-              }}>
+              }}
+            >
               <p>
-                We use cookies for better user experience and site analytics. By continuing, you agree to our use of
-                cookies. Learn more in our{' '}
-                <Link href="/legal/privacy-policy-for-foot-factor" className="font-bold text-sky-400">
+                We use cookies for better user experience and site analytics. By continuing, you
+                agree to our use of cookies. Learn more in our{' '}
+                <Link
+                  href="/legal/privacy-policy-for-foot-factor"
+                  className="font-bold text-sky-400"
+                >
                   Privacy Policy
                 </Link>
                 .

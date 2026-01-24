@@ -69,6 +69,71 @@ type ContentRelationshipFieldWithData<
   >;
 }[Exclude<TCustomType[number], string>["id"]];
 
+/**
+ * Content for Download documents
+ */
+interface DownloadDocumentData {
+  /**
+   * Title field in *Download*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: download.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Description field in *Download*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: download.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  description: prismic.KeyTextField;
+
+  /**
+   * Download field in *Download*
+   *
+   * - **Field Type**: Link to Media
+   * - **Placeholder**: *None*
+   * - **API ID Path**: download.download
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/link-to-media
+   */
+  download: prismic.LinkToMediaField<prismic.FieldState, never>;
+
+  /**
+   * File type field in *Download*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: download.file_type
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  file_type: prismic.SelectField<"PDF" | "Word" | "Powerpoint">;
+}
+
+/**
+ * Download document from Prismic
+ *
+ * - **API ID**: `download`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type DownloadDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<
+    Simplify<DownloadDocumentData>,
+    "download",
+    Lang
+  >;
+
 type LessonDocumentDataSlicesSlice = never;
 
 /**
@@ -232,7 +297,11 @@ interface ModuleDocumentData {
 export type ModuleDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<ModuleDocumentData>, "module", Lang>;
 
-type PageDocumentDataSlicesSlice = TextSlice | HeroSlice;
+type PageDocumentDataSlicesSlice =
+  | IconTextHighlightSlice
+  | MediaSlice
+  | TextSlice
+  | HeroSlice;
 
 /**
  * Content for Page documents
@@ -468,6 +537,7 @@ export type SettingsDocument<Lang extends string = string> =
   >;
 
 export type AllDocumentTypes =
+  | DownloadDocument
   | LessonDocument
   | ModuleDocument
   | PageDocument
@@ -524,6 +594,101 @@ type HeroSliceVariation = HeroSliceDefault;
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type HeroSlice = prismic.SharedSlice<"hero", HeroSliceVariation>;
+
+/**
+ * Primary content in *IconTextHighlight → Default → Primary*
+ */
+export interface IconTextHighlightSliceDefaultPrimary {
+  /**
+   * Icon field in *IconTextHighlight → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: icon_text_highlight.default.primary.icon
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  icon: prismic.ImageField<never>;
+
+  /**
+   * Text field in *IconTextHighlight → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: icon_text_highlight.default.primary.text
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  text: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for IconTextHighlight Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Uses a single icon or marker next to a text block to emphasize important information.
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type IconTextHighlightSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<IconTextHighlightSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Primary content in *IconTextHighlight → WithDownloads → Primary*
+ */
+export interface IconTextHighlightSliceWithDownloadsPrimary {
+  /**
+   * Icon field in *IconTextHighlight → WithDownloads → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: icon_text_highlight.withDownloads.primary.icon
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  icon: prismic.ImageField<never>;
+
+  /**
+   * Text field in *IconTextHighlight → WithDownloads → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: icon_text_highlight.withDownloads.primary.text
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  text: prismic.KeyTextField;
+}
+
+/**
+ * WithDownloads variation for IconTextHighlight Slice
+ *
+ * - **API ID**: `withDownloads`
+ * - **Description**: Uses a single icon or marker next to a text block to emphasize important information.
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type IconTextHighlightSliceWithDownloads = prismic.SharedSliceVariation<
+  "withDownloads",
+  Simplify<IconTextHighlightSliceWithDownloadsPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *IconTextHighlight*
+ */
+type IconTextHighlightSliceVariation =
+  | IconTextHighlightSliceDefault
+  | IconTextHighlightSliceWithDownloads;
+
+/**
+ * IconTextHighlight Shared Slice
+ *
+ * - **API ID**: `icon_text_highlight`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type IconTextHighlightSlice = prismic.SharedSlice<
+  "icon_text_highlight",
+  IconTextHighlightSliceVariation
+>;
 
 /**
  * Primary content in *Media → Default → Primary*
@@ -785,6 +950,8 @@ declare module "@prismicio/client" {
 
   namespace Content {
     export type {
+      DownloadDocument,
+      DownloadDocumentData,
       LessonDocument,
       LessonDocumentData,
       LessonDocumentDataSlicesSlice,
@@ -802,6 +969,12 @@ declare module "@prismicio/client" {
       HeroSliceDefaultPrimary,
       HeroSliceVariation,
       HeroSliceDefault,
+      IconTextHighlightSlice,
+      IconTextHighlightSliceDefaultPrimary,
+      IconTextHighlightSliceWithDownloadsPrimary,
+      IconTextHighlightSliceVariation,
+      IconTextHighlightSliceDefault,
+      IconTextHighlightSliceWithDownloads,
       MediaSlice,
       MediaSliceDefaultPrimary,
       MediaSliceVideoPrimary,

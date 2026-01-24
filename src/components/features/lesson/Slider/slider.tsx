@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState, useRef, useEffect } from "react";
-import { motion, useAnimation, PanInfo } from "framer-motion";
-import { LessonCard } from "../Card";
-import { LessonDetail } from "../Detail";
-import { SliderNavigation } from "@/components/ui/SliderNavigation";
+import { useState, useRef, useEffect } from 'react';
+import { motion, useAnimation, PanInfo } from 'framer-motion';
+import { LessonCard } from '../Card';
+import { LessonDetail } from '../Detail';
+import { SliderNavigation } from '@/components/ui/SliderNavigation';
 
 interface Lesson {
   id: string;
@@ -30,7 +30,7 @@ const itemVariants = {
     y: 0,
     transition: {
       delay: i * 0.1,
-      type: "spring" as const,
+      type: 'spring' as const,
       stiffness: 300,
       damping: 24,
     },
@@ -58,8 +58,8 @@ export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderPro
     };
 
     updateMaxIndex();
-    window.addEventListener("resize", updateMaxIndex);
-    return () => window.removeEventListener("resize", updateMaxIndex);
+    window.addEventListener('resize', updateMaxIndex);
+    return () => window.removeEventListener('resize', updateMaxIndex);
   }, [lessons.length]);
 
   const handleLessonClick = (lesson: Lesson) => {
@@ -74,7 +74,7 @@ export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderPro
     const newIndex = Math.max(0, Math.min(index, maxIndex));
     setCurrentIndex(newIndex);
     const targetX = -newIndex * (CARD_WIDTH + GAP);
-    controls.start({ x: targetX, transition: { type: "spring", stiffness: 300, damping: 30 } });
+    controls.start({ x: targetX, transition: { type: 'spring', stiffness: 300, damping: 30 } });
   };
 
   const handlePrev = () => {
@@ -100,12 +100,12 @@ export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderPro
   };
 
   return (
-    <div className="w-full relative" ref={containerRef}>
+    <div className="relative w-full" ref={containerRef}>
       {/* Slider */}
       <div className="overflow-hidden">
         <motion.div
           ref={sliderRef}
-          className="flex gap-6 p-10 cursor-grab active:cursor-grabbing"
+          className="flex cursor-grab gap-6 p-10 active:cursor-grabbing"
           animate={controls}
           drag="x"
           dragConstraints={{ left: -maxIndex * (CARD_WIDTH + GAP), right: 0 }}

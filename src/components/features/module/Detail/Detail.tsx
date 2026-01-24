@@ -1,9 +1,7 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import styles from "./Detail.module.css";
-
-
+import { useRouter } from 'next/navigation';
+import styles from './Detail.module.css';
 
 interface ModuleDetailProps {
   module: Module;
@@ -37,10 +35,7 @@ export function ModuleDetail({ module, onClose }: ModuleDetailProps) {
 
         {/* Main module card */}
         <div className={styles.moduleCard}>
-          <div
-            className={styles.cardHeader}
-            style={{ backgroundColor: module.colour }}
-          >
+          <div className={styles.cardHeader} style={{ backgroundColor: module.colour }}>
             <span className={styles.moduleNumber}>{module.position}</span>
           </div>
           <div className={styles.cardContent}>
@@ -48,9 +43,7 @@ export function ModuleDetail({ module, onClose }: ModuleDetailProps) {
             <p className={styles.description}>{module.description}</p>
             {module.lessons && module.lessons.length > 0 && (
               <div className={styles.lessonPreview}>
-                <span className={styles.lessonCount}>
-                  {module.lessons.length} lessons
-                </span>
+                <span className={styles.lessonCount}>{module.lessons.length} lessons</span>
               </div>
             )}
           </div>

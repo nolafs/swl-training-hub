@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import {ArrowRight, Play} from "lucide-react";
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { ArrowRight, Play } from 'lucide-react';
 
 interface ModuleCardProps {
   moduleNumber: number;
@@ -33,20 +33,20 @@ export function ModuleCard({
     >
       {/* Progress bar - slides out from left */}
       <motion.div
-        className="absolute left-0 top-1/2 -translate-y-1/2 h-75 w-16 flex flex-col items-center justify-center gap-2"
+        className="absolute top-1/2 left-0 flex h-75 w-16 -translate-y-1/2 flex-col items-center justify-center gap-2"
         initial={{ x: 0, opacity: 0 }}
         animate={{
           x: isHovered ? -80 : 0,
           opacity: isHovered ? 1 : 0,
         }}
         transition={{
-          type: "spring",
+          type: 'spring',
           stiffness: 300,
           damping: 25,
         }}
       >
-        <div className="text-xs text-gray-500 font-medium">{progress}%</div>
-        <div className="h-48 w-2 bg-gray-200 rounded-full overflow-hidden">
+        <div className="text-xs font-medium text-gray-500">{progress}%</div>
+        <div className="h-48 w-2 overflow-hidden rounded-full bg-gray-200">
           <motion.div
             className="w-full rounded-full"
             style={{ backgroundColor: color }}
@@ -67,49 +67,49 @@ export function ModuleCard({
           opacity: isHovered ? 1 : 0,
         }}
         transition={{
-          type: "spring",
+          type: 'spring',
           stiffness: 300,
           damping: 25,
         }}
       >
         <Link
           href={href}
-          className="flex items-center justify-center w-24 h-20  text-white shadow-lg hover:scale-110 transition-transform"
+          className="flex h-20 w-24 items-center justify-center text-white shadow-lg transition-transform hover:scale-110"
           style={{ backgroundColor: color }}
         >
-          <ArrowRight className="w-10 h-10 ml-4"   />
+          <ArrowRight className="ml-4 h-10 w-10" />
         </Link>
       </motion.div>
 
       {/* Main Card */}
       <Link href={href}>
         <motion.div
-          className="relative w-93.75 h-93.75 bg-white border border-black/20 cursor-pointer overflow-hidden flex flex-col"
+          className="relative flex h-93.75 w-93.75 cursor-pointer flex-col overflow-hidden border border-black/20 bg-white"
           animate={{
             boxShadow: isHovered
-              ? "0 20px 50px rgba(0, 0, 0, 0.2)"
-              : "0 2px 8px rgba(0, 0, 0, 0.08)",
+              ? '0 20px 50px rgba(0, 0, 0, 0.2)'
+              : '0 2px 8px rgba(0, 0, 0, 0.08)',
             zIndex: isHovered ? 50 : 1,
           }}
           transition={{
-            type: "spring",
+            type: 'spring',
             stiffness: 300,
             damping: 25,
           }}
           whileHover={{ scale: 1.02 }}
         >
-          <div className="flex-1 p-4 flex flex-col relative z-10">
-            <div className="grid grid-cols-2 justify-center items-center gap-2">
+          <div className="relative z-10 flex flex-1 flex-col p-4">
+            <div className="grid grid-cols-2 items-center justify-center gap-2">
               <motion.div
                 className="text-5xl font-extralight"
-                animate={{ color: isHovered ? "#ffffff" : color }}
+                animate={{ color: isHovered ? '#ffffff' : color }}
                 transition={{ duration: 0.3 }}
               >
-                {moduleNumber > 9 ? moduleNumber : "0" + moduleNumber}
+                {moduleNumber > 9 ? moduleNumber : '0' + moduleNumber}
               </motion.div>
               <motion.div
-                className="text-2xl font-light text-right"
-                animate={{ color: isHovered ? "#ffffff" : color }}
+                className="text-right text-2xl font-light"
+                animate={{ color: isHovered ? '#ffffff' : color }}
                 transition={{ duration: 0.3 }}
               >
                 Module
@@ -122,20 +122,20 @@ export function ModuleCard({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <h3 className="text-sm font-semibold text-white mb-1">{title}</h3>
-                <p className="text-xs text-white/80 leading-relaxed">{description}</p>
+                <h3 className="mb-1 text-sm font-semibold text-white">{title}</h3>
+                <p className="text-xs leading-relaxed text-white/80">{description}</p>
               </motion.div>
             )}
           </div>
           <motion.div
-            className="absolute bottom-0 left-0 w-full h-4"
+            className="absolute bottom-0 left-0 h-4 w-full"
             style={{ backgroundColor: color }}
             animate={{
-              height: isHovered ? "100%" : 16,
+              height: isHovered ? '100%' : 16,
             }}
             transition={{
               duration: 0.3,
-              ease: "easeOut",
+              ease: 'easeOut',
             }}
           />
         </motion.div>

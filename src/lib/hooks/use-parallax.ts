@@ -19,7 +19,7 @@ type UseParallaxReturn = {
 export default function useParallax(
   strength: number = 0.5,
   invert: boolean = false,
-  spring: boolean = true,
+  spring: boolean = true
 ): UseParallaxReturn {
   const ref = useRef<HTMLDivElement | null>(null);
 

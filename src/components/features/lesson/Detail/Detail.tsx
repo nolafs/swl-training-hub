@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import styles from "./Detail.module.css";
+import { useRouter } from 'next/navigation';
+import styles from './Detail.module.css';
 
 interface Lesson {
   id: string;
@@ -29,18 +29,13 @@ export function LessonDetail({ lesson, moduleId, color, onClose }: LessonDetailP
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.container} onClick={(e) => e.stopPropagation()}>
         <div className={styles.lessonCard}>
-          <div
-            className={styles.cardHeader}
-            style={{ backgroundColor: color }}
-          >
+          <div className={styles.cardHeader} style={{ backgroundColor: color }}>
             <span className={styles.lessonNumber}>{lesson.lessonNumber}</span>
           </div>
           <div className={styles.cardContent}>
             <h2 className={styles.title}>{lesson.title}</h2>
             <p className={styles.description}>{lesson.description}</p>
-            {lesson.duration && (
-              <span className={styles.duration}>{lesson.duration}</span>
-            )}
+            {lesson.duration && <span className={styles.duration}>{lesson.duration}</span>}
           </div>
         </div>
 

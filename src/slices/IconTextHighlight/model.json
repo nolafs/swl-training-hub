@@ -1,0 +1,55 @@
+{
+  "type": "SharedSlice",
+  "id": "icon_text_highlight",
+  "name": "IconTextHighlight",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "description": "Uses a single icon or marker next to a text block to emphasize important information.",
+      "version": "initial",
+      "imageUrl": "",
+      "docURL": "...",
+      "primary": {
+        "icon": {
+          "type": "Image",
+          "config": {
+            "label": "Icon"
+          }
+        },
+        "text": {
+          "type": "Text",
+          "config": {
+            "label": "Text",
+            "placeholder": ""
+          }
+        }
+      },
+      "items": {}
+    },
+    {
+      "id": "withDownloads",
+      "name": "WithDownloads",
+      "description": "Uses a single icon or marker next to a text block to emphasize important information.",
+      "version": "initial",
+      "imageUrl": "",
+      "docURL": "...",
+      "primary": {
+        "icon": {
+          "type": "Image",
+          "config": {
+            "label": "Icon"
+          }
+        },
+        "text": {
+          "type": "Text",
+          "config": {
+            "label": "Text",
+            "placeholder": ""
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

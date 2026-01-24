@@ -23,6 +23,7 @@ npm run commit   # Interactive commit with conventional format
 Uses semantic-release with Conventional Commits. Commits to `main` trigger automatic releases.
 
 Commit format: `type(scope): description`
+
 - `feat:` → minor version bump
 - `fix:` → patch version bump
 - `BREAKING CHANGE:` in footer → major version bump
@@ -32,25 +33,31 @@ Commit format: `type(scope): description`
 Next.js 16 App Router with TypeScript. Uses CSS Modules for component styling combined with Tailwind CSS for utilities. Prismic CMS for content management.
 
 ### Route Structure
+
 - `/` - Homepage with ModuleSlider showing all training modules
 - `/module/[uid]` - Module page with LessonSlider showing lessons in that module
 - `/module/[uid]/lesson/[lessonId]` - Individual lesson content page
 
 ### Component Pattern
+
 Each component lives in `src/components/[ComponentName]/` with:
+
 - `ComponentName.tsx` - React component (client components use "use client")
 - `ComponentName.module.css` - CSS Module styles
 - `index.ts` - Re-export for clean imports
 
 Key components:
+
 - `ModuleSlider` / `LessonSlider` - Horizontal scrollable card containers
 - `ModuleCard` / `LessonCard` - Interactive cards with hover animations (color bar expands on hover)
 - `ModuleDetail` / `LessonDetail` - Modal overlays that zoom in when a card is clicked
 
 ### Prismic CMS
+
 Configuration in `src/prismicio.ts`. Set `NEXT_PUBLIC_PRISMIC_REPOSITORY` in `.env.local`.
 
 Content types to configure in Prismic:
+
 - `homepage` - Main landing page
 - `module` - Training module with color, title, description
 - `lesson` - Lesson content within a module

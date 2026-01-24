@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 import VideoControl from './video-control';
 import VideoPlayerWrapper from '../video-player-wrapper';
-import {ImageFieldImage} from "@prismicio/client";
+import { ImageFieldImage } from '@prismicio/client';
 
 export interface VimeoProps {
   id: string;
@@ -70,40 +70,44 @@ export function Vimeo({
   };
 
   return (
-    <VideoPlayerWrapper handlePlay={handlePlay} handlePause={handlePause} handleReplay={handleReplay}>
+    <VideoPlayerWrapper
+      handlePlay={handlePlay}
+      handlePause={handlePause}
+      handleReplay={handleReplay}
+    >
       <div
         className={cn(
           'bg-neutral aspect-w-16 aspect-h-9 relative z-20 h-full w-full overflow-hidden',
-          showPlayer ? 'display opacity-100' : 'hidden opacity-0',
-        )}>
+          showPlayer ? 'display opacity-100' : 'hidden opacity-0'
+        )}
+      >
+        {showPlayer && (
+          <ReactPlayer
+            width="100%"
+            height="100%"
+            playing={showPlayer}
+            controls={controls}
+            loop={loop}
+            muted={autoplay}
+            ref={ref}
+            id={id}
+            src={src}
+            config={opts}
+            className={'h-full w-full object-cover object-center'}
+            onPlay={handlePlay}
+          ></ReactPlayer>
+        )}
 
-          {showPlayer && (
-            <ReactPlayer
-              width="100%"
-              height="100%"
-              playing={showPlayer}
-              controls={controls}
-              loop={loop}
-              muted={autoplay}
-              ref={ref}
-              id={id}
-              src={src}
-              config={opts}
-              className={'h-full w-full object-cover object-center'}
-              onPlay={handlePlay}></ReactPlayer>
-          )}
-
-          {!autoplay && (
-            <VideoControl
-                handlePlayAction={play}
-              title={title}
-              loading={loading}
-              poster={poster}
-              width={width}
-              height={height}
-            />
-          )}
-
+        {!autoplay && (
+          <VideoControl
+            handlePlayAction={play}
+            title={title}
+            loading={loading}
+            poster={poster}
+            width={width}
+            height={height}
+          />
+        )}
       </div>
     </VideoPlayerWrapper>
   );
