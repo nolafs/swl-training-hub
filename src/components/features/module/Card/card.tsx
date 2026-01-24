@@ -112,11 +112,12 @@ export function ModuleCard({
 
       {/* Main Card - uses programmatic navigation to allow drag on slider */}
       <motion.div
-        className="relative flex h-93.75 w-93.75 cursor-pointer flex-col overflow-hidden border border-black/20 bg-white"
+        className="relative flex h-93.75 w-93.75 cursor-pointer flex-col overflow-hidden border bg-white"
         onPointerDown={handlePointerDown}
         onClick={handleClick}
         animate={{
           scale: isHovered ? 1.20 : 1,
+          borderColor: isHovered ? color : 'rgba(0, 0, 0, 0.2)',
           boxShadow: isHovered
             ? '0 20px 50px rgba(0, 0, 0, 0.2)'
             : '0 2px 8px rgba(0, 0, 0, 0.08)',
