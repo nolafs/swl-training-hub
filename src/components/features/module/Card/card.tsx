@@ -116,6 +116,7 @@ export function ModuleCard({
         onPointerDown={handlePointerDown}
         onClick={handleClick}
         animate={{
+          scale: isHovered ? 1.20 : 1,
           boxShadow: isHovered
             ? '0 20px 50px rgba(0, 0, 0, 0.2)'
             : '0 2px 8px rgba(0, 0, 0, 0.08)',
@@ -126,7 +127,6 @@ export function ModuleCard({
           stiffness: 300,
           damping: 25,
         }}
-        whileHover={{ scale: 1.20 }}
       >
         <div className="relative z-10 flex flex-1 flex-col p-4">
           <div className="grid grid-cols-2 items-center justify-center gap-2">
