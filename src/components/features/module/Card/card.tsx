@@ -65,7 +65,7 @@ export function ModuleCard({
         style={{ backgroundColor: color }}
         initial={{ x: 0, opacity: 0 }}
         animate={{
-          x: isHovered ? -80 : 0,
+          x: isHovered ? -110 : 0,
           opacity: isHovered ? 1 : 0,
         }}
         transition={{
@@ -92,7 +92,7 @@ export function ModuleCard({
         className="absolute right-0 bottom-3 -translate-y-1/2"
         initial={{ x: 0, opacity: 0 }}
         animate={{
-          x: isHovered ? 80 : 0,
+          x: isHovered ? 110 : 0,
           opacity: isHovered ? 1 : 0,
         }}
         transition={{
@@ -126,7 +126,7 @@ export function ModuleCard({
           stiffness: 300,
           damping: 25,
         }}
-        whileHover={{ scale: 1.02 }}
+        whileHover={{ scale: 1.20 }}
       >
         <div className="relative z-10 flex flex-1 flex-col p-4">
           <div className="grid grid-cols-2 items-center justify-center gap-2">
