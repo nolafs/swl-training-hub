@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import {getAllDownloads} from "@/actions/downloads";
 import {DownloadDocument} from "../../../../prismicio-types";
 import {PrismicNextLink} from "@prismicio/next";
+import {Button} from "@/components/ui/button";
 
 
 export const DownloadDialog = (props: DialogProps) => {
@@ -31,7 +32,9 @@ export const DownloadDialog = (props: DialogProps) => {
 
   return (
     <Dialog {...props}>
-      <DialogTrigger>Downloads</DialogTrigger>
+      <DialogTrigger asChild>
+        <Button size={'lg'}>Downloads</Button>
+      </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Download</DialogTitle>
