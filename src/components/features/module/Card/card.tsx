@@ -25,10 +25,11 @@ export function ModuleCard({
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div
+    <motion.div
       className="relative"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      animate={{ zIndex: isHovered ? 50 : 1 }}
     >
       {/* Progress bar - slides out from left */}
       <motion.div
@@ -88,6 +89,7 @@ export function ModuleCard({
             boxShadow: isHovered
               ? "0 20px 50px rgba(0, 0, 0, 0.2)"
               : "0 2px 8px rgba(0, 0, 0, 0.08)",
+            zIndex: isHovered ? 50 : 1,
           }}
           transition={{
             type: "spring",
@@ -98,12 +100,20 @@ export function ModuleCard({
         >
           <div className="flex-1 p-4 flex flex-col relative z-10">
             <div className="grid grid-cols-2 justify-center items-center gap-2">
-              <div className="text-5xl font-extralight" style={{ color: color }}>
+              <motion.div
+                className="text-5xl font-extralight"
+                animate={{ color: isHovered ? "#ffffff" : color }}
+                transition={{ duration: 0.3 }}
+              >
                 {moduleNumber > 9 ? moduleNumber : "0" + moduleNumber}
-              </div>
-              <div className="text-2xl font-light text-right" style={{ color: color }}>
+              </motion.div>
+              <motion.div
+                className="text-2xl font-light text-right"
+                animate={{ color: isHovered ? "#ffffff" : color }}
+                transition={{ duration: 0.3 }}
+              >
                 Module
-              </div>
+              </motion.div>
             </div>
             {isHovered && (
               <motion.div
@@ -112,8 +122,8 @@ export function ModuleCard({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <h3 className="text-sm font-semibold text-gray-800 mb-1">{title}</h3>
-                <p className="text-xs text-gray-500 leading-relaxed">{description}</p>
+                <h3 className="text-sm font-semibold text-white mb-1">{title}</h3>
+                <p className="text-xs text-white/80 leading-relaxed">{description}</p>
               </motion.div>
             )}
           </div>
@@ -121,7 +131,7 @@ export function ModuleCard({
             className="absolute bottom-0 left-0 w-full h-4"
             style={{ backgroundColor: color }}
             animate={{
-              height: isHovered ? 60 : 16,
+              height: isHovered ? "100%" : 16,
             }}
             transition={{
               duration: 0.3,
@@ -130,6 +140,6 @@ export function ModuleCard({
           />
         </motion.div>
       </Link>
-    </div>
+    </motion.div>
   );
 }
