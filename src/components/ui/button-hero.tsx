@@ -37,7 +37,7 @@ function ButtonHero({
       {/* Icon box section */}
       {icon && (
         <span
-          className="flex items-center justify-center px-6 py-4 transition-colors group-hover:brightness-110"
+          className="flex items-center justify-center px-6 py-4 transition-colors brightness-80 group-hover:brightness-110"
           style={{ backgroundColor: iconBgColor }}
         >
           <span className="text-white [&_svg]:size-8">{icon}</span>

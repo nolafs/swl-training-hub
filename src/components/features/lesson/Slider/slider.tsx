@@ -107,7 +107,7 @@ export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderPro
       <div className="overflow-hidden">
         <motion.div
           ref={sliderRef}
-          className="flex cursor-grab gap-6 p-10 active:cursor-grabbing"
+          className="flex cursor-grab gap-6 p-32 active:cursor-grabbing"
           animate={controls}
           drag="x"
           dragConstraints={{ left: -maxIndex * (CARD_WIDTH + GAP), right: 0 }}
@@ -138,13 +138,17 @@ export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderPro
         </motion.div>
       </div>
 
-      <SliderNavigation
-        currentIndex={currentIndex}
-        maxIndex={maxIndex}
-        onPrev={handlePrev}
-        onNext={handleNext}
-        onSlide={slideTo}
-      />
+
+      <div className="mt-4 grid grid-cols-1 items-center gap-6 px-5 md:grid-cols-2">
+        <div>Progress here</div>
+        <SliderNavigation
+          currentIndex={currentIndex}
+          maxIndex={maxIndex}
+          onPrev={handlePrev}
+          onNext={handleNext}
+          onSlide={slideTo}
+        />
+      </div>
 
       {selectedLesson && (
         <LessonDetail
