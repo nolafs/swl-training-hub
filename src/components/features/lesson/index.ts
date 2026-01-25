@@ -1,3 +1,3 @@
-export { LessonCard } from './Card';
-export { LessonSlider } from './Slider';
-export { LessonDetail } from './Detail';
+export { LessonCard } from './card';
+export { LessonSlider } from './slider';
+export { LessonDetail } from './detail';

@@ -134,7 +134,7 @@ export type DownloadDocument<Lang extends string = string> =
     Lang
   >;
 
-type LessonDocumentDataSlicesSlice = never;
+type LessonDocumentDataSlicesSlice = MediaSlice | TextSlice;
 
 /**
  * Content for Lesson documents
@@ -174,6 +174,17 @@ interface LessonDocumentData {
   cover_image: prismic.ImageField<never>;
 
   /**
+   * Video field in *Lesson*
+   *
+   * - **Field Type**: Embed
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson.video
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/embed
+   */
+  video: prismic.EmbedField;
+
+  /**
    * Type field in *Lesson*
    *
    * - **Field Type**: Select
@@ -183,6 +194,17 @@ interface LessonDocumentData {
    * - **Documentation**: https://prismic.io/docs/fields/select
    */
   type: prismic.SelectField<"Lesson" | "Lesson Video" | "Discussion">;
+
+  /**
+   * Body field in *Lesson*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson.body
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  body: prismic.RichTextField;
 
   /**
    * Slice Zone field in *Lesson*

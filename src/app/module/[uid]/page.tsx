@@ -1,7 +1,8 @@
 import { LessonSlider } from '@/components/features/lesson';
 import { createClient } from "@/prismicio";
 import { notFound } from "next/navigation";
-import { isFilled } from "@prismicio/client";
+import { Metadata } from "next";
+import { isFilled, asImageSrc } from "@prismicio/client";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import {AlertCircle, ChevronRightIcon} from "lucide-react";
 import { PageColorSetter } from "@/components/features/page-color";
@@ -83,4 +84,28 @@ export default async function ModulePage({ params }: ModulePageProps) {
       </div>
     </main>
   );
+}
+
+export async function generateMetadata({ params }: ModulePageProps): Promise<Metadata> {
+  const { uid } = await params;
+  const client = createClient();
+  const moduleDoc = await client.getByUID('module', uid).catch(() => null);
+
+  if (!moduleDoc) {
+    return {
+      title: 'Module Not Found',
+    };
+  }
+
+  return {
+    title: moduleDoc.data.title,
+    description: moduleDoc.data.description,
+  };
+}
+
+export async function generateStaticParams() {
+  const client = createClient();
+  const modules = await client.getAllByType('module');
+
+  return modules.map((moduleData) => ({ uid: moduleData.uid }));
 }

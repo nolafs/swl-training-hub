@@ -82,7 +82,7 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
 
   return (
     <div className="relative w-full" ref={containerRef}>
-      {/* Slider */}
+      {/* slider */}
       <div className="overflow-hidden">
         <motion.div
           ref={sliderRef}

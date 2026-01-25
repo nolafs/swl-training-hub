@@ -110,7 +110,7 @@ export function ModuleCard({
         </Link>
       </motion.div>
 
-      {/* Main Card - uses programmatic navigation to allow drag on slider */}
+      {/* Main card - uses programmatic navigation to allow drag on slider */}
       <motion.div
         className="relative flex h-93.75 w-93.75 cursor-pointer flex-col overflow-hidden border bg-white"
         onPointerDown={handlePointerDown}
