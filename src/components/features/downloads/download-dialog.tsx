@@ -36,7 +36,7 @@ export const DownloadDialog = (props: DialogProps) => {
   return (
     <Dialog {...props}>
       <DialogTrigger asChild>
-        <ButtonHero  icon={<DownloadIcon />} textBgColor={'#331f1f'} textColor={'#fff'} iconBgColor={'#E55D5D'} >Downloads</ButtonHero>
+        <ButtonHero  icon={<DownloadIcon />} textBgColor={'#331f1f'} textColor={'#fff'} iconBgColor={'#E55D5D'}  >Downloads</ButtonHero>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>

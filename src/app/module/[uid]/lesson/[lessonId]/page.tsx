@@ -100,7 +100,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
         <LessonNavigation
           moduleUid={moduleDoc.uid}
           moduleId={moduleDoc.id}
-          lessonId={lessonId}
+          lessonId={lessonDoc.id}
           lessonType={lessonDoc.data.type}
           nextLessonUid={nextLessonUid}
           prevLessonUid={prevLessonUid}
@@ -136,7 +136,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
             isFilled.embed(lessonDoc.data.video) &&
             lessonDoc.data.video.embed_url && (
               <LessonVideoPlayer
-                lessonId={lessonId}
+                lessonId={lessonDoc.id}
                 moduleId={moduleDoc.id}
                 videoUrl={lessonDoc.data.video.embed_url}
               />
@@ -144,7 +144,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
           {lessonDoc.data.type === 'Practice' && isFilled.image(lessonDoc.data.cover_image) && (
             <LessonPracticeCountdown
-              lessonId={lessonId}
+              lessonId={lessonDoc.id}
               moduleId={moduleDoc.id}
               duration={lessonDoc.data.duration}
               coverImage={lessonDoc.data.cover_image}
@@ -153,7 +153,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
           {lessonDoc.data.type === 'Lesson' ? (
             <LessonScrollArea
-              lessonId={lessonId}
+              lessonId={lessonDoc.id}
               moduleId={moduleDoc.id}
               className="mt-4 mb-8 h-[400px] max-h-96 overflow-hidden rounded-md border bg-white p-4"
             >

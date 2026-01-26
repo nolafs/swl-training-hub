@@ -21,7 +21,7 @@ function ButtonHero({
     <button
       data-slot="button-hero"
       className={cn(
-        'group inline-flex items-stretch overflow-hidden transition-all disabled:pointer-events-none disabled:opacity-50',
+        'group inline-flex items-stretch overflow-hidden transition-all disabled:pointer-events-none disabled:opacity-50 cursor-pointer',
         className
       )}
       {...props}
