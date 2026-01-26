@@ -1,10 +1,11 @@
 'use client';
 
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useMemo, ReactNode } from 'react';
 
 interface PageColorContextType {
   color: string | null;
   previousColor: string | null;
+  textColor: string;
   setPageColor: (color: string | null) => void;
 }
 
@@ -19,8 +20,13 @@ export function PageColorProvider({ children }: { children: ReactNode }) {
     setColor(newColor);
   }, [color]);
 
+  // When a page color is set, use white text; otherwise use dark text
+  const textColor = useMemo(() => {
+    return color ? '#ffffff' : '#111827'; // white or gray-900
+  }, [color]);
+
   return (
-    <PageColorContext.Provider value={{ color, previousColor, setPageColor }}>
+    <PageColorContext.Provider value={{ color, previousColor, textColor, setPageColor }}>
       {children}
     </PageColorContext.Provider>
   );

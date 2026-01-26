@@ -12,7 +12,11 @@ import { Button } from '@/components/ui/button';
 import { useResetProgress } from '@/lib/store';
 import { SettingsIcon } from 'lucide-react';
 
-export function SettingsDialog() {
+interface SettingsDialogProps {
+  textColor?: string;
+}
+
+export function SettingsDialog({ textColor }: SettingsDialogProps) {
   const resetProgress = useResetProgress();
 
   const handleResetProgress = () => {
@@ -22,7 +26,7 @@ export function SettingsDialog() {
   return (
     <Dialog>
       <DialogTrigger>
-        <SettingsIcon />
+        <SettingsIcon style={{ color: textColor }} className="transition-colors duration-300" />
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
