@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { motion, useAnimation, PanInfo } from 'framer-motion';
 import { LessonCard } from '../card';
 import { SliderNavigation } from '@/components/ui/SliderNavigation';
+import { ModuleProgress } from '@/components/features/lesson/progress/progress';
 
 interface Lesson {
   id: string;
@@ -153,6 +154,7 @@ export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderPro
               className="shrink-0"
             >
               <LessonCard
+                lessonId={lesson.id}
                 lessonNumber={lesson.lessonNumber}
                 title={lesson.title}
                 description={lesson.description}
@@ -170,7 +172,7 @@ export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderPro
       </div>
 
       <div className="mt-4 grid grid-cols-1 items-center gap-6 px-5 md:grid-cols-2">
-        <div>Progress here</div>
+        <div><ModuleProgress moduleId={moduleId} /> </div>
         <SliderNavigation
           currentIndex={currentIndex}
           maxIndex={maxIndex}

@@ -6,7 +6,8 @@ import { createClient, repositoryName } from '@/prismicio';
 import { RootInnerLayout } from '@/layout/RootInnerLayout';
 import { Footer } from '@/layout/footer';
 import { Header } from '@/layout/header';
-import { asText } from '@prismicio/client';
+import { asText, isFilled } from '@prismicio/client';
+import { LearnProgressStoreProvider, type CourseStructure } from '@/lib/store';
 
 const roboto = Roboto({
   variable: '--font-roboto',
@@ -105,17 +106,47 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     console.warn('Settings document not found');
   }
 
+  // Load course structure from CMS for progress tracking
+  let courseStructure: CourseStructure = { modules: [] };
+
+  try {
+    const modules = await client.getAllByType('module', {
+      orderings: [{ field: 'my.module.position', direction: 'asc' }],
+      fetchLinks: ['lesson.title'],
+    });
+
+    courseStructure = {
+      modules: modules.map((module) => ({
+        moduleId: module.uid ?? module.id,
+        title: module.data.title ?? '',
+        lessons: (module.data.lesson ?? []).flatMap((item, index) => {
+          if (!isFilled.contentRelationship(item.lesson)) return [];
+          const lesson = item.lesson;
+          return [
+            {
+              lessonId: lesson.uid ?? lesson.id ?? `lesson-${index}`,
+              title: (lesson.data as { title?: string } | undefined)?.title ?? `Lesson ${index + 1}`,
+            },
+          ];
+        }),
+      })),
+    };
+  } catch {
+    console.warn('Could not load course structure');
+  }
+
   return (
     <html lang="en">
       <body className={`${roboto.variable} font-sans antialiased`}>
-        <RootInnerLayout>
-          <Header settings={settings} />
-          {children}
-          <Footer settings={settings} />
-
-          {/* Prismic preview */}
-          <PrismicPreview repositoryName={repositoryName} />
-        </RootInnerLayout>
+        <LearnProgressStoreProvider courseStructure={courseStructure}>
+          <RootInnerLayout>
+            <Header settings={settings} />
+            {children}
+            <Footer settings={settings} />
+            {/* Prismic preview */}
+            <PrismicPreview repositoryName={repositoryName} />
+          </RootInnerLayout>
+        </LearnProgressStoreProvider>
       </body>
     </html>
   );

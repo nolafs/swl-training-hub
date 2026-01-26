@@ -49,7 +49,7 @@ export const RootInnerLayout = ({ children }: { children: ReactNode }) => {
               containerClasses="w-full px-6 py-4 bg-black text-white text-center flex justify-center items-center flex-wrap shadow gap-3 md:gap-8 md:rounded-t-xl shadow"
               buttonClasses="px-8 py-1.5 text-lg inline-flex rounded-full px-4 py-1.5 text-sm font-semibold transition bg-accent text-white hover:bg-white/90 transition-colors ease-in-out duration-100"
               onAccept={() => {
-                // 1) flip state for GTM
+                // 1) flip store for GTM
                 setConsent(true);
                 // 2) run your tracking util (see next section – make it “safe”)
                 grantConsentForEverything();

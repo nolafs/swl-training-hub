@@ -39,7 +39,7 @@ export function SliderNavigation({
             className="origin-bottom text-6xl leading-none font-semibold"
             animate={{
               scale: currentIndex === index ? 1.5 : 1,
-              color: currentIndex === index ? '#ef4444' : '#9ca3af',
+              color: currentIndex === index ? '#fff' : 'rgba(255,255,255,0.50)',
               lineHeight: currentIndex === index ? 0.9 : 1,
             }}
             transition={{

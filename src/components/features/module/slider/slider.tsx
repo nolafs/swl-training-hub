@@ -2,9 +2,10 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, useAnimation, PanInfo } from 'framer-motion';
-import { ModuleCard } from '../Card';
+import { ModuleCard } from '../card';
 import { ModuleDocument } from '../../../../../prismicio-types';
 import { SliderNavigation } from '@/components/ui/SliderNavigation';
+import { CourseProgress } from '@/components/features/module/progress/progress-course';
 
 interface ModuleSliderProps {
   modules: ModuleDocument[];
@@ -116,7 +117,9 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
       </div>
 
       <div className="mt-4 grid grid-cols-1 items-center gap-6 px-5 md:grid-cols-2">
-        <div>Progress here</div>
+        <div>
+          <CourseProgress />
+        </div>
         <SliderNavigation
           currentIndex={currentIndex}
           maxIndex={maxIndex}

@@ -6,8 +6,10 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
+import { useLessonProgress } from '@/lib/store';
 
 interface LessonCardProps {
+  lessonId: string;
   lessonNumber: number;
   title: string;
   description: string;
@@ -23,6 +25,7 @@ interface LessonCardProps {
 const DRAG_THRESHOLD = 5;
 
 export function LessonCard({
+  lessonId,
   lessonNumber,
   title,
   coverImage,
@@ -37,6 +40,8 @@ export function LessonCard({
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
   const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
+  const lessonProgress = useLessonProgress(lessonId);
+
 
   const handlePointerDown = (e: React.PointerEvent) => {
     pointerStartRef.current = { x: e.clientX, y: e.clientY };
@@ -85,13 +90,16 @@ export function LessonCard({
           damping: 25,
         }}
       >
-        <div className="text-xs font-medium text-gray-50">{progress}%</div>
-        <div className="w-2 overflow-hidden rounded-full bg-gray-200" style={{ height: height * 0.4 }}>
+        <div className="text-xs font-medium text-gray-50">{lessonProgress}%</div>
+        <div
+          className="w-2 overflow-hidden rounded-full bg-gray-200"
+          style={{ height: height * 0.4 }}
+        >
           <motion.div
             className="w-full rounded-full"
             style={{ backgroundColor: color }}
             initial={{ height: 0 }}
-            animate={{ height: `${progress}%` }}
+            animate={{ height: `${lessonProgress}%` }}
             transition={{ duration: 0.5, delay: 0.2 }}
           />
         </div>
@@ -130,9 +138,7 @@ export function LessonCard({
         animate={{
           scale: isHovered ? 1.1 : 1,
           zIndex: isHovered ? 50 : 1,
-          boxShadow: isHovered
-            ? '0 20px 50px rgba(0, 0, 0, 0.3)'
-            : 'none',
+          boxShadow: isHovered ? '0 20px 50px rgba(0, 0, 0, 0.3)' : 'none',
         }}
         transition={{
           type: 'spring',
@@ -155,7 +161,7 @@ export function LessonCard({
 
         {/* Caption bar - expands to fill card on hover */}
         <motion.div
-          className="absolute bottom-0 left-0 right-0 flex flex-col justify-start overflow-hidden px-4 py-3"
+          className="absolute right-0 bottom-0 left-0 flex flex-col justify-start overflow-hidden px-4 py-3"
           style={{ backgroundColor: isHovered ? `${color}cc` : color }}
           animate={{
             height: isHovered ? '100%' : 48,
