@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 interface SliderNavigationProps {
   currentIndex: number;
   maxIndex: number;
+  color?: string;
   onPrev: () => void;
   onNext: () => void;
   onSlide: (index: number) => void;
@@ -13,6 +14,7 @@ interface SliderNavigationProps {
 
 export function SliderNavigation({
   currentIndex,
+  color,
   maxIndex,
   onPrev,
   onNext,
@@ -39,7 +41,7 @@ export function SliderNavigation({
             className="origin-bottom text-6xl leading-none font-semibold"
             animate={{
               scale: currentIndex === index ? 1.5 : 1,
-              color: currentIndex === index ? '#fff' : 'rgba(255,255,255,0.50)',
+              color: currentIndex === index ? (color ?? '#fff') : (color ? `${color}` : 'rgba(255,255,255,0.50)'),
               lineHeight: currentIndex === index ? 0.9 : 1,
             }}
             transition={{

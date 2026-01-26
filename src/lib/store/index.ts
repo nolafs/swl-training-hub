@@ -6,6 +6,7 @@ export {
   useCourseProgress,
   useUpdateLessonProgress,
   useMarkLessonComplete,
+  useResetProgress,
   useCourseStructure,
 } from './learn-progress-store-provider';
 

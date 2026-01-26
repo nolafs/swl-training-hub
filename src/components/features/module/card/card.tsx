@@ -5,29 +5,31 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { useModuleProgress } from '@/lib/store';
 
 interface ModuleCardProps {
+  moduleId: string;
   moduleNumber: number;
   title: string;
   description: string;
   color: string;
-  progress?: number;
   href: string;
 }
 
 const DRAG_THRESHOLD = 5; // pixels - if moved more than this, it's a drag not a click
 
 export function ModuleCard({
+  moduleId,
   moduleNumber,
   title,
   description,
   color,
-  progress = 0,
   href,
 }: ModuleCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
   const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
+  const progress = useModuleProgress(moduleId);
 
   const handlePointerDown = (e: React.PointerEvent) => {
     pointerStartRef.current = { x: e.clientX, y: e.clientY };
@@ -74,7 +76,7 @@ export function ModuleCard({
           damping: 25,
         }}
       >
-        <div className="text-xs font-medium text-gray-50">{progress}%</div>
+        <div className="text-xs font-medium text-gray-50">{progress?.progress}%</div>
         <div className="h-48 w-2 overflow-hidden rounded-full bg-gray-200">
           <motion.div
             className="w-full rounded-full"

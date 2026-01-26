@@ -162,3 +162,7 @@ export function useMarkLessonComplete() {
 export function useCourseStructure() {
   return useLearnProgressStore((state) => state.courseStructure);
 }
+
+export function useResetProgress() {
+  return useLearnProgressStore((state) => state.resetProgress);
+}

@@ -1,5 +1,6 @@
 import { PrismicNextImage, PrismicNextLink } from '@prismicio/next';
 import type { SettingsDocument } from '../../prismicio-types';
+import { SettingsDialog } from '@/components/features/settings/settings-dialog';
 
 interface HeaderProps {
   settings: SettingsDocument | null;
@@ -23,6 +24,7 @@ export function Header({ settings }: HeaderProps) {
         {/* Navigation - Right (placeholder for future menu) */}
         <nav aria-label="Main navigation" className="flex items-center gap-4">
           {/* Menu items will go here */}
+          <SettingsDialog />
         </nav>
       </div>
     </header>

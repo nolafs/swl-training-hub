@@ -104,11 +104,11 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
               className="shrink-0"
             >
               <ModuleCard
+                moduleId={module.id}
                 moduleNumber={module.data.position ?? 0}
                 title={module.data.title ?? ''}
                 description={module.data.description ?? ''}
                 color={module.data.colour ?? '#000000'}
-                progress={0}
                 href={`/module/${module.uid}`}
               />
             </motion.div>
@@ -121,6 +121,7 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
           <CourseProgress />
         </div>
         <SliderNavigation
+          color={'#000'}
           currentIndex={currentIndex}
           maxIndex={maxIndex}
           onPrev={handlePrev}

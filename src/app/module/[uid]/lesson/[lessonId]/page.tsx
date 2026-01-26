@@ -5,6 +5,11 @@ import { components } from "@/slices";
 import {PrismicRichText, SliceZone} from "@prismicio/react";
 import { Metadata } from "next";
 import { isFilled } from "@prismicio/client";
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { LessonVideoPlayer } from '@/components/features';
+import { PrismicNextImage } from '@prismicio/next';
+import { ChevronRightIcon, ChevronLeftIcon, HomeIcon } from 'lucide-react';
+import Link from 'next/link';
 
 
 type Params = { uid: string; lessonId: string };
@@ -33,33 +38,107 @@ export default async function LessonPage({ params }: LessonPageProps) {
   const moduleColor = moduleDoc.data.colour || '#fff';
 
   const numberOfLessons = moduleDoc.data.lesson.length;
-  let lessonIndex = -1;
+  let currentIndex = -1;
 
-  console.log('Checking numberOfLessons:', numberOfLessons);
-
+  // Find current lesson index (0-based)
   for (let i = 0; i < numberOfLessons; i++) {
     const item = moduleDoc.data.lesson[i];
-    console.log('Checking lesson:', lessonIndex);
     if (isFilled.contentRelationship(item.lesson) && item.lesson.uid === lessonId) {
-      lessonIndex = (i + 1);
+      currentIndex = i;
       break;
     }
   }
 
+  // Get next and previous lesson UIDs (with safety checks)
+  const nextLessonItem = currentIndex < numberOfLessons - 1 ? moduleDoc.data.lesson[currentIndex + 1] : null;
+  const prevLessonItem = currentIndex > 0 ? moduleDoc.data.lesson[currentIndex - 1] : null;
+
+  const nextLessonUid = nextLessonItem && isFilled.contentRelationship(nextLessonItem.lesson)
+    ? nextLessonItem.lesson.uid
+    : null;
+  const prevLessonUid = prevLessonItem && isFilled.contentRelationship(prevLessonItem.lesson)
+    ? prevLessonItem.lesson.uid
+    : null;
+
+  // Display index is 1-based
+  const lessonIndex = currentIndex + 1;
+
+
+
   return (
-    <main className="min-h-screen flex-1 pb-16">
+    <main className="h-full flex-1 pb-16">
       <PageColorSetter color={moduleColor} />
-      <div className="container mx-auto px-6 ">
-        <article className="mx-auto max-w-5xl  bg-gray-100 py-4 px-8 shadow-lg">
-          <h1 className={'flex items-center gap-x-3'}><span className={'font-semibold tracking-tight text-2xl text-gray-500'}>{lessonIndex < 10 ? `0${lessonIndex}` : lessonIndex  }</span> <span className={'font-bold'}>{lessonDoc.data.title}</span></h1>
-          <div className={'prose lg:prose-xl max-w-5xl '}>
+      <div className="relative container mx-auto max-w-5xl">
+        {/* Home Link Button */}
 
+        <Link
+          href={`/module/${moduleDoc.uid}`}
+          className={
+            'absolute right-0 bottom-11 flex h-24 w-24 translate-x-full items-center justify-center text-white shadow-lg brightness-110 hover:brightness-130'
+          }
+          style={{ backgroundColor: moduleColor }}
+        >
+          <HomeIcon className={'h-12 w-12'} strokeWidth={1} />
+        </Link>
 
+        {/* Next Previous lesson Link Button */}
 
-            <PrismicRichText field={lessonDoc.data.body} />
+        {nextLessonUid && (
+          <Link
+            href={`/module/${moduleDoc.uid}/lesson/${nextLessonUid}`}
+            className={
+              'absolute right-0 top-36 flex h-24 w-24 translate-x-full items-center justify-center text-white shadow-lg brightness-110 hover:brightness-130'
+            }
+            style={{ backgroundColor: moduleColor }}
+          >
+            <ChevronRightIcon className={'h-12 w-12'} strokeWidth={1} />
+          </Link>
+        )}
 
-            <SliceZone slices={lessonDoc.data.slices} components={components} />
-          </div>
+        {prevLessonUid && (
+          <Link
+            href={`/module/${moduleDoc.uid}/lesson/${prevLessonUid}`}
+            className={
+              'absolute left-0 top-36 flex h-24 w-24 -translate-x-full items-center justify-center text-white shadow-lg brightness-110 hover:brightness-130'
+            }
+            style={{ backgroundColor: moduleColor }}
+          >
+            <ChevronLeftIcon className={'h-12 w-12'} strokeWidth={1} />
+          </Link>
+        )}
+
+        <article className="z-10 mx-auto max-w-5xl bg-gray-100 px-8 py-4 shadow-xl">
+          <h1 className={'flex items-center gap-x-3'}>
+            <span className={'text-2xl font-semibold tracking-tight text-gray-500'}>
+              {lessonIndex < 10 ? `0${lessonIndex}` : lessonIndex}
+            </span>{' '}
+            <span className={'font-bold'}>{lessonDoc.data.title}</span>
+          </h1>
+
+          {lessonDoc.data.type === 'Info' && isFilled.image(lessonDoc.data.cover_image) && (
+            <PrismicNextImage
+              field={lessonDoc.data.cover_image}
+              className={'aspect-video w-full'}
+              fallbackAlt={''}
+            />
+          )}
+
+          {lessonDoc.data.type === 'Lesson Video' &&
+            isFilled.embed(lessonDoc.data.video) &&
+            lessonDoc.data.video.embed_url && (
+              <LessonVideoPlayer
+                lessonId={lessonId}
+                moduleId={moduleDoc.id}
+                videoUrl={lessonDoc.data.video.embed_url}
+              />
+            )}
+
+          <ScrollArea className="mt-4 mb-8 h-[400px] max-h-96 overflow-hidden rounded-md border bg-white p-4">
+            <div className={'prose lg:prose-xl max-w-5xl'}>
+              <PrismicRichText field={lessonDoc.data.body} />
+              <SliceZone slices={lessonDoc.data.slices} components={components} />
+            </div>
+          </ScrollArea>
         </article>
       </div>
     </main>

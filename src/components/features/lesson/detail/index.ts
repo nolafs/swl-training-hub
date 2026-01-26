@@ -1,1 +1,0 @@
-export { LessonDetail } from './Detail';

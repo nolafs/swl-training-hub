@@ -46,7 +46,14 @@
         "config": {
           "label": "Type",
           "placeholder": "",
-          "options": ["Lesson", "Lesson Video", "Discussion"]
+          "options": ["Lesson", "Lesson Video", "Discussion", "Practice", "Info"]
+        }
+      },
+      "duration": {
+        "type": "Number",
+        "config": {
+          "label": "duration",
+          "placeholder": "Sec"
         }
       },
       "body": {
