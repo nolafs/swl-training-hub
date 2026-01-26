@@ -162,7 +162,6 @@ export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor }: Less
                 coverImage={lesson.coverImage}
                 coverImageAlt={lesson.coverImageAlt}
                 color={moduleColor}
-                progress={0}
                 href={`/module/${moduleUid}/lesson/${lesson.uid}`}
                 width={cardWidth}
                 height={cardHeight}
