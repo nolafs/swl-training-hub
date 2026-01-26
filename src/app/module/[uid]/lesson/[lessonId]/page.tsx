@@ -6,9 +6,9 @@ import {PrismicRichText, SliceZone} from "@prismicio/react";
 import { Metadata } from "next";
 import { isFilled } from "@prismicio/client";
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { LessonVideoPlayer } from '@/components/features';
+import { LessonVideoPlayer, LessonScrollArea, LessonNavigation } from '@/components/features';
 import { PrismicNextImage } from '@prismicio/next';
-import { ChevronRightIcon, ChevronLeftIcon, HomeIcon } from 'lucide-react';
+import { HomeIcon } from 'lucide-react';
 import Link from 'next/link';
 
 
@@ -83,29 +83,15 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
         {/* Next Previous lesson Link Button */}
 
-        {nextLessonUid && (
-          <Link
-            href={`/module/${moduleDoc.uid}/lesson/${nextLessonUid}`}
-            className={
-              'absolute right-0 top-36 flex h-24 w-24 translate-x-full items-center justify-center text-white shadow-lg brightness-110 hover:brightness-130'
-            }
-            style={{ backgroundColor: moduleColor }}
-          >
-            <ChevronRightIcon className={'h-12 w-12'} strokeWidth={1} />
-          </Link>
-        )}
-
-        {prevLessonUid && (
-          <Link
-            href={`/module/${moduleDoc.uid}/lesson/${prevLessonUid}`}
-            className={
-              'absolute left-0 top-36 flex h-24 w-24 -translate-x-full items-center justify-center text-white shadow-lg brightness-110 hover:brightness-130'
-            }
-            style={{ backgroundColor: moduleColor }}
-          >
-            <ChevronLeftIcon className={'h-12 w-12'} strokeWidth={1} />
-          </Link>
-        )}
+        <LessonNavigation
+          moduleUid={moduleDoc.uid}
+          moduleId={moduleDoc.id}
+          lessonId={lessonId}
+          lessonType={lessonDoc.data.type}
+          nextLessonUid={nextLessonUid}
+          prevLessonUid={prevLessonUid}
+          moduleColor={moduleColor}
+        />
 
         <article className="z-10 mx-auto max-w-5xl bg-gray-100 px-8 py-4 shadow-xl">
           <h1 className={'flex items-center gap-x-3'}>
@@ -123,6 +109,14 @@ export default async function LessonPage({ params }: LessonPageProps) {
             />
           )}
 
+          {lessonDoc.data.type === 'Lesson' && isFilled.image(lessonDoc.data.cover_image) && (
+            <PrismicNextImage
+              field={lessonDoc.data.cover_image}
+              className={'aspect-video w-full'}
+              fallbackAlt={''}
+            />
+          )}
+
           {lessonDoc.data.type === 'Lesson Video' &&
             isFilled.embed(lessonDoc.data.video) &&
             lessonDoc.data.video.embed_url && (
@@ -133,12 +127,25 @@ export default async function LessonPage({ params }: LessonPageProps) {
               />
             )}
 
-          <ScrollArea className="mt-4 mb-8 h-[400px] max-h-96 overflow-hidden rounded-md border bg-white p-4">
-            <div className={'prose lg:prose-xl max-w-5xl'}>
-              <PrismicRichText field={lessonDoc.data.body} />
-              <SliceZone slices={lessonDoc.data.slices} components={components} />
-            </div>
-          </ScrollArea>
+          {lessonDoc.data.type === 'Lesson' ? (
+            <LessonScrollArea
+              lessonId={lessonId}
+              moduleId={moduleDoc.id}
+              className="mt-4 mb-8 h-[400px] max-h-96 overflow-hidden rounded-md border bg-white p-4"
+            >
+              <div className={'prose lg:prose-xl max-w-5xl'}>
+                <PrismicRichText field={lessonDoc.data.body} />
+                <SliceZone slices={lessonDoc.data.slices} components={components} />
+              </div>
+            </LessonScrollArea>
+          ) : (
+            <ScrollArea className="mt-4 mb-8 h-[400px] max-h-96 overflow-hidden rounded-md border bg-white p-4">
+              <div className={'prose lg:prose-xl max-w-5xl'}>
+                <PrismicRichText field={lessonDoc.data.body} />
+                <SliceZone slices={lessonDoc.data.slices} components={components} />
+              </div>
+            </ScrollArea>
+          )}
         </article>
       </div>
     </main>
