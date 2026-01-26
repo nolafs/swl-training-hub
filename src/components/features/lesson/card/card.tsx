@@ -16,7 +16,6 @@ interface LessonCardProps {
   coverImage: string;
   coverImageAlt: string;
   color: string;
-  progress?: number;
   href: string;
   width?: number;
   height?: number;
@@ -32,7 +31,6 @@ export function LessonCard({
   coverImageAlt,
   description,
   color,
-  progress = 0,
   href,
   width = 320,
   height = 200,
@@ -77,7 +75,7 @@ export function LessonCard({
     >
       {/* Progress bar - slides out from left */}
       <motion.div
-        className="absolute top-1/2 left-0 flex -translate-y-1/2 flex-col items-center justify-center gap-2"
+        className="absolute top-1/2 left-0 flex h-75 w-20 -translate-y-1/2 p-3 shadow-lg brightness-90"
         style={{ backgroundColor: color, height: height * 0.8, width: sideElementWidth }}
         initial={{ x: 0, opacity: 0 }}
         animate={{
@@ -90,20 +88,27 @@ export function LessonCard({
           damping: 25,
         }}
       >
-        <div className="text-xs font-medium text-gray-50">{lessonProgress}%</div>
-        <div
-          className="w-2 overflow-hidden rounded-full bg-gray-200"
-          style={{ height: height * 0.4 }}
-        >
-          <motion.div
-            className="w-full rounded-full"
-            style={{ backgroundColor: color }}
-            initial={{ height: 0 }}
-            animate={{ height: `${lessonProgress}%` }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          />
+        <div className={'flex h-full gap-2.5'}>
+          <div className={'flex flex-col items-center justify-between border-white/30'}>
+            <div className="text-xs leading-normal font-medium tracking-tight text-gray-50 [text-orientation:mixed] [writing-mode:sideways-lr]">
+              {lessonProgress}%
+            </div>
+            <div className="text-xs leading-normal font-semibold tracking-tight text-gray-50 uppercase [text-orientation:mixed] [writing-mode:sideways-lr]">
+              Completed
+            </div>
+          </div>
+          <div
+            className="h-full w-2 overflow-hidden rounded-full bg-gray-200/30"
+          >
+            <motion.div
+              className="w-full rounded-full"
+              style={{ backgroundColor: '#ffffff' }}
+              initial={{ height: 0 }}
+              animate={{ height: `${lessonProgress}%` }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            />
+          </div>
         </div>
-        <div className="text-xs text-gray-50">Progress</div>
       </motion.div>
 
       {/* Start button - slides out from right */}
@@ -122,8 +127,8 @@ export function LessonCard({
       >
         <Link
           href={href}
-          className="flex items-center justify-center text-white shadow-lg transition-transform hover:scale-110"
-          style={{ backgroundColor: color, height: height * 0.4, width: sideElementWidth * 1.2 }}
+          className="flex items-center justify-center w-20 h-16 text-white shadow-lg transition-transform hover:scale-110"
+          style={{ backgroundColor: color }}
         >
           <ArrowRight className="ml-2 h-8 w-8" />
         </Link>
