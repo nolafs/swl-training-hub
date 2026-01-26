@@ -4,15 +4,16 @@ import Link from 'next/link';
 import { ChevronRightIcon, ChevronLeftIcon } from 'lucide-react';
 import { useUpdateLessonProgress } from '@/lib/store';
 
-type LessonType = 'Lesson' | 'Lesson Video' | 'Info' | 'Discussion';
+type LessonType = 'Lesson' | 'Lesson Video' | 'Info' | 'Discussion' | 'Practice' | null;
 
 interface LessonNavigationProps {
   moduleUid: string;
   moduleId: string;
   lessonId: string;
   lessonType: LessonType;
-  nextLessonUid: string | null;
-  prevLessonUid: string | null;
+  nextLessonUid: string | null | undefined;
+  prevLessonUid: string | null | undefined;
+  nextModuleUid: string | null | undefined;
   moduleColor: string;
 }
 
@@ -23,6 +24,7 @@ export function LessonNavigation({
   lessonType,
   nextLessonUid,
   prevLessonUid,
+  nextModuleUid,
   moduleColor,
 }: LessonNavigationProps) {
   const updateLessonProgress = useUpdateLessonProgress();
@@ -34,11 +36,18 @@ export function LessonNavigation({
     }
   };
 
+  // Determine next destination: next lesson or next module
+  const nextHref = nextLessonUid
+    ? `/module/${moduleUid}/lesson/${nextLessonUid}`
+    : nextModuleUid
+      ? `/module/${nextModuleUid}`
+      : null;
+
   return (
     <>
-      {nextLessonUid && (
+      {nextHref && (
         <Link
-          href={`/module/${moduleUid}/lesson/${nextLessonUid}`}
+          href={nextHref}
           onClick={handleNextClick}
           className={
             'absolute top-36 right-0 flex h-24 w-24 translate-x-full items-center justify-center text-white shadow-lg brightness-110 hover:brightness-130'

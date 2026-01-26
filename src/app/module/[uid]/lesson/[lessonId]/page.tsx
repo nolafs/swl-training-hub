@@ -6,7 +6,7 @@ import {PrismicRichText, SliceZone} from "@prismicio/react";
 import { Metadata } from "next";
 import { isFilled } from "@prismicio/client";
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { LessonVideoPlayer, LessonScrollArea, LessonNavigation } from '@/components/features';
+import { LessonVideoPlayer, LessonScrollArea, LessonNavigation, LessonPracticeCountdown } from '@/components/features';
 import { PrismicNextImage } from '@prismicio/next';
 import { HomeIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -60,6 +60,19 @@ export default async function LessonPage({ params }: LessonPageProps) {
     ? prevLessonItem.lesson.uid
     : null;
 
+  // If we're at the last lesson, get the next module
+  let nextModuleUid: string | null = null;
+  if (!nextLessonUid) {
+    const allModules = await client.getAllByType('module', {
+      orderings: [{ field: 'my.module.position', direction: 'asc' }],
+    });
+    const currentModulePosition = moduleDoc.data.position ?? 0;
+    const nextModule = allModules.find(
+      (m) => (m.data.position ?? 0) > currentModulePosition
+    );
+    nextModuleUid = nextModule?.uid ?? null;
+  }
+
   // Display index is 1-based
   const lessonIndex = currentIndex + 1;
 
@@ -76,6 +89,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
           className={
             'absolute right-0 bottom-11 flex h-24 w-24 translate-x-full items-center justify-center text-white shadow-lg brightness-110 hover:brightness-130'
           }
+
           style={{ backgroundColor: moduleColor }}
         >
           <HomeIcon className={'h-12 w-12'} strokeWidth={1} />
@@ -90,6 +104,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
           lessonType={lessonDoc.data.type}
           nextLessonUid={nextLessonUid}
           prevLessonUid={prevLessonUid}
+          nextModuleUid={nextModuleUid}
           moduleColor={moduleColor}
         />
 
@@ -126,6 +141,15 @@ export default async function LessonPage({ params }: LessonPageProps) {
                 videoUrl={lessonDoc.data.video.embed_url}
               />
             )}
+
+          {lessonDoc.data.type === 'Practice' && isFilled.image(lessonDoc.data.cover_image) && (
+            <LessonPracticeCountdown
+              lessonId={lessonId}
+              moduleId={moduleDoc.id}
+              duration={lessonDoc.data.duration}
+              coverImage={lessonDoc.data.cover_image}
+            />
+          )}
 
           {lessonDoc.data.type === 'Lesson' ? (
             <LessonScrollArea
