@@ -13,7 +13,7 @@ export function ModuleProgress({moduleId}: ModuleProgress) {
 
   return (
     <div>
-      <Progress value={moduleData?.progress} />
+      <Progress value={moduleData?.progress} color={'#ffffff'} />
     </div>
   );
 }

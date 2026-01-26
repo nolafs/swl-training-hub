@@ -57,7 +57,7 @@ export default async function ModulePage({ params }: ModulePageProps) {
       <PageColorSetter color={moduleColor} />
 
       {hasLessons ? (
-        <LessonSlider lessons={lessons} moduleId={uid} moduleColor={moduleColor} />
+        <LessonSlider lessons={lessons} moduleUid={uid} moduleId={moduleDoc.id} moduleColor={moduleColor} />
       ) : (
         <div className={'p-10'}>
           <Alert>

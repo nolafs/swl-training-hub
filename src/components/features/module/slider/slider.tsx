@@ -87,7 +87,7 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
       <div className="overflow-hidden">
         <motion.div
           ref={sliderRef}
-          className="flex cursor-grab gap-6 p-20 active:cursor-grabbing"
+          className="flex cursor-grab gap-6 p-20 pl-36 active:cursor-grabbing"
           animate={controls}
           drag="x"
           dragConstraints={{ left: -maxIndex * (CARD_WIDTH + GAP), right: 0 }}
@@ -116,18 +116,30 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
         </motion.div>
       </div>
 
-      <div className="mt-4 grid grid-cols-1 items-center gap-6 px-5 md:grid-cols-2">
-        <div>
-          <CourseProgress />
+      <div className="mt-4 flex flex-col items-center gap-6 px-5 md:flex-row">
+        <div className={'w-full md:w-7/12'}>
+          <div className={'gap-10 flex w-full items-center justify-between'}>
+            <div className={'opacity-20 [text-orientation:mixed] [writing-mode:sideways-lr]'}>
+              Modules
+            </div>
+            <div className={'w-full justify-between'}>
+              <CourseProgress />
+            </div>
+            <div className={'opacity-20 [text-orientation:mixed] [writing-mode:sideways-lr]'}>
+              Completed
+            </div>
+          </div>
         </div>
-        <SliderNavigation
-          color={'#000'}
-          currentIndex={currentIndex}
-          maxIndex={maxIndex}
-          onPrev={handlePrev}
-          onNext={handleNext}
-          onSlide={slideTo}
-        />
+        <div className={'w-full md:w-5/12'}>
+          <SliderNavigation
+            color={'#000'}
+            currentIndex={currentIndex}
+            maxIndex={maxIndex}
+            onPrev={handlePrev}
+            onNext={handleNext}
+            onSlide={slideTo}
+          />
+        </div>
       </div>
     </div>
   );

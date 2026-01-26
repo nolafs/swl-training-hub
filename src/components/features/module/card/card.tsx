@@ -31,6 +31,8 @@ export function ModuleCard({
   const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
   const progress = useModuleProgress(moduleId);
 
+  console.log('ModuleCard progress:', progress, 'for moduleId:', moduleId);
+
   const handlePointerDown = (e: React.PointerEvent) => {
     pointerStartRef.current = { x: e.clientX, y: e.clientY };
   };
@@ -63,7 +65,7 @@ export function ModuleCard({
     >
       {/* Progress bar - slides out from left */}
       <motion.div
-        className="absolute top-1/2 left-0 flex h-75 w-20 -translate-y-1/2 flex-col items-center justify-center gap-2"
+        className="absolute top-1/2 left-0 flex h-75 w-20  -translate-y-1/2  p-3 brightness-95"
         style={{ backgroundColor: color }}
         initial={{ x: 0, opacity: 0 }}
         animate={{
@@ -76,17 +78,25 @@ export function ModuleCard({
           damping: 25,
         }}
       >
-        <div className="text-xs font-medium text-gray-50">{progress?.progress}%</div>
-        <div className="h-48 w-2 overflow-hidden rounded-full bg-gray-200">
-          <motion.div
-            className="w-full rounded-full"
-            style={{ backgroundColor: color }}
-            initial={{ height: 0 }}
-            animate={{ height: `${progress}%` }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          />
+        <div className={'flex h-full gap-2.5'}>
+          <div className={'flex flex-col items-center justify-between border-white/30'}>
+            <div className="text-xs leading-normal font-medium tracking-tight text-gray-50 [text-orientation:mixed] [writing-mode:sideways-lr]">
+              {progress?.progress}%
+            </div>
+            <div className="text-xs uppercase leading-normal font-semibold tracking-tight text-gray-50 [text-orientation:mixed] [writing-mode:sideways-lr]">
+              Completed
+            </div>
+          </div>
+
+          <div className="h-full w-2 overflow-hidden rounded-full bg-gray-200/30">
+            <motion.div
+              className="w-full rounded-full bg-white"
+              initial={{ height: 0 }}
+              animate={{ height: `${progress?.progress}%` }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            />
+          </div>
         </div>
-        <div className="text-xs text-gray-50">Progress</div>
       </motion.div>
 
       {/* Start button - slides out from right */}
@@ -118,11 +128,9 @@ export function ModuleCard({
         onPointerDown={handlePointerDown}
         onClick={handleClick}
         animate={{
-          scale: isHovered ? 1.20 : 1,
+          scale: isHovered ? 1.2 : 1,
           borderColor: isHovered ? color : 'rgba(0, 0, 0, 0.2)',
-          boxShadow: isHovered
-            ? '0 20px 50px rgba(0, 0, 0, 0.2)'
-            : '0 2px 8px rgba(0, 0, 0, 0.08)',
+          boxShadow: isHovered ? '0 20px 50px rgba(0, 0, 0, 0.2)' : '0 2px 8px rgba(0, 0, 0, 0.08)',
           zIndex: isHovered ? 50 : 1,
         }}
         transition={{

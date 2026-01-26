@@ -30,7 +30,7 @@ export function SliderNavigation({
         whileTap={{ scale: 0.95 }}
         aria-label="Previous"
       >
-        <ChevronLeft className="h-10 w-10 text-gray-600" />
+        <ChevronLeft className="h-10 w-10" style={{ color: color ?? '#fff' }} />
       </motion.button>
 
       <div className="flex items-end gap-10">
@@ -41,7 +41,8 @@ export function SliderNavigation({
             className="origin-bottom text-6xl leading-none font-semibold"
             animate={{
               scale: currentIndex === index ? 1.5 : 1,
-              color: currentIndex === index ? (color ?? '#fff') : (color ? `${color}` : 'rgba(255,255,255,0.50)'),
+              color: currentIndex === index ? (color ?? '#fff') : color ? `${color}` : '#fff',
+              opacity: currentIndex === index ? 1 : 0.3,
               lineHeight: currentIndex === index ? 0.9 : 1,
             }}
             transition={{
@@ -66,7 +67,7 @@ export function SliderNavigation({
         whileTap={{ scale: 0.95 }}
         aria-label="Next"
       >
-        <ChevronRight className="h-10 w-10 text-gray-600" />
+        <ChevronRight className="h-10 w-10" style={{ color: color ?? '#fff' }} />
       </motion.button>
     </div>
   );

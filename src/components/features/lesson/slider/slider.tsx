@@ -18,6 +18,7 @@ interface Lesson {
 
 interface LessonSliderProps {
   lessons: Lesson[];
+  moduleUid: string;
   moduleId: string;
   moduleColor: string;
 }
@@ -39,7 +40,7 @@ const itemVariants = {
   }),
 };
 
-export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderProps) {
+export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor }: LessonSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
   const [isReady, setIsReady] = useState(false);
@@ -162,7 +163,7 @@ export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderPro
                 coverImageAlt={lesson.coverImageAlt}
                 color={moduleColor}
                 progress={0}
-                href={`/module/${moduleId}/lesson/${lesson.uid}`}
+                href={`/module/${moduleUid}/lesson/${lesson.uid}`}
                 width={cardWidth}
                 height={cardHeight}
               />
@@ -171,8 +172,21 @@ export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderPro
         </motion.div>
       </div>
 
-      <div className="mt-4 grid grid-cols-1 items-center gap-6 px-5 md:grid-cols-2">
-        <div><ModuleProgress moduleId={moduleId} /> </div>
+      <div className="mt-4 flex flex-col items-center gap-6 px-5 md:flex-row">
+        <div className={'w-full md:w-7/12'}>
+          <div className={'flex w-full items-center justify-between gap-10'}>
+            <div className={'opacity-20 text-white [text-orientation:mixed] [writing-mode:sideways-lr]'}>
+              Lessons
+            </div>
+            <div className={'w-full justify-between'}>
+              <ModuleProgress moduleId={moduleId} />{' '}
+            </div>
+            <div className={'opacity-20 text-white [text-orientation:mixed] [writing-mode:sideways-lr]'}>
+              Completed
+            </div>
+          </div>
+        </div>
+        <div className={'w-full md:w-5/12'}>
         <SliderNavigation
           currentIndex={currentIndex}
           maxIndex={maxIndex}
@@ -180,6 +194,7 @@ export function LessonSlider({ lessons, moduleId, moduleColor }: LessonSliderPro
           onNext={handleNext}
           onSlide={slideTo}
         />
+        </div>
       </div>
     </div>
   );

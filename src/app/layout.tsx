@@ -117,14 +117,14 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 
     courseStructure = {
       modules: modules.map((module) => ({
-        moduleId: module.uid ?? module.id,
+        moduleId: module.id,
         title: module.data.title ?? '',
         lessons: (module.data.lesson ?? []).flatMap((item, index) => {
           if (!isFilled.contentRelationship(item.lesson)) return [];
           const lesson = item.lesson;
           return [
             {
-              lessonId: lesson.uid ?? lesson.id ?? `lesson-${index}`,
+              lessonId: lesson.id ?? `lesson-${index}`,
               title: (lesson.data as { title?: string } | undefined)?.title ?? `Lesson ${index + 1}`,
             },
           ];
