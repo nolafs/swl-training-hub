@@ -17,7 +17,7 @@ export function Footer({ settings }: FooterProps) {
   const { textColor } = usePageColor();
 
   return (
-    <footer style={{ color: textColor }} className="transition-colors duration-300">
+    <footer style={{ color: textColor }} className="transition-colors duration-300 absolute bottom-0 left-0 w-full bg-transparent">
       <div className="mx-auto flex flex-col items-center justify-between gap-4 px-4 py-6 sm:flex-row sm:px-6 lg:px-8">
         {/* Copyright - Left */}
         <p className="text-sm">{copyrightText}</p>

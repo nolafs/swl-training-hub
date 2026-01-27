@@ -17,7 +17,7 @@ export default async function Home() {
   const page = await client.getByUID('page', 'home').catch(() => notFound());
 
   return (
-    <main className="flex flex-col h-full w-full flex-1">
+    <main className="flex flex-col h-full w-full flex-1 pt-32 pb-16">
       <PageColorSetter color={null} />
       <ModuleSlider modules={modules} />
       <SliceZone slices={page.data.slices} components={components} />

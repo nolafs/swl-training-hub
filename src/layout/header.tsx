@@ -18,7 +18,7 @@ export function Header({ settings }: HeaderProps) {
   const displayLogo = color && logoAlt?.url ? logoAlt : logo;
 
   return (
-    <header style={{ color: textColor }} className="transition-colors duration-300">
+    <header style={{ color: textColor }} className="transition-colors duration-300 absolute top-0 left-0 w-full z-50">
       <div className="mx-auto flex items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         {/* Logo - Left */}
         <PrismicNextLink href="/" className="flex items-center">

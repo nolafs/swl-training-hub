@@ -53,11 +53,16 @@ export default async function ModulePage({ params }: ModulePageProps) {
   const hasLessons = lessons.length > 0;
 
   return (
-    <main className="flex h-full w-full flex-1 flex-col">
+    <main className="flex h-full w-full flex-1 flex-col pt-32 pb-16">
       <PageColorSetter color={moduleColor} />
 
       {hasLessons ? (
-        <LessonSlider lessons={lessons} moduleUid={uid} moduleId={moduleDoc.id} moduleColor={moduleColor} />
+        <LessonSlider
+          lessons={lessons}
+          moduleUid={uid}
+          moduleId={moduleDoc.id}
+          moduleColor={moduleColor}
+        />
       ) : (
         <div className={'p-10'}>
           <Alert>

@@ -79,106 +79,109 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
 
   return (
-    <main className="h-full flex-1 pb-16">
+    <main className="h-screen w-full overflow-visible">
       <PageColorSetter color={moduleColor} />
-      <div className="relative container mx-auto max-w-5xl shadow-[0px_4px_65px_14px_rgba(0,0,0,0.25)]">
+      <div className="relative container mx-auto h-screen min-h-full max-w-5xl overflow-visible py-20">
         {/* Home Link Button */}
-
-        <Link
-          href={`/module/${moduleDoc.uid}`}
-          className={
-            'absolute right-0 bottom-11 flex h-24 w-24 translate-x-full items-center justify-center text-white shadow-lg brightness-110 hover:brightness-130'
-          }
-          style={{ backgroundColor: moduleColor }}
-        >
-          <HomeIcon className={'h-12 w-12'} strokeWidth={1} />
-        </Link>
-
-        {/* Next Previous lesson Link Button */}
-
-        <LessonNavigation
-          moduleUid={moduleDoc.uid}
-          moduleId={moduleDoc.id}
-          lessonId={lessonDoc.id}
-          lessonType={lessonDoc.data.type}
-          nextLessonUid={nextLessonUid}
-          prevLessonUid={prevLessonUid}
-          nextModuleUid={nextModuleUid}
-          moduleColor={moduleColor}
-        />
-
-        {/* Lesson progress bar */}
-
         <div
-          className={'absolute top-1/2 left-0 flex h-75 w-20 -translate-x-full p-3 shadow-lg'}
-          style={{ backgroundColor: moduleColor }}
+          className={'relative flex h-full w-full bg-gray-100 shadow-[0px_4px_65px_14px_rgba(0,0,0,0.25)]'}
         >
-          <ProgressCard lessonId={lessonId} />
-        </div>
+          <Link
+            href={`/module/${moduleDoc.uid}`}
+            className={
+              'absolute right-0 bottom-11 flex h-24 w-24 translate-x-full items-center justify-center text-white shadow-lg brightness-110 hover:brightness-130'
+            }
+            style={{ backgroundColor: moduleColor }}
+          >
+            <HomeIcon className={'h-12 w-12'} strokeWidth={1} />
+          </Link>
 
-        <article className="z-10 mx-auto max-w-5xl bg-gray-100 px-8 py-4 shadow-lg">
-          <h1 className={'flex items-center gap-x-3'}>
-            <span className={'text-2xl font-semibold tracking-tight text-gray-500'}>
-              {lessonIndex < 10 ? `0${lessonIndex}` : lessonIndex}
-            </span>{' '}
-            <span className={'font-bold'}>{lessonDoc.data.title}</span>
-          </h1>
+          {/* Next Previous lesson Link Button */}
 
-          {lessonDoc.data.type === 'Info' && isFilled.image(lessonDoc.data.cover_image) && (
-            <PrismicNextImage
-              field={lessonDoc.data.cover_image}
-              className={'aspect-video w-full'}
-              fallbackAlt={''}
-            />
-          )}
+          <LessonNavigation
+            moduleUid={moduleDoc.uid}
+            moduleId={moduleDoc.id}
+            lessonId={lessonDoc.id}
+            lessonType={lessonDoc.data.type}
+            nextLessonUid={nextLessonUid}
+            prevLessonUid={prevLessonUid}
+            nextModuleUid={nextModuleUid}
+            moduleColor={moduleColor}
+          />
 
-          {lessonDoc.data.type === 'Lesson' && isFilled.image(lessonDoc.data.cover_image) && (
-            <PrismicNextImage
-              field={lessonDoc.data.cover_image}
-              className={'aspect-video w-full'}
-              fallbackAlt={''}
-            />
-          )}
+          {/* Lesson progress bar */}
 
-          {lessonDoc.data.type === 'Lesson Video' &&
-            isFilled.embed(lessonDoc.data.video) &&
-            lessonDoc.data.video.embed_url && (
-              <LessonVideoPlayer
-                lessonId={lessonDoc.id}
-                moduleId={moduleDoc.id}
-                videoUrl={lessonDoc.data.video.embed_url}
+          <div
+            className={'absolute top-1/2 left-0 z-1 flex h-75 w-20 -translate-x-full p-3 shadow-lg'}
+            style={{ backgroundColor: moduleColor }}
+          >
+            <ProgressCard lessonId={lessonId} />
+          </div>
+
+          <article className="absolute z-10 mx-auto h-full max-w-5xl px-8 py-4 shadow-[0px_0px_5px_5px_rgba(0,0,0,0.10)]">
+            <h1 className={'flex items-center gap-x-3'}>
+              <span className={'text-2xl font-semibold tracking-tight text-gray-500'}>
+                {lessonIndex < 10 ? `0${lessonIndex}` : lessonIndex}
+              </span>{' '}
+              <span className={'font-bold'}>{lessonDoc.data.title}</span>
+            </h1>
+
+            {lessonDoc.data.type === 'Info' && isFilled.image(lessonDoc.data.cover_image) && (
+              <PrismicNextImage
+                field={lessonDoc.data.cover_image}
+                className={'aspect-video w-full'}
+                fallbackAlt={''}
               />
             )}
 
-          {lessonDoc.data.type === 'Practice' && isFilled.image(lessonDoc.data.cover_image) && (
-            <LessonPracticeCountdown
-              lessonId={lessonDoc.id}
-              moduleId={moduleDoc.id}
-              duration={lessonDoc.data.duration}
-              coverImage={lessonDoc.data.cover_image}
-            />
-          )}
+            {lessonDoc.data.type === 'Lesson' && isFilled.image(lessonDoc.data.cover_image) && (
+              <PrismicNextImage
+                field={lessonDoc.data.cover_image}
+                className={'aspect-video w-full'}
+                fallbackAlt={''}
+              />
+            )}
 
-          {lessonDoc.data.type === 'Lesson' ? (
-            <LessonScrollArea
-              lessonId={lessonDoc.id}
-              moduleId={moduleDoc.id}
-              className="mt-4 mb-8 h-[400px] max-h-96 overflow-hidden rounded-md border bg-white p-4"
-            >
-              <div className={'prose lg:prose-xl max-w-5xl'}>
-                <PrismicRichText field={lessonDoc.data.body} />
-                <SliceZone slices={lessonDoc.data.slices} components={components} />
-              </div>
-            </LessonScrollArea>
-          ) : (
-            <ScrollArea className="mt-4 mb-8 h-[400px] max-h-96 overflow-hidden rounded-md border bg-white p-4">
-              <div className={'prose lg:prose-xl max-w-5xl'}>
-                <PrismicRichText field={lessonDoc.data.body} />
-                <SliceZone slices={lessonDoc.data.slices} components={components} />
-              </div>
-            </ScrollArea>
-          )}
-        </article>
+            {lessonDoc.data.type === 'Lesson Video' &&
+              isFilled.embed(lessonDoc.data.video) &&
+              lessonDoc.data.video.embed_url && (
+                <LessonVideoPlayer
+                  lessonId={lessonDoc.id}
+                  moduleId={moduleDoc.id}
+                  videoUrl={lessonDoc.data.video.embed_url}
+                />
+              )}
+
+            {lessonDoc.data.type === 'Practice' && isFilled.image(lessonDoc.data.cover_image) && (
+              <LessonPracticeCountdown
+                lessonId={lessonDoc.id}
+                moduleId={moduleDoc.id}
+                duration={lessonDoc.data.duration}
+                coverImage={lessonDoc.data.cover_image}
+              />
+            )}
+
+            {lessonDoc.data.type === 'Lesson' ? (
+              <LessonScrollArea
+                lessonId={lessonDoc.id}
+                moduleId={moduleDoc.id}
+                className="mt-4 mb-8 h-100 max-h-96 overflow-hidden rounded-md border bg-white p-4"
+              >
+                <div className={'prose lg:prose-xl max-w-5xl'}>
+                  <PrismicRichText field={lessonDoc.data.body} />
+                  <SliceZone slices={lessonDoc.data.slices} components={components} />
+                </div>
+              </LessonScrollArea>
+            ) : (
+              <ScrollArea className="mt-4 mb-8 h-100 max-h-96 overflow-hidden rounded-md border bg-white p-4">
+                <div className={'prose lg:prose-xl max-w-5xl'}>
+                  <PrismicRichText field={lessonDoc.data.body} />
+                  <SliceZone slices={lessonDoc.data.slices} components={components} />
+                </div>
+              </ScrollArea>
+            )}
+          </article>
+        </div>
       </div>
     </main>
   );
