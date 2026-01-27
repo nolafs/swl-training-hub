@@ -84,12 +84,14 @@ export default async function LessonPage({ params }: LessonPageProps) {
       <div className="relative container mx-auto h-screen min-h-full max-w-5xl overflow-visible py-20">
         {/* Home Link Button */}
         <div
-          className={'relative flex h-full w-full bg-gray-100 shadow-[0px_4px_65px_14px_rgba(0,0,0,0.25)]'}
+          className={
+            'relative flex h-full w-full bg-gray-100 shadow-[0px_4px_65px_14px_rgba(0,0,0,0.25)]'
+          }
         >
           <Link
             href={`/module/${moduleDoc.uid}`}
             className={
-              'absolute right-0 bottom-11 flex h-24 w-24 translate-x-full items-center justify-center text-white shadow-lg brightness-110 hover:brightness-130'
+              'absolute right-0 bottom-11 flex h-24 w-24 translate-x-full items-center justify-center text-white shadow-lg brightness-105 hover:brightness-130'
             }
             style={{ backgroundColor: moduleColor }}
           >
@@ -112,13 +114,15 @@ export default async function LessonPage({ params }: LessonPageProps) {
           {/* Lesson progress bar */}
 
           <div
-            className={'absolute top-1/2 left-0 z-1 flex h-75 w-20 -translate-x-full p-3 shadow-lg'}
+            className={
+              'absolute top-1/2 left-0 z-1 flex h-75 w-20 -translate-x-full p-3 shadow-lg brightness-105'
+            }
             style={{ backgroundColor: moduleColor }}
           >
             <ProgressCard lessonId={lessonId} />
           </div>
 
-          <article className="absolute z-10 mx-auto h-full max-w-5xl px-8 py-4 shadow-[0px_0px_5px_5px_rgba(0,0,0,0.10)]">
+          <article className="relative flex flex-col z-10 w-full h-full max-h-screen max-w-5xl px-8 pt-4 pb-2 shadow-[0px_0px_5px_5px_rgba(0,0,0,0.10)]">
             <h1 className={'flex items-center gap-x-3'}>
               <span className={'text-2xl font-semibold tracking-tight text-gray-500'}>
                 {lessonIndex < 10 ? `0${lessonIndex}` : lessonIndex}
@@ -165,7 +169,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
               <LessonScrollArea
                 lessonId={lessonDoc.id}
                 moduleId={moduleDoc.id}
-                className="mt-4 mb-8 h-100 max-h-96 overflow-hidden rounded-md border bg-white p-4"
+                className="mt-4 mb-8 flex-1 overflow-hidden border bg-white p-4"
               >
                 <div className={'prose lg:prose-xl max-w-5xl'}>
                   <PrismicRichText field={lessonDoc.data.body} />
@@ -173,7 +177,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
                 </div>
               </LessonScrollArea>
             ) : (
-              <ScrollArea className="mt-4 mb-8 h-100 max-h-96 overflow-hidden rounded-md border bg-white p-4">
+              <ScrollArea className="mt-4 mb-8 flex-1  overflow-hidden  border bg-white p-4">
                 <div className={'prose lg:prose-xl max-w-5xl'}>
                   <PrismicRichText field={lessonDoc.data.body} />
                   <SliceZone slices={lessonDoc.data.slices} components={components} />
