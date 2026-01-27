@@ -92,15 +92,13 @@ export function AnimatedModuleContent({
       animate="visible"
     >
       {/* Slider area */}
-      <motion.div variants={itemVariants}>
-        {children}
-      </motion.div>
+      <motion.div variants={itemVariants}>{children}</motion.div>
 
       {/* Module info section */}
-      <div className="mt-20 grid grid-cols-1 items-center gap-6 px-5 text-white md:grid-cols-2">
+      <div className="mt-10 grid grid-cols-1 items-center gap-6 px-5 text-white md:mt-20 md:grid-cols-2">
         <div className="flex">
           <motion.div
-            className="text-9xl font-extralight tracking-tight"
+            className="text-2xl font-extralight tracking-tight md:text-9xl"
             variants={numberVariants}
           >
             {moduleNumber < 10 ? `0${moduleNumber}` : moduleNumber}
@@ -109,12 +107,12 @@ export function AnimatedModuleContent({
             className="ml-4 flex flex-col justify-center space-y-1"
             variants={infoVariants}
           >
-            <div className="text-xl font-extralight uppercase">Module</div>
-            <div className="text-3xl font-bold">{moduleTitle}</div>
-            <div className="text-xl font-normal">{moduleDescription}</div>
+            <div className="text-xs font-extralight uppercase md:text-xl">Module</div>
+            <div className="text-lg font-bold md:text-3xl">{moduleTitle}</div>
+            <div className="text-sm font-normal md:text-xl">{moduleDescription}</div>
           </motion.div>
         </div>
-        <motion.div className="flex justify-center" variants={buttonVariants}>
+        <motion.div className="hidden justify-center md:flex" variants={buttonVariants}>
           {continueButton}
         </motion.div>
       </div>

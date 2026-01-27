@@ -9,7 +9,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   LessonVideoPlayer,
   LessonScrollArea,
-  LessonNavigation,
   LessonPracticeCountdown,
   ProgressCard,
   LessonCoverImageNavigation,
@@ -88,7 +87,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
   // If we're at the last lesson, get the next module
   let nextModuleUid: string | null = null;
-  let nextModuleTitle: string | null = null;
+
   if (!nextLessonUid) {
     const allModules = await client.getAllByType('module', {
       orderings: [{ field: 'my.module.position', direction: 'asc' }],
@@ -96,7 +95,6 @@ export default async function LessonPage({ params }: LessonPageProps) {
     const currentModulePosition = moduleDoc.data.position ?? 0;
     const nextModule = allModules.find((m) => (m.data.position ?? 0) > currentModulePosition);
     nextModuleUid = nextModule?.uid ?? null;
-    nextModuleTitle = nextModule?.data.title ?? null;
   }
 
   // Display index is 1-based
@@ -122,31 +120,65 @@ export default async function LessonPage({ params }: LessonPageProps) {
     </Link>
   );
 
+  // Desktop navigation buttons
   const navigationNext = (
     <LessonNavigationButton
-      type={'next'}
-      lessonId={lessonId}
+      type="next"
+      lessonId={lessonDoc.id}
       lessonType={lessonDoc.data.type}
-      lessonLinkTitle={nextLessonTitle ? nextLessonTitle : ''}
+      lessonLinkTitle={nextLessonTitle ?? ''}
       lessonLinkUid={nextLessonUid}
       moduleLinkUid={nextModuleUid}
       moduleId={moduleDoc.id}
       moduleUid={uid}
       moduleColor={moduleColor}
+      variant="desktop"
     />
   );
 
   const navigationPrev = (
     <LessonNavigationButton
-      type={'prev'}
-      lessonId={lessonId}
+      type="prev"
+      lessonId={lessonDoc.id}
       lessonType={lessonDoc.data.type}
-      lessonLinkTitle={prevLessonTitle ? prevLessonTitle : ''}
+      lessonLinkTitle={prevLessonTitle ?? ''}
       lessonLinkUid={prevLessonUid}
       moduleLinkUid={null}
       moduleId={moduleDoc.id}
       moduleUid={uid}
       moduleColor={moduleColor}
+      variant="desktop"
+    />
+  );
+
+  // Mobile navigation buttons
+  const navigationNextMobile = (
+    <LessonNavigationButton
+      type="next"
+      lessonId={lessonDoc.id}
+      lessonType={lessonDoc.data.type}
+      lessonLinkTitle={nextLessonTitle ?? ''}
+      lessonLinkUid={nextLessonUid}
+      moduleLinkUid={nextModuleUid}
+      moduleId={moduleDoc.id}
+      moduleUid={uid}
+      moduleColor={moduleColor}
+      variant="mobile"
+    />
+  );
+
+  const navigationPrevMobile = (
+    <LessonNavigationButton
+      type="prev"
+      lessonId={lessonDoc.id}
+      lessonType={lessonDoc.data.type}
+      lessonLinkTitle={prevLessonTitle ?? ''}
+      lessonLinkUid={prevLessonUid}
+      moduleLinkUid={null}
+      moduleId={moduleDoc.id}
+      moduleUid={uid}
+      moduleColor={moduleColor}
+      variant="mobile"
     />
   );
 
@@ -170,9 +202,14 @@ export default async function LessonPage({ params }: LessonPageProps) {
         homeButton={homeButton}
         nextNavigation={navigationNext}
         prevNavigation={navigationPrev}
+        nextNavigationMobile={navigationNextMobile}
+        prevNavigationMobile={navigationPrevMobile}
         progressBar={progressBar}
+        moduleColor={moduleColor}
+        moduleUid={uid}
+        lessonId={lessonDoc.id}
       >
-        <article className="relative z-10 flex h-full max-h-screen w-full max-w-5xl flex-col px-8 pt-4 pb-2 shadow-[0px_0px_5px_5px_rgba(0,0,0,0.10)]">
+        <article className="relative z-10 flex h-full max-h-screen w-full max-w-5xl flex-col px-8 pt-4 pb-2 md:shadow-[0px_0px_5px_5px_rgba(0,0,0,0.10)]">
           <h1 className="flex items-center gap-x-3">
             <span className="text-2xl font-semibold tracking-tight text-gray-500">
               {lessonIndex < 10 ? `0${lessonIndex}` : lessonIndex}

@@ -15,9 +15,11 @@ interface LessonNavigationButtonProps {
   moduleId: string;
   moduleUid: string | null | undefined;
   moduleColor: string;
+  /** Layout variant: desktop (absolute positioned) or mobile (inline) */
+  variant?: 'desktop' | 'mobile';
 }
 
-export function LessonNavigationButton ({
+export function LessonNavigationButton({
   type,
   lessonId,
   lessonType,
@@ -27,8 +29,8 @@ export function LessonNavigationButton ({
   moduleId,
   moduleUid,
   moduleColor,
-                                        }: LessonNavigationButtonProps) {
-
+  variant = 'desktop',
+}: LessonNavigationButtonProps) {
   const updateLessonProgress = useUpdateLessonProgress();
 
   const handleNextClick = () => {
@@ -48,27 +50,47 @@ export function LessonNavigationButton ({
     ? `${type === 'next' ? 'Next Lesson' : 'Previous Lesson'}: ${lessonLinkTitle}`
     : `${type === 'next' ? 'Next Lesson' : 'Previous Lesson'}`;
 
+  const Icon = type === 'next' ? ChevronRightIcon : ChevronLeftIcon;
 
-  if(!href) {
+  // Mobile variant - inline button for bottom nav bar
+  if (variant === 'mobile') {
+    if (!href) {
+      // Disabled state for mobile
+      return (
+        <div className="flex h-14 flex-1 items-center justify-center text-gray-300">
+          <Icon className="h-6 w-6" />
+        </div>
+      );
+    }
+
+    return (
+      <Link
+        href={href}
+        onClick={type === 'next' ? handleNextClick : undefined}
+        className="flex h-14 flex-1 items-center justify-center text-gray-700 transition-colors hover:bg-gray-100"
+      >
+        <Icon className="h-6 w-6" />
+      </Link>
+    );
+  }
+
+  // Desktop variant - absolute positioned with tooltip
+  if (!href) {
     return null;
   }
-  
+
   return (
     <LessonMouseTooltip label={tooltipLabel}>
       <Link
         href={href}
-        onClick={handleNextClick}
+        onClick={type === 'next' ? handleNextClick : undefined}
         className={cn(
           type === 'next' ? 'right-0 translate-x-full' : 'left-0 -translate-x-full',
           'absolute top-36 flex h-24 w-24 items-center justify-center text-white shadow-lg brightness-90 hover:brightness-130'
         )}
         style={{ backgroundColor: moduleColor }}
       >
-        {type === 'next' ? (
-          <ChevronRightIcon className={'h-12 w-12'} strokeWidth={1} />
-        ) : (
-          <ChevronLeftIcon className={'h-12 w-12'} strokeWidth={1} />
-        )}
+        <Icon className="h-12 w-12" strokeWidth={1} />
       </Link>
     </LessonMouseTooltip>
   );
