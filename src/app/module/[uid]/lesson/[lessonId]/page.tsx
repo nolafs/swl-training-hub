@@ -194,7 +194,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
   );
 
   return (
-    <main className="h-screen w-full overflow-visible">
+    <main className="relative h-screen w-full overflow-hidden">
       <PageColorSetter color={moduleColor} />
 
       <AnimatedLessonContent

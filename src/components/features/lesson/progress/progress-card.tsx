@@ -1,10 +1,15 @@
 'use client';
 import { motion } from 'framer-motion';
 import { useLessonProgress } from '@/lib/store';
+import { useEffect } from 'react';
 
 export function ProgressCard({ lessonId} : { lessonId: string }) {
 
   const lessonProgress = useLessonProgress(lessonId);
+
+  useEffect(() => {
+    console.log('Lesson Progress for lessonId', lessonId, ':', lessonProgress);
+  }, [lessonProgress]);
 
   return (
     <div className={'flex h-full gap-2.5'}>
