@@ -28,7 +28,7 @@ function ButtonHero({
     >
       {/* Text section */}
       <span
-        className="flex items-center justify-center px-8 py-4 text-[32px] font-medium leading-tight"
+        className="flex items-center justify-center px-8 py-4 text-2xl md:text-[32px] font-medium leading-tight"
         style={{ color: textColor, backgroundColor: textBgColor }}
       >
         {children}

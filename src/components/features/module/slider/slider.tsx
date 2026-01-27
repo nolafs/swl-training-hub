@@ -11,7 +11,7 @@ interface ModuleSliderProps {
   modules: ModuleDocument[];
 }
 
-const CARD_WIDTH = 375;
+const CARD_WIDTH = 360;
 const GAP = 24;
 
 const itemVariants = {
@@ -87,7 +87,7 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
       <div className="overflow-hidden">
         <motion.div
           ref={sliderRef}
-          className="flex cursor-grab gap-6 p-20 pl-36 active:cursor-grabbing"
+          className="flex cursor-grab gap-6 p-5 md:p-20 md:pl-36 active:cursor-grabbing"
           animate={controls}
           drag="x"
           dragConstraints={{ left: -maxIndex * (CARD_WIDTH + GAP), right: 0 }}
@@ -110,6 +110,7 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
                 description={module.data.description ?? ''}
                 color={module.data.colour ?? '#000000'}
                 href={`/module/${module.uid}`}
+                cardDimension={CARD_WIDTH}
               />
             </motion.div>
           ))}

@@ -21,7 +21,7 @@ export function SliderNavigation({
   onSlide,
 }: SliderNavigationProps) {
   return (
-    <div className="mt-6 flex items-end justify-end gap-4">
+    <div className="mt-6 flex justify-center items-center md:items-end md:justify-end gap-4">
       <motion.button
         onClick={onPrev}
         disabled={currentIndex === 0}
@@ -33,12 +33,12 @@ export function SliderNavigation({
         <ChevronLeft className="h-10 w-10" style={{ color: color ?? '#fff' }} />
       </motion.button>
 
-      <div className="flex items-end gap-10">
+      <div className="flex items-end gap-5 md:gap-10">
         {Array.from({ length: maxIndex + 1 }).map((_, index) => (
           <motion.button
             key={index}
             onClick={() => onSlide(index)}
-            className="origin-bottom text-6xl leading-none font-semibold"
+            className="origin-bottom text-2xl leading-none font-semibold md:text-6xl"
             animate={{
               scale: currentIndex === index ? 1.5 : 1,
               color: currentIndex === index ? (color ?? '#fff') : color ? `${color}` : '#fff',

@@ -14,6 +14,7 @@ interface ModuleCardProps {
   description: string;
   color: string;
   href: string;
+  cardDimension?: number;
 }
 
 const DRAG_THRESHOLD = 5; // pixels - if moved more than this, it's a drag not a click
@@ -25,6 +26,7 @@ export function ModuleCard({
   description,
   color,
   href,
+  cardDimension = 375,
 }: ModuleCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
@@ -65,7 +67,7 @@ export function ModuleCard({
     >
       {/* Progress bar - slides out from left */}
       <motion.div
-        className="absolute top-1/2 left-0 flex h-75 w-20  -translate-y-1/2  p-3 brightness-95"
+        className="absolute top-1/2 left-0 flex h-75 w-20 -translate-y-1/2 p-3 brightness-95"
         style={{ backgroundColor: color }}
         initial={{ x: 0, opacity: 0 }}
         animate={{
@@ -83,7 +85,7 @@ export function ModuleCard({
             <div className="text-xs leading-normal font-medium tracking-tight text-gray-50 [text-orientation:mixed] [writing-mode:sideways-lr]">
               {progress?.progress}%
             </div>
-            <div className="text-xs uppercase leading-normal font-semibold tracking-tight text-gray-50 [text-orientation:mixed] [writing-mode:sideways-lr]">
+            <div className="text-xs leading-normal font-semibold tracking-tight text-gray-50 uppercase [text-orientation:mixed] [writing-mode:sideways-lr]">
               Completed
             </div>
           </div>
@@ -124,7 +126,8 @@ export function ModuleCard({
 
       {/* Main card - uses programmatic navigation to allow drag on slider */}
       <motion.div
-        className="relative flex h-93.75 w-93.75 cursor-pointer flex-col overflow-hidden border bg-white"
+        className="relative flex cursor-pointer flex-col overflow-hidden border bg-white"
+        style={{ height: cardDimension, width: cardDimension }}
         onPointerDown={handlePointerDown}
         onClick={handleClick}
         animate={{
