@@ -23,7 +23,11 @@ export default async function LessonPage({ params }: LessonPageProps) {
   const client = createClient();
 
   // Fetch module to get the color
-  const moduleDoc = await client.getByUID('module', uid).catch(() => null);
+  const moduleDoc = await client
+    .getByUID('module', uid, {
+      fetchLinks: ['lesson.uid', 'lesson.type', 'lesson.cover_image', 'lesson.title'],
+    })
+    .catch(() => null);
 
   if (!moduleDoc) {
     notFound();
@@ -49,41 +53,54 @@ export default async function LessonPage({ params }: LessonPageProps) {
     }
   }
 
-  // Get next and previous lesson UIDs (with safety checks)
-  const nextLessonItem = currentIndex < numberOfLessons - 1 ? moduleDoc.data.lesson[currentIndex + 1] : null;
+  // Helper to extract lesson data from a lesson item
+  const getLessonData = (lessonItem: (typeof moduleDoc.data.lesson)[number] | null) => {
+    if (!lessonItem || !isFilled.contentRelationship(lessonItem.lesson)) {
+      return { uid: null, coverImage: null };
+    }
+    const lessonData = lessonItem.lesson.data as { cover_image?: unknown, title?: unknown } | undefined;
+
+    return {
+      uid: lessonItem.lesson.uid ?? null,
+      title: lessonData?.title ?? null,
+      coverImage: lessonData?.cover_image ?? null,
+    };
+  };
+
+  // Get next and previous lesson data
+  const nextLessonItem =
+    currentIndex < numberOfLessons - 1 ? moduleDoc.data.lesson[currentIndex + 1] : null;
   const prevLessonItem = currentIndex > 0 ? moduleDoc.data.lesson[currentIndex - 1] : null;
 
-  const nextLessonUid = nextLessonItem && isFilled.contentRelationship(nextLessonItem.lesson)
-    ? nextLessonItem.lesson.uid
-    : null;
-  const prevLessonUid = prevLessonItem && isFilled.contentRelationship(prevLessonItem.lesson)
-    ? prevLessonItem.lesson.uid
-    : null;
+  const { uid: nextLessonUid, title: nextLessonTitle, coverImage: nextLessonCoverImage } = getLessonData(nextLessonItem);
+  const { uid: prevLessonUid, title: prevLessonTitle, coverImage: prevLessonCoverImage } = getLessonData(prevLessonItem);
 
   // If we're at the last lesson, get the next module
   let nextModuleUid: string | null = null;
+  let nextModuleTitle: string | null = null;
   if (!nextLessonUid) {
     const allModules = await client.getAllByType('module', {
       orderings: [{ field: 'my.module.position', direction: 'asc' }],
     });
     const currentModulePosition = moduleDoc.data.position ?? 0;
-    const nextModule = allModules.find(
-      (m) => (m.data.position ?? 0) > currentModulePosition
-    );
+    const nextModule = allModules.find((m) => (m.data.position ?? 0) > currentModulePosition);
     nextModuleUid = nextModule?.uid ?? null;
+    nextModuleTitle = nextModule?.data.title ?? null;
   }
 
   // Display index is 1-based
   const lessonIndex = currentIndex + 1;
 
-
-
   return (
     <main className="h-screen w-full overflow-visible">
       <PageColorSetter color={moduleColor} />
 
-      <div>
+      <div className={'absolute top-36 z-2 -translate-x-1/2'}>
+        <PrismicNextImage field={prevLessonCoverImage} />
+      </div>
 
+      <div className={'top-36 right-0 absolute z-2 translate-x-1/2'}>
+        <PrismicNextImage field={nextLessonCoverImage} />
       </div>
 
       <div className="relative z-10 container mx-auto h-screen min-h-full max-w-5xl overflow-visible py-20">
@@ -111,8 +128,11 @@ export default async function LessonPage({ params }: LessonPageProps) {
             lessonId={lessonDoc.id}
             lessonType={lessonDoc.data.type}
             nextLessonUid={nextLessonUid}
+            nextLessonTitle={nextLessonTitle as string | null}
             prevLessonUid={prevLessonUid}
+            prevLessonTitle={prevLessonTitle as string | null}
             nextModuleUid={nextModuleUid}
+            nextModuleTitle={nextModuleTitle}
             moduleColor={moduleColor}
           />
 
@@ -127,7 +147,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
             <ProgressCard lessonId={lessonId} />
           </div>
 
-          <article className="relative flex flex-col z-10 w-full h-full max-h-screen max-w-5xl px-8 pt-4 pb-2 shadow-[0px_0px_5px_5px_rgba(0,0,0,0.10)]">
+          <article className="relative z-10 flex h-full max-h-screen w-full max-w-5xl flex-col px-8 pt-4 pb-2 shadow-[0px_0px_5px_5px_rgba(0,0,0,0.10)]">
             <h1 className={'flex items-center gap-x-3'}>
               <span className={'text-2xl font-semibold tracking-tight text-gray-500'}>
                 {lessonIndex < 10 ? `0${lessonIndex}` : lessonIndex}
@@ -182,7 +202,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
                 </div>
               </LessonScrollArea>
             ) : (
-              <ScrollArea className="mt-4 mb-8 flex-1  overflow-hidden  border bg-white p-4">
+              <ScrollArea className="mt-4 mb-8 flex-1 overflow-hidden border bg-white p-4">
                 <div className={'prose lg:prose-xl max-w-5xl'}>
                   <PrismicRichText field={lessonDoc.data.body} />
                   <SliceZone slices={lessonDoc.data.slices} components={components} />
