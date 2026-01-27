@@ -47,7 +47,7 @@ export const RootInnerLayout = ({ children }: { children: ReactNode }) => {
               enableDeclineButton={true}
               declineButtonClasses="px-8 py-1.5 mr-2 text-lg inline-flex rounded-full px-4 py-1.5 text-sm font-semibold transition bg-white text-black hover:bg-white/90 transition-colors ease-in-out duration-100"
               containerClasses="w-full px-6 py-4 bg-black text-white text-center flex justify-center items-center flex-wrap shadow gap-3 md:gap-8 md:rounded-t-xl shadow"
-              buttonClasses="px-8 py-1.5 text-lg inline-flex rounded-full px-4 py-1.5 text-sm font-semibold transition bg-accent text-white hover:bg-white/90 transition-colors ease-in-out duration-100"
+              buttonClasses="px-8 py-1.5 text-lg inline-flex rounded-full px-4 py-1.5 text-sm font-semibold transition bg-accent bg-green-500 text-white hover:bg-white/90 transition-colors ease-in-out duration-100"
               onAccept={() => {
                 // 1) flip store for GTM
                 setConsent(true);
