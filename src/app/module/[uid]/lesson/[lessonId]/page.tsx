@@ -81,7 +81,12 @@ export default async function LessonPage({ params }: LessonPageProps) {
   return (
     <main className="h-screen w-full overflow-visible">
       <PageColorSetter color={moduleColor} />
-      <div className="relative container mx-auto h-screen min-h-full max-w-5xl overflow-visible py-20">
+
+      <div>
+
+      </div>
+
+      <div className="relative z-10 container mx-auto h-screen min-h-full max-w-5xl overflow-visible py-20">
         {/* Home Link Button */}
         <div
           className={

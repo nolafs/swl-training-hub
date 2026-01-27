@@ -75,13 +75,13 @@ export default async function ModulePage({ params }: ModulePageProps) {
 
       <div className="mt-20 grid grid-cols-1 items-center gap-6 px-5 text-white md:grid-cols-2">
         <div className={'flex'}>
-          <div className={'text-9xl font-extralight'}>
+          <div className={'text-9xl font-extralight tracking-tight'}>
             {(moduleDoc.data.position ?? 0) < 10
               ? `0${moduleDoc.data.position ?? 0}`
               : moduleDoc.data.position}
           </div>
           <div className={'ml-4 flex flex-col justify-center space-y-1'}>
-            <div className={'text-xl font-extralight capitalize'}>Module</div>
+            <div className={'text-xl font-extralight uppercase'}>Module</div>
             <div className={'text-3xl font-bold'}>{moduleDoc.data.title}</div>
             <div className={'text-xl font-normal'}>{moduleDoc.data.description}</div>
           </div>

@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
-import { useLessonProgress } from '@/lib/store';
 import { ProgressCard } from '@/components/features/lesson/progress/progress-card';
 
 interface LessonCardProps {
