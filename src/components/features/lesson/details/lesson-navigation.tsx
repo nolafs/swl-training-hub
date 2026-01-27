@@ -50,7 +50,7 @@ export function LessonNavigation({
           href={nextHref}
           onClick={handleNextClick}
           className={
-            'absolute top-36 right-0 flex h-24 w-24 translate-x-full items-center justify-center text-white shadow-lg brightness-110 hover:brightness-130'
+            'absolute top-36 right-0 flex h-24 w-24 translate-x-full items-center justify-center text-white shadow-lg brightness-90 hover:brightness-130'
           }
           style={{ backgroundColor: moduleColor }}
         >
@@ -62,7 +62,7 @@ export function LessonNavigation({
         <Link
           href={`/module/${moduleUid}/lesson/${prevLessonUid}`}
           className={
-            'absolute top-36 left-0 flex h-24 w-24 -translate-x-full items-center justify-center text-white shadow-lg brightness-110 hover:brightness-130'
+            'absolute top-36 left-0 flex h-24 w-24 -translate-x-full items-center justify-center text-white shadow-lg brightness-90 hover:brightness-130'
           }
           style={{ backgroundColor: moduleColor }}
         >

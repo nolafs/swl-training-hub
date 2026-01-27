@@ -91,7 +91,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
           <Link
             href={`/module/${moduleDoc.uid}`}
             className={
-              'absolute right-0 bottom-11 flex h-24 w-24 translate-x-full items-center justify-center text-white shadow-lg brightness-105 hover:brightness-130'
+              'absolute right-0 bottom-11 flex h-24 w-24 translate-x-full items-center justify-center text-white shadow-lg brightness-90 hover:brightness-130'
             }
             style={{ backgroundColor: moduleColor }}
           >
@@ -115,7 +115,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
           <div
             className={
-              'absolute top-1/2 left-0 z-1 flex h-75 w-20 -translate-x-full p-3 shadow-lg brightness-105'
+              'absolute top-1/2 left-0 z-1 flex h-75 w-20 -translate-x-full p-3 shadow-lg brightness-90'
             }
             style={{ backgroundColor: moduleColor }}
           >
