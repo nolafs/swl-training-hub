@@ -1,0 +1,1 @@
+export { AnimatedModuleContent } from './animated-module-content';
