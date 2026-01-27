@@ -28,7 +28,8 @@ interface LessonSliderProps {
 }
 
 const GAP = 24;
-const CARD_ASPECT_RATIO = 16 / 9; // width / height
+const CARD_ASPECT_RATIO = 16 / 9; // width / height for desktop
+const MOBILE_BREAKPOINT = 430; // Below this width, show single slide with square cards
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -49,6 +50,7 @@ export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor, animat
   const [containerWidth, setContainerWidth] = useState(0);
   const [isReady, setIsReady] = useState(false);
   const [hasInitialScrolled, setHasInitialScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
 
@@ -61,11 +63,15 @@ export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor, animat
     useShallow((state) => state.lessonProgress)
   );
 
-  // Calculate card width: containerWidth = halfCard + gap + fullCard + gap + halfCard
-  // containerWidth = 2*cardWidth + 2*gap
-  // cardWidth = (containerWidth - 2*gap) / 2
-  const cardWidth = containerWidth > 0 ? (containerWidth - 2 * GAP) / 2 : 400;
-  const cardHeight = cardWidth / CARD_ASPECT_RATIO;
+  // Calculate card dimensions based on container width and mobile state
+  // Desktop: containerWidth = halfCard + gap + fullCard + gap + halfCard = 2*cardWidth + 2*gap
+  // Mobile: single card takes full width minus padding, square aspect ratio
+  const cardWidth = containerWidth > 0
+    ? isMobile
+      ? containerWidth - 32 // Mobile: full width minus 16px padding on each side
+      : (containerWidth - 2 * GAP) / 2 // Desktop: centered layout with half cards visible
+    : 400;
+  const cardHeight = isMobile ? cardWidth : cardWidth / CARD_ASPECT_RATIO; // Square on mobile, 16:9 on desktop
 
   // Use ResizeObserver for reliable container width measurement
   useLayoutEffect(() => {
@@ -76,6 +82,7 @@ export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor, animat
         const width = entry.contentRect.width;
         if (width > 0) {
           setContainerWidth(width);
+          setIsMobile(width < MOBILE_BREAKPOINT);
           setIsReady(true);
         }
       }
@@ -87,6 +94,7 @@ export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor, animat
     const width = containerRef.current.offsetWidth;
     if (width > 0) {
       setContainerWidth(width);
+      setIsMobile(width < MOBILE_BREAKPOINT);
       setIsReady(true);
     }
 
@@ -95,6 +103,11 @@ export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor, animat
 
   // Calculate offset to center the current card
   const getCenteredOffset = (index: number) => {
+    if (isMobile) {
+      // Mobile: simple slide calculation, centered with padding
+      return 16 - index * (cardWidth + GAP); // 16px left padding
+    }
+    // Desktop: center the card with half cards visible on sides
     const centerOffset = (containerWidth - cardWidth) / 2;
     const cardOffset = index * (cardWidth + GAP);
     return centerOffset - cardOffset;
@@ -113,7 +126,7 @@ export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor, animat
       const targetX = getCenteredOffset(currentIndex);
       controls.set({ x: targetX });
     }
-  }, [containerWidth, cardWidth]);
+  }, [containerWidth, cardWidth, isMobile]);
 
   // Scroll to first uncompleted lesson on mount
   useEffect(() => {

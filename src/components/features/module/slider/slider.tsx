@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useLayoutEffect } from 'react';
 import { motion, useAnimation, PanInfo } from 'framer-motion';
 import { ModuleCard } from '../card';
 import { ModuleDocument } from '../../../../../prismicio-types';
@@ -11,8 +11,9 @@ interface ModuleSliderProps {
   modules: ModuleDocument[];
 }
 
-let CARD_WIDTH = 391;
+const DEFAULT_CARD_WIDTH = 391;
 const GAP = 24;
+const MOBILE_BREAKPOINT = 430; // Below this width, show single slide
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -31,36 +32,49 @@ const itemVariants = {
 export function ModuleSlider({ modules }: ModuleSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [maxIndex, setMaxIndex] = useState(0);
+  const [cardWidth, setCardWidth] = useState(DEFAULT_CARD_WIDTH);
+  const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
 
   const controls = useAnimation();
 
-  useEffect(() => {
-    const updateMaxIndex = () => {
-      if (containerRef.current && sliderRef.current) {
-        const containerWidth = containerRef.current.offsetWidth;
-        const contentWidth = sliderRef.current.scrollWidth;
+  // Handle resize and calculate card dimensions
+  useLayoutEffect(() => {
+    const updateDimensions = () => {
+      if (!containerRef.current || !sliderRef.current) return;
 
-        if(containerWidth < CARD_WIDTH) {
-          CARD_WIDTH = containerWidth - (GAP) - 16;
-        }
+      const containerWidth = containerRef.current.offsetWidth;
+      const mobile = containerWidth < MOBILE_BREAKPOINT;
+      setIsMobile(mobile);
 
-        const maxScroll = contentWidth - containerWidth;
-        const totalSlides = Math.ceil(maxScroll / (CARD_WIDTH + GAP));
-        setMaxIndex(Math.max(0, totalSlides - 1));
+      // Calculate card width based on container
+      let newCardWidth: number;
+      if (mobile) {
+        // Single slide mode: card takes full width minus padding
+        newCardWidth = containerWidth - 32; // 16px padding on each side
+      } else {
+        // Default card width, but cap at container width if needed
+        newCardWidth = Math.min(DEFAULT_CARD_WIDTH, containerWidth - GAP - 16);
       }
+      setCardWidth(newCardWidth);
+
+      // Calculate max index
+      const contentWidth = modules.length * (newCardWidth + GAP);
+      const maxScroll = contentWidth - containerWidth;
+      const totalSlides = Math.ceil(maxScroll / (newCardWidth + GAP));
+      setMaxIndex(Math.max(0, totalSlides));
     };
 
-    updateMaxIndex();
-    window.addEventListener('resize', updateMaxIndex);
-    return () => window.removeEventListener('resize', updateMaxIndex);
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
   }, [modules.length]);
 
   const slideTo = (index: number) => {
     const newIndex = Math.max(0, Math.min(index, maxIndex));
     setCurrentIndex(newIndex);
-    const targetX = -newIndex * (CARD_WIDTH + GAP);
+    const targetX = -newIndex * (cardWidth + GAP);
     controls.start({ x: targetX, transition: { type: 'spring', stiffness: 300, damping: 30 } });
   };
 
@@ -95,7 +109,7 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
           className="flex cursor-grab gap-6 p-5 md:p-20 md:pl-36 active:cursor-grabbing"
           animate={controls}
           drag="x"
-          dragConstraints={{ left: -maxIndex * (CARD_WIDTH + GAP), right: 0 }}
+          dragConstraints={{ left: -maxIndex * (cardWidth + GAP), right: 0 }}
           dragElastic={0.1}
           onDragEnd={handleDragEnd}
         >
@@ -115,7 +129,7 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
                 description={module.data.description ?? ''}
                 color={module.data.colour ?? '#000000'}
                 href={`/module/${module.uid}`}
-                cardDimension={CARD_WIDTH}
+                cardDimension={cardWidth}
               />
             </motion.div>
           ))}
