@@ -133,7 +133,7 @@ export function ModuleCard({
         animate={{
           scale: isHovered ? 1.2 : 1,
           borderColor: isHovered ? color : 'rgba(0, 0, 0, 0.2)',
-          boxShadow: isHovered ? '0 20px 50px rgba(0, 0, 0, 0.2)' : '0 2px 8px rgba(0, 0, 0, 0.08)',
+          boxShadow: isHovered ? '0 10px 25px rgba(0, 0, 0, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.08)',
           zIndex: isHovered ? 50 : 1,
         }}
         transition={{

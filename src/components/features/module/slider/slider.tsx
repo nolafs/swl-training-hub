@@ -11,7 +11,7 @@ interface ModuleSliderProps {
   modules: ModuleDocument[];
 }
 
-const CARD_WIDTH = 360;
+let CARD_WIDTH = 391;
 const GAP = 24;
 
 const itemVariants = {
@@ -41,9 +41,14 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
       if (containerRef.current && sliderRef.current) {
         const containerWidth = containerRef.current.offsetWidth;
         const contentWidth = sliderRef.current.scrollWidth;
+
+        if(containerWidth < CARD_WIDTH) {
+          CARD_WIDTH = containerWidth - (GAP) - 16;
+        }
+
         const maxScroll = contentWidth - containerWidth;
         const totalSlides = Math.ceil(maxScroll / (CARD_WIDTH + GAP));
-        setMaxIndex(Math.max(0, totalSlides));
+        setMaxIndex(Math.max(0, totalSlides - 1));
       }
     };
 
@@ -117,7 +122,7 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
         </motion.div>
       </div>
 
-      <div className="mt-4 flex flex-col items-center gap-6 px-5 md:flex-row">
+      <div className="mt-4 flex flex-col items-center gap-x-6 px-5 md:flex-row">
         <div className={'w-full md:w-7/12'}>
           <div className={'gap-10 flex w-full items-center justify-between'}>
             <div className={'opacity-20 [text-orientation:mixed] [writing-mode:sideways-lr]'}>
