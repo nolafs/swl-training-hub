@@ -2,14 +2,23 @@ import { createClient } from "@/prismicio";
 import { notFound } from "next/navigation";
 import { PageColorSetter } from "@/components/features/page-color";
 import { components } from "@/slices";
-import {PrismicRichText, SliceZone} from "@prismicio/react";
+import { PrismicRichText, SliceZone } from "@prismicio/react";
 import { Metadata } from "next";
-import { isFilled } from "@prismicio/client";
+import { ImageField, isFilled, KeyTextField } from '@prismicio/client';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { LessonVideoPlayer, LessonScrollArea, LessonNavigation, LessonPracticeCountdown, ProgressCard } from '@/components/features';
+import {
+  LessonVideoPlayer,
+  LessonScrollArea,
+  LessonNavigation,
+  LessonPracticeCountdown,
+  ProgressCard,
+  LessonCoverImageNavigation,
+  AnimatedLessonContent,
+} from '@/components/features';
 import { PrismicNextImage } from '@prismicio/next';
 import { HomeIcon } from 'lucide-react';
 import Link from 'next/link';
+import { LessonNavigationButton } from '@/components/features/lesson/details/lesson-navigation-button';
 
 
 type Params = { uid: string; lessonId: string };
@@ -58,7 +67,9 @@ export default async function LessonPage({ params }: LessonPageProps) {
     if (!lessonItem || !isFilled.contentRelationship(lessonItem.lesson)) {
       return { uid: null, coverImage: null };
     }
-    const lessonData = lessonItem.lesson.data as { cover_image?: unknown, title?: unknown } | undefined;
+    const lessonData = lessonItem.lesson.data as
+      | { cover_image?: ImageField; title?: KeyTextField }
+      | undefined;
 
     return {
       uid: lessonItem.lesson.uid ?? null,
@@ -91,127 +102,140 @@ export default async function LessonPage({ params }: LessonPageProps) {
   // Display index is 1-based
   const lessonIndex = currentIndex + 1;
 
+  // Build the animated components
+  const coverImages = (
+    <LessonCoverImageNavigation
+      prevLessonCoverImage={prevLessonCoverImage}
+      nextLessonCoverImage={nextLessonCoverImage}
+      nextLessonTitle={nextLessonTitle}
+      prevLessonTitle={prevLessonTitle}
+    />
+  );
+
+  const homeButton = (
+    <Link
+      href={`/module/${moduleDoc.uid}`}
+      className="absolute right-0 bottom-11 flex h-24 w-24 translate-x-full items-center justify-center text-white shadow-lg brightness-90 hover:brightness-130"
+      style={{ backgroundColor: moduleColor }}
+    >
+      <HomeIcon className="h-12 w-12" strokeWidth={1} />
+    </Link>
+  );
+
+  const navigationNext = (
+    <LessonNavigationButton
+      type={'next'}
+      lessonId={lessonId}
+      lessonType={lessonDoc.data.type}
+      lessonLinkTitle={nextLessonTitle ? nextLessonTitle : ''}
+      lessonLinkUid={nextLessonUid}
+      moduleLinkUid={nextModuleUid}
+      moduleId={moduleDoc.id}
+      moduleUid={uid}
+      moduleColor={moduleColor}
+    />
+  );
+
+  const navigationPrev = (
+    <LessonNavigationButton
+      type={'prev'}
+      lessonId={lessonId}
+      lessonType={lessonDoc.data.type}
+      lessonLinkTitle={prevLessonTitle ? prevLessonTitle : ''}
+      lessonLinkUid={prevLessonUid}
+      moduleLinkUid={null}
+      moduleId={moduleDoc.id}
+      moduleUid={uid}
+      moduleColor={moduleColor}
+    />
+  );
+
+
+
+  const progressBar = (
+    <div
+      className="absolute top-1/2 left-0 z-1 flex h-75 w-20 -translate-x-full p-3 shadow-lg brightness-90"
+      style={{ backgroundColor: moduleColor }}
+    >
+      <ProgressCard lessonId={lessonId} />
+    </div>
+  );
+
   return (
     <main className="h-screen w-full overflow-visible">
       <PageColorSetter color={moduleColor} />
 
-      <div className={'absolute top-36 z-2 -translate-x-1/2'}>
-        <PrismicNextImage field={prevLessonCoverImage} />
-      </div>
+      <AnimatedLessonContent
+        coverImages={coverImages}
+        homeButton={homeButton}
+        nextNavigation={navigationNext}
+        prevNavigation={navigationPrev}
+        progressBar={progressBar}
+      >
+        <article className="relative z-10 flex h-full max-h-screen w-full max-w-5xl flex-col px-8 pt-4 pb-2 shadow-[0px_0px_5px_5px_rgba(0,0,0,0.10)]">
+          <h1 className="flex items-center gap-x-3">
+            <span className="text-2xl font-semibold tracking-tight text-gray-500">
+              {lessonIndex < 10 ? `0${lessonIndex}` : lessonIndex}
+            </span>{' '}
+            <span className="font-bold">{lessonDoc.data.title}</span>
+          </h1>
 
-      <div className={'top-36 right-0 absolute z-2 translate-x-1/2'}>
-        <PrismicNextImage field={nextLessonCoverImage} />
-      </div>
+          {lessonDoc.data.type === 'Info' && isFilled.image(lessonDoc.data.cover_image) && (
+            <PrismicNextImage
+              field={lessonDoc.data.cover_image}
+              className="aspect-video w-full"
+              fallbackAlt=""
+            />
+          )}
 
-      <div className="relative z-10 container mx-auto h-screen min-h-full max-w-5xl overflow-visible py-20">
-        {/* Home Link Button */}
-        <div
-          className={
-            'relative flex h-full w-full bg-gray-100 shadow-[0px_4px_65px_14px_rgba(0,0,0,0.25)]'
-          }
-        >
-          <Link
-            href={`/module/${moduleDoc.uid}`}
-            className={
-              'absolute right-0 bottom-11 flex h-24 w-24 translate-x-full items-center justify-center text-white shadow-lg brightness-90 hover:brightness-130'
-            }
-            style={{ backgroundColor: moduleColor }}
-          >
-            <HomeIcon className={'h-12 w-12'} strokeWidth={1} />
-          </Link>
+          {lessonDoc.data.type === 'Lesson' && isFilled.image(lessonDoc.data.cover_image) && (
+            <PrismicNextImage
+              field={lessonDoc.data.cover_image}
+              className="aspect-video w-full"
+              fallbackAlt=""
+            />
+          )}
 
-          {/* Next Previous lesson Link Button */}
-
-          <LessonNavigation
-            moduleUid={moduleDoc.uid}
-            moduleId={moduleDoc.id}
-            lessonId={lessonDoc.id}
-            lessonType={lessonDoc.data.type}
-            nextLessonUid={nextLessonUid}
-            nextLessonTitle={nextLessonTitle as string | null}
-            prevLessonUid={prevLessonUid}
-            prevLessonTitle={prevLessonTitle as string | null}
-            nextModuleUid={nextModuleUid}
-            nextModuleTitle={nextModuleTitle}
-            moduleColor={moduleColor}
-          />
-
-          {/* Lesson progress bar */}
-
-          <div
-            className={
-              'absolute top-1/2 left-0 z-1 flex h-75 w-20 -translate-x-full p-3 shadow-lg brightness-90'
-            }
-            style={{ backgroundColor: moduleColor }}
-          >
-            <ProgressCard lessonId={lessonId} />
-          </div>
-
-          <article className="relative z-10 flex h-full max-h-screen w-full max-w-5xl flex-col px-8 pt-4 pb-2 shadow-[0px_0px_5px_5px_rgba(0,0,0,0.10)]">
-            <h1 className={'flex items-center gap-x-3'}>
-              <span className={'text-2xl font-semibold tracking-tight text-gray-500'}>
-                {lessonIndex < 10 ? `0${lessonIndex}` : lessonIndex}
-              </span>{' '}
-              <span className={'font-bold'}>{lessonDoc.data.title}</span>
-            </h1>
-
-            {lessonDoc.data.type === 'Info' && isFilled.image(lessonDoc.data.cover_image) && (
-              <PrismicNextImage
-                field={lessonDoc.data.cover_image}
-                className={'aspect-video w-full'}
-                fallbackAlt={''}
-              />
-            )}
-
-            {lessonDoc.data.type === 'Lesson' && isFilled.image(lessonDoc.data.cover_image) && (
-              <PrismicNextImage
-                field={lessonDoc.data.cover_image}
-                className={'aspect-video w-full'}
-                fallbackAlt={''}
-              />
-            )}
-
-            {lessonDoc.data.type === 'Lesson Video' &&
-              isFilled.embed(lessonDoc.data.video) &&
-              lessonDoc.data.video.embed_url && (
-                <LessonVideoPlayer
-                  lessonId={lessonDoc.id}
-                  moduleId={moduleDoc.id}
-                  videoUrl={lessonDoc.data.video.embed_url}
-                />
-              )}
-
-            {lessonDoc.data.type === 'Practice' && isFilled.image(lessonDoc.data.cover_image) && (
-              <LessonPracticeCountdown
+          {lessonDoc.data.type === 'Lesson Video' &&
+            isFilled.embed(lessonDoc.data.video) &&
+            lessonDoc.data.video.embed_url && (
+              <LessonVideoPlayer
                 lessonId={lessonDoc.id}
                 moduleId={moduleDoc.id}
-                duration={lessonDoc.data.duration}
-                coverImage={lessonDoc.data.cover_image}
+                videoUrl={lessonDoc.data.video.embed_url}
               />
             )}
 
-            {lessonDoc.data.type === 'Lesson' ? (
-              <LessonScrollArea
-                lessonId={lessonDoc.id}
-                moduleId={moduleDoc.id}
-                className="mt-4 mb-8 flex-1 overflow-hidden border bg-white p-4"
-              >
-                <div className={'prose lg:prose-xl max-w-5xl'}>
-                  <PrismicRichText field={lessonDoc.data.body} />
-                  <SliceZone slices={lessonDoc.data.slices} components={components} />
-                </div>
-              </LessonScrollArea>
-            ) : (
-              <ScrollArea className="mt-4 mb-8 flex-1 overflow-hidden border bg-white p-4">
-                <div className={'prose lg:prose-xl max-w-5xl'}>
-                  <PrismicRichText field={lessonDoc.data.body} />
-                  <SliceZone slices={lessonDoc.data.slices} components={components} />
-                </div>
-              </ScrollArea>
-            )}
-          </article>
-        </div>
-      </div>
+          {lessonDoc.data.type === 'Practice' && isFilled.image(lessonDoc.data.cover_image) && (
+            <LessonPracticeCountdown
+              lessonId={lessonDoc.id}
+              moduleId={moduleDoc.id}
+              duration={lessonDoc.data.duration}
+              coverImage={lessonDoc.data.cover_image}
+            />
+          )}
+
+          {lessonDoc.data.type === 'Lesson' ? (
+            <LessonScrollArea
+              lessonId={lessonDoc.id}
+              moduleId={moduleDoc.id}
+              className="mt-4 mb-8 flex-1 overflow-hidden border bg-white p-4"
+            >
+              <div className="prose lg:prose-xl max-w-5xl">
+                <PrismicRichText field={lessonDoc.data.body} />
+                <SliceZone slices={lessonDoc.data.slices} components={components} />
+              </div>
+            </LessonScrollArea>
+          ) : (
+            <ScrollArea className="mt-4 mb-8 flex-1 overflow-hidden border bg-white p-4">
+              <div className="prose lg:prose-xl max-w-5xl">
+                <PrismicRichText field={lessonDoc.data.body} />
+                <SliceZone slices={lessonDoc.data.slices} components={components} />
+              </div>
+            </ScrollArea>
+          )}
+        </article>
+      </AnimatedLessonContent>
     </main>
   );
 }

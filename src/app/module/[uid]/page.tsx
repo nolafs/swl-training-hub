@@ -4,10 +4,11 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { isFilled, asImageSrc } from "@prismicio/client";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import {AlertCircle, ChevronRightIcon} from "lucide-react";
+import { AlertCircle, ChevronRightIcon } from "lucide-react";
 import { PageColorSetter } from "@/components/features/page-color";
-import {ButtonHero} from "@/components/ui/button-hero";
+import { ButtonHero } from "@/components/ui/button-hero";
 import { ContinueButton } from '@/components/features/module/continue/continue-button';
+import { AnimatedModuleContent } from '@/components/features/module';
 
 interface ModulePageProps {
   params: Promise<{ uid: string }>;
@@ -52,50 +53,47 @@ export default async function ModulePage({ params }: ModulePageProps) {
 
   const hasLessons = lessons.length > 0;
 
+  const moduleNumber = moduleDoc.data.position ?? 0;
+  const moduleTitle = moduleDoc.data.title ?? '';
+  const moduleDescription = moduleDoc.data.description ?? '';
+
+  const continueButton = (
+    <ContinueButton
+      moduleUid={uid}
+      moduleId={moduleDoc.id}
+      lessons={lessons.map((l) => ({ uid: l.uid, id: l.id }))}
+      colour={moduleDoc.data.colour ?? undefined}
+    />
+  );
+
   return (
-    <main className="flex h-full w-full flex-1 flex-col pt-32 pb-16">
+    <main className="flex h-full w-full flex-1 flex-col">
       <PageColorSetter color={moduleColor} />
 
-      {hasLessons ? (
-        <LessonSlider
-          lessons={lessons}
-          moduleUid={uid}
-          moduleId={moduleDoc.id}
-          moduleColor={moduleColor}
-        />
-      ) : (
-        <div className={'p-10'}>
-          <Alert>
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>No lessons found</AlertTitle>
-            <AlertDescription>There are no lessons available for this module yet.</AlertDescription>
-          </Alert>
-        </div>
-      )}
-
-      <div className="mt-20 grid grid-cols-1 items-center gap-6 px-5 text-white md:grid-cols-2">
-        <div className={'flex'}>
-          <div className={'text-9xl font-extralight tracking-tight'}>
-            {(moduleDoc.data.position ?? 0) < 10
-              ? `0${moduleDoc.data.position ?? 0}`
-              : moduleDoc.data.position}
-          </div>
-          <div className={'ml-4 flex flex-col justify-center space-y-1'}>
-            <div className={'text-xl font-extralight uppercase'}>Module</div>
-            <div className={'text-3xl font-bold'}>{moduleDoc.data.title}</div>
-            <div className={'text-xl font-normal'}>{moduleDoc.data.description}</div>
-          </div>
-
-        </div>
-        <div className={'flex justify-center'}>
-          <ContinueButton
+      <AnimatedModuleContent
+        moduleNumber={moduleNumber}
+        moduleTitle={moduleTitle}
+        moduleDescription={moduleDescription}
+        continueButton={continueButton}
+      >
+        {hasLessons ? (
+          <LessonSlider
+            lessons={lessons}
             moduleUid={uid}
             moduleId={moduleDoc.id}
-            lessons={lessons.map((l) => ({ uid: l.uid, id: l.id }))}
-            colour={moduleDoc.data.colour ?? undefined}
+            moduleColor={moduleColor}
+            animationDelay={1200}
           />
-        </div>
-      </div>
+        ) : (
+          <div className={'p-10'}>
+            <Alert>
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>No lessons found</AlertTitle>
+              <AlertDescription>There are no lessons available for this module yet.</AlertDescription>
+            </Alert>
+          </div>
+        )}
+      </AnimatedModuleContent>
     </main>
   );
 }

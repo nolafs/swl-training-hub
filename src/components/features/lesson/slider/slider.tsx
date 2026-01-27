@@ -23,6 +23,8 @@ interface LessonSliderProps {
   moduleUid: string;
   moduleId: string;
   moduleColor: string;
+  /** Delay in ms before auto-scrolling to current lesson (for intro animations) */
+  animationDelay?: number;
 }
 
 const GAP = 24;
@@ -42,7 +44,7 @@ const itemVariants = {
   }),
 };
 
-export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor }: LessonSliderProps) {
+export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor, animationDelay = 0 }: LessonSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
   const [isReady, setIsReady] = useState(false);
@@ -132,16 +134,16 @@ export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor }: Less
       targetIndex = i;
     }
 
-    // Use a small delay to ensure smooth animation after initial render
+    // Use animationDelay + small buffer to ensure smooth animation after intro
     const timer = setTimeout(() => {
       if (targetIndex > 0) {
         slideTo(targetIndex);
       }
       setHasInitialScrolled(true);
-    }, 100);
+    }, animationDelay + 100);
 
     return () => clearTimeout(timer);
-  }, [isReady, containerWidth, lessons, lessonProgress, hasInitialScrolled]);
+  }, [isReady, containerWidth, lessons, lessonProgress, hasInitialScrolled, animationDelay]);
 
   const handlePrev = () => {
     slideTo(currentIndex - 1);

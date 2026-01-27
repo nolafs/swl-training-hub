@@ -4,6 +4,7 @@ import { useState, useRef, useCallback, type ReactNode, type MouseEvent } from '
 import Link from 'next/link';
 import { ChevronRightIcon, ChevronLeftIcon } from 'lucide-react';
 import { useUpdateLessonProgress } from '@/lib/store';
+import { LessonMouseTooltip } from '@/components/features/lesson/details/lesson-mouse-tooltip';
 
 type LessonType = 'Lesson' | 'Lesson Video' | 'Info' | 'Discussion' | 'Practice' | null;
 
@@ -21,56 +22,7 @@ interface LessonNavigationProps {
   moduleColor: string;
 }
 
-interface MouseTooltipProps {
-  children: ReactNode;
-  label: string;
-  delay?: number;
-}
 
-function MouseTooltip({ children, label, delay = 300 }: MouseTooltipProps) {
-  const [isVisible, setIsVisible] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    setPosition({ x: e.clientX, y: e.clientY });
-  }, []);
-
-  const handleMouseEnter = useCallback(() => {
-    timeoutRef.current = setTimeout(() => {
-      setIsVisible(true);
-    }, delay);
-  }, [delay]);
-
-  const handleMouseLeave = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-    setIsVisible(false);
-  }, []);
-
-  return (
-    <div
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onMouseMove={handleMouseMove}
-    >
-      {children}
-      {isVisible && (
-        <div
-          className="pointer-events-none fixed z-[100] rounded bg-gray-900 px-3 py-2 text-sm text-white shadow-lg"
-          style={{
-            left: position.x + 12,
-            top: position.y + 12,
-          }}
-        >
-          {label}
-        </div>
-      )}
-    </div>
-  );
-}
 
 export function LessonNavigation({
   moduleUid,
@@ -115,7 +67,7 @@ export function LessonNavigation({
   return (
     <>
       {nextHref && (
-        <MouseTooltip label={nextTooltipLabel}>
+        <LessonMouseTooltip label={nextTooltipLabel}>
           <Link
             href={nextHref}
             onClick={handleNextClick}
@@ -126,11 +78,11 @@ export function LessonNavigation({
           >
             <ChevronRightIcon className={'h-12 w-12'} strokeWidth={1} />
           </Link>
-        </MouseTooltip>
+        </LessonMouseTooltip>
       )}
 
       {prevLessonUid && (
-        <MouseTooltip label={prevTooltipLabel}>
+        <LessonMouseTooltip label={prevTooltipLabel}>
           <Link
             href={`/module/${moduleUid}/lesson/${prevLessonUid}`}
             className={
@@ -140,7 +92,7 @@ export function LessonNavigation({
           >
             <ChevronLeftIcon className={'h-12 w-12'} strokeWidth={1} />
           </Link>
-        </MouseTooltip>
+        </LessonMouseTooltip>
       )}
     </>
   );
