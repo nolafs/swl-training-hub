@@ -190,7 +190,7 @@ export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor, animat
       <div className="overflow-hidden">
         <motion.div
           ref={sliderRef}
-          className="flex cursor-grab  md:py-20 active:cursor-grabbing"
+          className="flex cursor-grab  md:py-10 active:cursor-grabbing"
           style={{ gap: GAP, opacity: isReady ? 1 : 0, transition: 'opacity 0.3s ease' }}
           animate={controls}
           drag="x"
@@ -224,7 +224,7 @@ export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor, animat
         </motion.div>
       </div>
 
-      <div className="mt-4 flex flex-col items-center gap-x-6 px-5 md:flex-row">
+      <div className="mt-1 flex flex-col items-center gap-x-6 px-5 md:flex-row">
         <div className={'w-full md:w-7/12'}>
           <div className={'flex w-full items-center justify-between gap-10'}>
             <div className={'opacity-20 text-white [text-orientation:mixed] [writing-mode:sideways-lr]'}>
