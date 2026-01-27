@@ -5,6 +5,8 @@ import { motion, useAnimation, PanInfo } from 'framer-motion';
 import { LessonCard } from '../card';
 import { SliderNavigation } from '@/components/ui/SliderNavigation';
 import { ModuleProgress } from '@/components/features/lesson/progress/progress';
+import { useLearnProgressStore } from '@/lib/store';
+import { useShallow } from 'zustand/react/shallow';
 
 interface Lesson {
   id: string;
@@ -44,12 +46,18 @@ export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor }: Less
   const [currentIndex, setCurrentIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
   const [isReady, setIsReady] = useState(false);
+  const [hasInitialScrolled, setHasInitialScrolled] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
 
   const controls = useAnimation();
 
   const maxIndex = Math.max(0, lessons.length - 1);
+
+  // Get lesson progress from store
+  const lessonProgress = useLearnProgressStore(
+    useShallow((state) => state.lessonProgress)
+  );
 
   // Calculate card width: containerWidth = halfCard + gap + fullCard + gap + halfCard
   // containerWidth = 2*cardWidth + 2*gap
@@ -104,6 +112,36 @@ export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor }: Less
       controls.set({ x: targetX });
     }
   }, [containerWidth, cardWidth]);
+
+  // Scroll to first uncompleted lesson on mount
+  useEffect(() => {
+    if (!isReady || hasInitialScrolled || containerWidth === 0) return;
+
+    // Find the first uncompleted lesson
+    let targetIndex = 0;
+    for (let i = 0; i < lessons.length; i++) {
+      const lesson = lessons[i];
+      const progress = lessonProgress[lesson.id];
+
+      // If lesson is not completed (no progress or progress < 100), scroll to it
+      if (!progress || !progress.completed) {
+        targetIndex = i;
+        break;
+      }
+      // If we've gone through all lessons and all are completed, stay at last one
+      targetIndex = i;
+    }
+
+    // Use a small delay to ensure smooth animation after initial render
+    const timer = setTimeout(() => {
+      if (targetIndex > 0) {
+        slideTo(targetIndex);
+      }
+      setHasInitialScrolled(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [isReady, containerWidth, lessons, lessonProgress, hasInitialScrolled]);
 
   const handlePrev = () => {
     slideTo(currentIndex - 1);

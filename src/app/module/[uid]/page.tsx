@@ -85,6 +85,7 @@ export default async function ModulePage({ params }: ModulePageProps) {
             <div className={'text-3xl font-bold'}>{moduleDoc.data.title}</div>
             <div className={'text-xl font-normal'}>{moduleDoc.data.description}</div>
           </div>
+
         </div>
         <div className={'flex justify-center'}>
           <ContinueButton
