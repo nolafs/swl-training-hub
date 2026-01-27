@@ -6,7 +6,7 @@ import {PrismicRichText, SliceZone} from "@prismicio/react";
 import { Metadata } from "next";
 import { isFilled } from "@prismicio/client";
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { LessonVideoPlayer, LessonScrollArea, LessonNavigation, LessonPracticeCountdown } from '@/components/features';
+import { LessonVideoPlayer, LessonScrollArea, LessonNavigation, LessonPracticeCountdown, ProgressCard } from '@/components/features';
 import { PrismicNextImage } from '@prismicio/next';
 import { HomeIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -81,7 +81,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
   return (
     <main className="h-full flex-1 pb-16">
       <PageColorSetter color={moduleColor} />
-      <div className="relative container mx-auto max-w-5xl">
+      <div className="relative container mx-auto max-w-5xl shadow-[0px_4px_65px_14px_rgba(0,0,0,0.25)]">
         {/* Home Link Button */}
 
         <Link
@@ -89,7 +89,6 @@ export default async function LessonPage({ params }: LessonPageProps) {
           className={
             'absolute right-0 bottom-11 flex h-24 w-24 translate-x-full items-center justify-center text-white shadow-lg brightness-110 hover:brightness-130'
           }
-
           style={{ backgroundColor: moduleColor }}
         >
           <HomeIcon className={'h-12 w-12'} strokeWidth={1} />
@@ -108,7 +107,16 @@ export default async function LessonPage({ params }: LessonPageProps) {
           moduleColor={moduleColor}
         />
 
-        <article className="z-10 mx-auto max-w-5xl bg-gray-100 px-8 py-4 shadow-xl">
+        {/* Lesson progress bar */}
+
+        <div
+          className={'absolute top-1/2 left-0 flex h-75 w-20 -translate-x-full p-3 shadow-lg'}
+          style={{ backgroundColor: moduleColor }}
+        >
+          <ProgressCard lessonId={lessonId} />
+        </div>
+
+        <article className="z-10 mx-auto max-w-5xl bg-gray-100 px-8 py-4 shadow-lg">
           <h1 className={'flex items-center gap-x-3'}>
             <span className={'text-2xl font-semibold tracking-tight text-gray-500'}>
               {lessonIndex < 10 ? `0${lessonIndex}` : lessonIndex}

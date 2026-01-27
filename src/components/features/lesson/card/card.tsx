@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { useLessonProgress } from '@/lib/store';
+import { ProgressCard } from '@/components/features/lesson/progress/progress-card';
 
 interface LessonCardProps {
   lessonId: string;
@@ -38,7 +39,6 @@ export function LessonCard({
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
   const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
-  const lessonProgress = useLessonProgress(lessonId);
 
 
   const handlePointerDown = (e: React.PointerEvent) => {
@@ -88,27 +88,7 @@ export function LessonCard({
           damping: 25,
         }}
       >
-        <div className={'flex h-full gap-2.5'}>
-          <div className={'flex flex-col items-center justify-between border-white/30'}>
-            <div className="text-xs leading-normal font-medium tracking-tight text-gray-50 [text-orientation:mixed] [writing-mode:sideways-lr]">
-              {lessonProgress}%
-            </div>
-            <div className="text-xs leading-normal font-semibold tracking-tight text-gray-50 uppercase [text-orientation:mixed] [writing-mode:sideways-lr]">
-              Completed
-            </div>
-          </div>
-          <div
-            className="h-full w-2 overflow-hidden rounded-full bg-gray-200/30"
-          >
-            <motion.div
-              className="w-full rounded-full"
-              style={{ backgroundColor: '#ffffff' }}
-              initial={{ height: 0 }}
-              animate={{ height: `${lessonProgress}%` }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            />
-          </div>
-        </div>
+        <ProgressCard lessonId={lessonId} />
       </motion.div>
 
       {/* Start button - slides out from right */}
