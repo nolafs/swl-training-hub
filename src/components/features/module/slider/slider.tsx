@@ -130,6 +130,7 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
                 color={module.data.colour ?? '#000000'}
                 href={`/module/${module.uid}`}
                 cardDimension={cardWidth}
+                isMobile={isMobile}
               />
             </motion.div>
           ))}

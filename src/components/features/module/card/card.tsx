@@ -15,6 +15,8 @@ interface ModuleCardProps {
   color: string;
   href: string;
   cardDimension?: number;
+  /** On mobile, disable scale animation and hide progress bar/start button */
+  isMobile?: boolean;
 }
 
 const DRAG_THRESHOLD = 5; // pixels - if moved more than this, it's a drag not a click
@@ -27,13 +29,15 @@ export function ModuleCard({
   color,
   href,
   cardDimension = 375,
+  isMobile = false,
 }: ModuleCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
   const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
   const progress = useModuleProgress(moduleId);
 
-  console.log('ModuleCard progress:', progress, 'for moduleId:', moduleId);
+  // On mobile, we don't show hover effects
+  const showHoverEffects = isHovered && !isMobile;
 
   const handlePointerDown = (e: React.PointerEvent) => {
     pointerStartRef.current = { x: e.clientX, y: e.clientY };
@@ -63,66 +67,70 @@ export function ModuleCard({
       className="relative"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      animate={{ zIndex: isHovered ? 50 : 1 }}
+      animate={{ zIndex: showHoverEffects ? 50 : 1 }}
     >
-      {/* Progress bar - slides out from left */}
-      <motion.div
-        className="absolute top-1/2 left-0 flex h-75 w-20 -translate-y-1/2 p-3 brightness-95"
-        style={{ backgroundColor: color }}
-        initial={{ x: 0, opacity: 0 }}
-        animate={{
-          x: isHovered ? -110 : 0,
-          opacity: isHovered ? 1 : 0,
-        }}
-        transition={{
-          type: 'spring',
-          stiffness: 300,
-          damping: 25,
-        }}
-      >
-        <div className={'flex h-full gap-2.5'}>
-          <div className={'flex flex-col items-center justify-between border-white/30'}>
-            <div className="text-xs leading-normal font-medium tracking-tight text-gray-50 [text-orientation:mixed] [writing-mode:sideways-lr]">
-              {progress?.progress}%
-            </div>
-            <div className="text-xs leading-normal font-semibold tracking-tight text-gray-50 uppercase [text-orientation:mixed] [writing-mode:sideways-lr]">
-              Completed
-            </div>
-          </div>
-
-          <div className="h-full w-2 overflow-hidden rounded-full bg-gray-200/30">
-            <motion.div
-              className="w-full rounded-full bg-white"
-              initial={{ height: 0 }}
-              animate={{ height: `${progress?.progress}%` }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            />
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Start button - slides out from right */}
-      <motion.div
-        className="absolute right-0 bottom-3 -translate-y-1/2"
-        initial={{ x: 0, opacity: 0 }}
-        animate={{
-          x: isHovered ? 110 : 0,
-          opacity: isHovered ? 1 : 0,
-        }}
-        transition={{
-          type: 'spring',
-          stiffness: 300,
-          damping: 25,
-        }}
-      >
-        <Link
-          href={href}
-          className="flex h-20 w-24 items-center justify-center text-white shadow-lg transition-transform hover:scale-110"
+      {/* Progress bar - slides out from left (hidden on mobile) */}
+      {!isMobile && (
+        <motion.div
+          className="absolute top-1/2 left-0 flex h-75 w-20 -translate-y-1/2 p-3 brightness-95"
           style={{ backgroundColor: color }}
+          initial={{ x: 0, opacity: 0 }}
+          animate={{
+            x: showHoverEffects ? -110 : 0,
+            opacity: showHoverEffects ? 1 : 0,
+          }}
+          transition={{
+            type: 'spring',
+            stiffness: 300,
+            damping: 25,
+          }}
         >
-          <ArrowRight className="ml-4 h-10 w-10" />
-        </Link>
-      </motion.div>
+          <div className={'flex h-full gap-2.5'}>
+            <div className={'flex flex-col items-center justify-between border-white/30'}>
+              <div className="text-xs leading-normal font-medium tracking-tight text-gray-50 [text-orientation:mixed] [writing-mode:sideways-lr]">
+                {progress?.progress}%
+              </div>
+              <div className="text-xs leading-normal font-semibold tracking-tight text-gray-50 uppercase [text-orientation:mixed] [writing-mode:sideways-lr]">
+                Completed
+              </div>
+            </div>
+
+            <div className="h-full w-2 overflow-hidden rounded-full bg-gray-200/30">
+              <motion.div
+                className="w-full rounded-full bg-white"
+                initial={{ height: 0 }}
+                animate={{ height: `${progress?.progress}%` }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              />
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Start button - slides out from right (hidden on mobile) */}
+      {!isMobile && (
+        <motion.div
+          className="absolute right-0 bottom-3 -translate-y-1/2"
+          initial={{ x: 0, opacity: 0 }}
+          animate={{
+            x: showHoverEffects ? 110 : 0,
+            opacity: showHoverEffects ? 1 : 0,
+          }}
+          transition={{
+            type: 'spring',
+            stiffness: 300,
+            damping: 25,
+          }}
+        >
+          <Link
+            href={href}
+            className="flex h-20 w-24 items-center justify-center text-white shadow-lg transition-transform hover:scale-110"
+            style={{ backgroundColor: color }}
+          >
+            <ArrowRight className="ml-4 h-10 w-10" />
+          </Link>
+        </motion.div>
+      )}
 
       {/* Main card - uses programmatic navigation to allow drag on slider */}
       <motion.div
@@ -131,10 +139,10 @@ export function ModuleCard({
         onPointerDown={handlePointerDown}
         onClick={handleClick}
         animate={{
-          scale: isHovered ? 1.2 : 1,
-          borderColor: isHovered ? color : 'rgba(0, 0, 0, 0.2)',
-          boxShadow: isHovered ? '0 10px 25px rgba(0, 0, 0, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.08)',
-          zIndex: isHovered ? 50 : 1,
+          scale: showHoverEffects ? 1.2 : 1,
+          borderColor: showHoverEffects ? color : 'rgba(0, 0, 0, 0.2)',
+          boxShadow: showHoverEffects ? '0 10px 25px rgba(0, 0, 0, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.08)',
+          zIndex: showHoverEffects ? 50 : 1,
         }}
         transition={{
           type: 'spring',
@@ -146,20 +154,20 @@ export function ModuleCard({
           <div className="grid grid-cols-2 items-center justify-center gap-2">
             <motion.div
               className="text-5xl font-extralight"
-              animate={{ color: isHovered ? '#ffffff' : color }}
+              animate={{ color: showHoverEffects ? '#ffffff' : color }}
               transition={{ duration: 0.3 }}
             >
               {moduleNumber > 9 ? moduleNumber : '0' + moduleNumber}
             </motion.div>
             <motion.div
               className="text-right text-2xl font-light"
-              animate={{ color: isHovered ? '#ffffff' : color }}
+              animate={{ color: showHoverEffects ? '#ffffff' : color }}
               transition={{ duration: 0.3 }}
             >
               Module
             </motion.div>
           </div>
-          {isHovered && (
+          {showHoverEffects && (
             <motion.div
               className="mt-4"
               initial={{ opacity: 0, y: 4 }}
@@ -175,7 +183,7 @@ export function ModuleCard({
           className="absolute bottom-0 left-0 h-4 w-full"
           style={{ backgroundColor: color }}
           animate={{
-            height: isHovered ? '100%' : 16,
+            height: showHoverEffects ? '100%' : 16,
           }}
           transition={{
             duration: 0.3,
