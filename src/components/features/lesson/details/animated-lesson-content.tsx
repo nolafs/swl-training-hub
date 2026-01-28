@@ -124,7 +124,7 @@ export function AnimatedLessonContent({
   // Mobile layout
   if (isMobile) {
     return (
-      <div className="flex h-[100dvh] flex-col pt-24">
+      <div className="flex h-dvh flex-col pt-24">
         {/* Main content area - takes remaining space above nav */}
         <motion.div
           className="flex min-h-0 flex-1 flex-col overflow-hidden bg-gray-200"
