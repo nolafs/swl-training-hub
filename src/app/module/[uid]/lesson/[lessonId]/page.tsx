@@ -209,7 +209,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
         moduleUid={uid}
         lessonId={lessonDoc.id}
       >
-        <article className="relative z-10 flex h-full max-h-screen w-full max-w-5xl flex-col px-8 pt-4 pb-2 md:shadow-[0px_0px_5px_5px_rgba(0,0,0,0.10)]">
+        <article className="relative z-10 flex w-full max-w-5xl flex-col px-4 pt-4 pb-2 md:h-full md:max-h-screen md:px-8 md:shadow-[0px_0px_5px_5px_rgba(0,0,0,0.10)]">
           <h1 className="flex items-center gap-x-3">
             <span className="text-2xl font-semibold tracking-tight text-gray-500">
               {lessonIndex < 10 ? `0${lessonIndex}` : lessonIndex}
@@ -256,7 +256,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
             <LessonScrollArea
               lessonId={lessonDoc.id}
               moduleId={moduleDoc.id}
-              className="mt-4 mb-8 flex-1 overflow-hidden border bg-white p-4"
+              className="mt-4 mb-4 border bg-white p-4 md:mb-8 md:flex-1 md:overflow-hidden"
             >
               <div className="prose lg:prose-xl max-w-5xl">
                 <PrismicRichText field={lessonDoc.data.body} />
@@ -264,7 +264,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
               </div>
             </LessonScrollArea>
           ) : (
-            <ScrollArea className="mt-4 mb-8 flex-1 overflow-hidden border bg-white p-4">
+            <ScrollArea className="mt-4 mb-4 border bg-white p-4 md:mb-8 md:flex-1 md:overflow-hidden">
               <div className="prose lg:prose-xl max-w-5xl">
                 <PrismicRichText field={lessonDoc.data.body} />
                 <SliceZone slices={lessonDoc.data.slices} components={components} />

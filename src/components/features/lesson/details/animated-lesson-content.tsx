@@ -124,16 +124,16 @@ export function AnimatedLessonContent({
   // Mobile layout
   if (isMobile) {
     return (
-      <div className="mt-24 flex min-h-screen flex-col bg-gray-200">
-        {/* Main content area - takes remaining space */}
+      <div className="flex h-[100dvh] flex-col pt-24">
+        {/* Main content area - takes remaining space above nav */}
         <motion.div
-          className="flex flex-1 flex-col"
+          className="flex min-h-0 flex-1 flex-col overflow-hidden bg-gray-200"
           variants={mobileCardVariants}
           initial="hidden"
           animate="visible"
         >
           {/* Horizontal progress bar at top */}
-          <div className="px-4 py-8 brightness-90" style={{ backgroundColor: moduleColor }}>
+          <div className="shrink-0 px-4 py-4 brightness-90" style={{ backgroundColor: moduleColor }}>
             <div className="flex items-center gap-2 text-xs text-white">
               <span>{progress}%</span>
               <Progress value={progress} className="h-2 flex-1" color={'#ffffff'} />
@@ -141,13 +141,13 @@ export function AnimatedLessonContent({
             </div>
           </div>
 
-          {/* Article content */}
-          <div className="flex-1 overflow-auto">{children}</div>
+          {/* Article content - scrollable */}
+          <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
         </motion.div>
 
-        {/* Bottom navigation bar - fixed to bottom */}
+        {/* Bottom navigation bar - fixed height at bottom */}
         <motion.div
-          className="sticky bottom-0 z-50 flex items-center justify-between border-t border-gray-200 bg-white"
+          className="shrink-0 z-50 flex items-center justify-between border-t border-gray-200 bg-white"
           variants={mobileBottomNavVariants}
           initial="hidden"
           animate="visible"
