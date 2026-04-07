@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { ImageField } from '@prismicio/client';
 import { PrismicNextImage } from '@prismicio/next';
 import { useUpdateLessonProgress } from '@/lib/store';
+import { Button } from '@/components/ui/button';
 
 interface LessonPracticeCountdownProps {
   lessonId: string;
@@ -113,7 +114,7 @@ export function LessonPracticeCountdown({
         ) : (
           <>
             {/* Timer Display */}
-            <div className="mb-8 flex items-center gap-2 font-mono text-7xl font-bold tracking-tight md:text-9xl">
+            <div className="mb-4 flex items-center gap-2 font-mono text-5xl font-bold tracking-tight md:text-9xl">
               {showHours && (
                 <>
                   <span className="tabular-nums">{hours}</span>
@@ -128,28 +129,19 @@ export function LessonPracticeCountdown({
             {/* Controls */}
             <div className="flex gap-4">
               {!isRunning ? (
-                <button
-                  onClick={handleStart}
-                  className="rounded-lg bg-white/20 px-8 py-4 text-xl font-medium backdrop-blur-sm transition hover:bg-white/30"
-                >
+                <Button onClick={handleStart} size={'lg'}>
                   {timeRemaining === initialDuration ? 'Start Practice' : 'Resume'}
-                </button>
+                </Button>
               ) : (
-                <button
-                  onClick={handlePause}
-                  className="rounded-lg bg-white/20 px-8 py-4 text-xl font-medium backdrop-blur-sm transition hover:bg-white/30"
-                >
+                <Button onClick={handlePause} size={'lg'}>
                   Pause
-                </button>
+                </Button>
               )}
 
               {timeRemaining !== initialDuration && !isRunning && (
-                <button
-                  onClick={handleReset}
-                  className="rounded-lg bg-white/10 px-8 py-4 text-xl font-medium backdrop-blur-sm transition hover:bg-white/20"
-                >
+                <Button onClick={handleReset} size={'lg'}>
                   Reset
-                </button>
+                </Button>
               )}
             </div>
           </>
