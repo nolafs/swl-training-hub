@@ -179,7 +179,7 @@ export function AnimatedLessonContent({
         {coverImages}
       </motion.div>
 
-      <div className="relative z-10 container mx-auto h-screen min-h-full max-w-5xl overflow-visible py-20">
+      <div className="relative z-10 container mx-auto max-h-screen min-h-full max-w-5xl overflow-visible py-20">
         {/* Wrapper with relative positioning for side elements */}
         <div className="relative h-full w-full">
           {/* Progress bar - slides out from behind (left side) */}

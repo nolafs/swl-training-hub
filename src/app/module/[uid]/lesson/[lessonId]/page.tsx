@@ -194,7 +194,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
   );
 
   return (
-    <main className="relative h-screen w-full overflow-hidden">
+    <main className="relative max-h-screen w-full overflow-hidden">
       <PageColorSetter color={moduleColor} />
 
       <AnimatedLessonContent
@@ -251,8 +251,8 @@ export default async function LessonPage({ params }: LessonPageProps) {
               coverImage={lessonDoc.data.cover_image}
             />
           )}
-
-          {lessonDoc.data.type === 'Lesson' ? (
+          {(isFilled.richText(lessonDoc.data.body) ? (
+          lessonDoc.data.type === 'Lesson' ? (
             <LessonScrollArea
               lessonId={lessonDoc.id}
               moduleId={moduleDoc.id}
@@ -270,7 +270,8 @@ export default async function LessonPage({ params }: LessonPageProps) {
                 <SliceZone slices={lessonDoc.data.slices} components={components} />
               </div>
             </ScrollArea>
-          )}
+          )
+          ) : '')}
         </article>
       </AnimatedLessonContent>
     </main>
