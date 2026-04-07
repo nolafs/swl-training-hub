@@ -185,9 +185,9 @@ export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor, animat
   const rightConstraint = getCenteredOffset(0);
 
   return (
-    <div className="relative w-full" ref={containerRef}>
+    <div className="relative w-full overflow-hidden" ref={containerRef}>
       {/* slider */}
-      <div className="overflow-hidden">
+      <div className="overflow-visible">
         <motion.div
           ref={sliderRef}
           className="flex cursor-grab  md:py-10 active:cursor-grabbing"
