@@ -209,7 +209,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
         moduleUid={uid}
         lessonId={lessonDoc.id}
       >
-        <article className="relative z-10 flex w-full max-w-5xl flex-col px-4 pt-4 pb-8 md:h-full md:max-h-[80vh] md:px-8 md:shadow-[0px_0px_5px_5px_rgba(0,0,0,0.10)]">
+        <article className="relative z-10 flex w-full max-w-5xl flex-col px-4 pt-4 pb-8 md:h-full md:max-h-[80vh] md:min-h-214 md:px-8 md:shadow-[0px_0px_5px_5px_rgba(0,0,0,0.10)]">
           <h1 className="flex items-center gap-x-3">
             <span className="text-2xl font-semibold tracking-tight text-gray-500">
               {lessonIndex < 10 ? `0${lessonIndex}` : lessonIndex}
@@ -251,27 +251,31 @@ export default async function LessonPage({ params }: LessonPageProps) {
               coverImage={lessonDoc.data.cover_image}
             />
           )}
-          {(isFilled.richText(lessonDoc.data.body) ? (
-          lessonDoc.data.type === 'Lesson' ? (
-            <LessonScrollArea
-              lessonId={lessonDoc.id}
-              moduleId={moduleDoc.id}
-              className="mt-4 border bg-white px-4 md:flex-1 md:overflow-hidden"
-            >
-              <div className="prose lg:prose-xl max-w-5xl">
-                <PrismicRichText field={lessonDoc.data.body} />
-                <SliceZone slices={lessonDoc.data.slices} components={components} />
+          {isFilled.richText(lessonDoc.data.body) ? (
+            lessonDoc.data.type === 'Lesson' ? (
+              <LessonScrollArea
+                lessonId={lessonDoc.id}
+                moduleId={moduleDoc.id}
+                className="mt-4 border bg-white px-4 md:flex-1 md:overflow-hidden"
+              >
+                <div className="prose lg:prose-lg xl:prose-xl max-w-5xl">
+                  <PrismicRichText field={lessonDoc.data.body} />
+                  <SliceZone slices={lessonDoc.data.slices} components={components} />
+                </div>
+              </LessonScrollArea>
+            ) : (
+              <div className={'relative flex-1 mt-4 border bg-white p-4 overflow-auto'}>
+
+                  <div className="prose lg:prose-lg xl:prose-xl max-w-5xl">
+                    <PrismicRichText field={lessonDoc.data.body} />
+                    <SliceZone slices={lessonDoc.data.slices} components={components} />
+                  </div>
+
               </div>
-            </LessonScrollArea>
+            )
           ) : (
-            <ScrollArea className="mt-4 border bg-white px-4  md:flex-1 md:overflow-hidden">
-              <div className="prose lg:prose-xl max-w-5xl">
-                <PrismicRichText field={lessonDoc.data.body} />
-                <SliceZone slices={lessonDoc.data.slices} components={components} />
-              </div>
-            </ScrollArea>
-          )
-          ) : '')}
+            ''
+          )}
         </article>
       </AnimatedLessonContent>
     </main>
