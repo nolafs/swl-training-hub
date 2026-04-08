@@ -189,7 +189,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
       className="absolute top-1/2 left-0 z-1 flex h-75 w-20 -translate-x-full p-3 shadow-lg brightness-90"
       style={{ backgroundColor: moduleColor }}
     >
-      <ProgressCard lessonId={lessonId} />
+      <ProgressCard lessonId={lessonDoc.id} />
     </div>
   );
 
@@ -209,7 +209,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
         moduleUid={uid}
         lessonId={lessonDoc.id}
       >
-        <article className="relative z-10 flex w-full max-w-5xl flex-col px-4 pt-4 pb-8 md:h-full md:max-h-screen md:px-8 md:shadow-[0px_0px_5px_5px_rgba(0,0,0,0.10)]">
+        <article className="relative z-10 flex w-full max-w-5xl flex-col px-4 pt-4 pb-8 md:h-full md:max-h-[80vh] md:px-8 md:shadow-[0px_0px_5px_5px_rgba(0,0,0,0.10)]">
           <h1 className="flex items-center gap-x-3">
             <span className="text-2xl font-semibold tracking-tight text-gray-500">
               {lessonIndex < 10 ? `0${lessonIndex}` : lessonIndex}
@@ -256,7 +256,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
             <LessonScrollArea
               lessonId={lessonDoc.id}
               moduleId={moduleDoc.id}
-              className="mt-4  border bg-white px-4:flex-1 md:overflow-hidden"
+              className="mt-4 border bg-white px-4 md:flex-1 md:overflow-hidden"
             >
               <div className="prose lg:prose-xl max-w-5xl">
                 <PrismicRichText field={lessonDoc.data.body} />

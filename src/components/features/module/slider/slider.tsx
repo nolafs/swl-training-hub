@@ -14,6 +14,7 @@ interface ModuleSliderProps {
 const DEFAULT_CARD_WIDTH = 391;
 const GAP = 24;
 const MOBILE_BREAKPOINT = 430; // Below this width, show single slide
+const DESKTOP_LEFT_PAD = 144; // md:pl-36 = 9rem = 144px
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -38,6 +39,9 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
   const sliderRef = useRef<HTMLDivElement>(null);
 
   const controls = useAnimation();
+
+  // Extra pixels needed at maxIndex to compensate for the left padding offset
+  const leftPadOffset = isMobile ? 0 : DESKTOP_LEFT_PAD - GAP; // 120px on desktop
 
   // Handle resize and calculate card dimensions
   useLayoutEffect(() => {
@@ -74,7 +78,9 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
   const slideTo = (index: number) => {
     const newIndex = Math.max(0, Math.min(index, maxIndex));
     setCurrentIndex(newIndex);
-    const targetX = -newIndex * (cardWidth + GAP);
+    // At the last slide, scroll the extra left-pad offset so the last card isn't clipped
+    const extra = newIndex === maxIndex ? leftPadOffset : 0;
+    const targetX = -(newIndex * (cardWidth + GAP) + extra);
     controls.start({ x: targetX, transition: { type: 'spring', stiffness: 300, damping: 30 } });
   };
 
@@ -109,7 +115,7 @@ export function ModuleSlider({ modules }: ModuleSliderProps) {
           className="flex cursor-grab gap-6 p-5 md:p-20 md:pl-36 active:cursor-grabbing"
           animate={controls}
           drag="x"
-          dragConstraints={{ left: -maxIndex * (cardWidth + GAP), right: 0 }}
+          dragConstraints={{ left: -(maxIndex * (cardWidth + GAP) + leftPadOffset), right: 0 }}
           dragElastic={0.1}
           onDragEnd={handleDragEnd}
         >
