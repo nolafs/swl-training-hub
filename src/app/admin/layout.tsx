@@ -24,41 +24,44 @@ const navigation = [
   { name: 'Help', href: '/admin/help', icon: QuestionMarkCircleIcon },
 ];
 
-const NavItems = () => (
-  <ul role="list" className="-mx-2 space-y-1">
-    {navigation.map((item) => {
-      const current = pathname === item.href;
-      return (
-        <li key={item.name}>
-          <Link
-            href={item.href}
-            onClick={() => setSidebarOpen(false)}
-            className={cn(
-              current
-                ? 'text-primary bg-gray-50'
-                : 'hover:text-primary text-gray-700 hover:bg-gray-50',
-              'group flex gap-x-3 p-2 text-sm/6 font-semibold'
-            )}
-          >
-            <item.icon
-              aria-hidden="true"
+const NavItems = ({ onNavigate }: { onNavigate?: () => void }) => {
+  const pathname = usePathname();
+
+  return (
+    <ul role="list" className="-mx-2 space-y-1">
+      {navigation.map((item) => {
+        const current = pathname === item.href;
+        return (
+          <li key={item.name}>
+            <Link
+              href={item.href}
+              onClick={onNavigate}
               className={cn(
-                current ? 'text-primary' : 'group-hover:text-primary text-gray-400',
-                'size-6 shrink-0'
+                current
+                  ? 'text-primary bg-gray-50'
+                  : 'hover:text-primary text-gray-700 hover:bg-gray-50',
+                'group flex gap-x-3 p-2 text-sm/6 font-semibold'
               )}
-            />
-            {item.name}
-          </Link>
-        </li>
-      );
-    })}
-  </ul>
-);
+            >
+              <item.icon
+                aria-hidden="true"
+                className={cn(
+                  current ? 'text-primary' : 'group-hover:text-primary text-gray-400',
+                  'size-6 shrink-0'
+                )}
+              />
+              {item.name}
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
-
 
 
   return (
@@ -91,7 +94,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <span className="text-sm font-semibold text-foreground">Admin</span>
               </div>
               <nav className="flex flex-1 flex-col">
-                <NavItems />
+                <NavItems onNavigate={() => setSidebarOpen(false)} />
               </nav>
             </div>
           </DialogPanel>
