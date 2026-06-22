@@ -5,7 +5,6 @@ import { components } from "@/slices";
 import { PrismicRichText, SliceZone } from "@prismicio/react";
 import { Metadata } from "next";
 import { ImageField, isFilled, KeyTextField } from '@prismicio/client';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   LessonVideoPlayer,
   LessonScrollArea,

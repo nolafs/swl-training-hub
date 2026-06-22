@@ -1,16 +1,11 @@
 'use server';
 
-import { auth, clerkClient } from '@clerk/nextjs/server';
+import { clerkClient } from '@clerk/nextjs/server';
 import { revalidatePath } from 'next/cache';
-
-async function assertAdmin() {
-  const { sessionClaims } = await auth();
-  const role = (sessionClaims?.metadata as Record<string, unknown>)?.role;
-  if (role !== 'admin') throw new Error('Unauthorized');
-}
+import { requireAdmin } from '@/lib/auth';
 
 export async function approveUser(userId: string) {
-  await assertAdmin();
+  await requireAdmin();
   const client = await clerkClient();
   await client.users.updateUserMetadata(userId, {
     publicMetadata: { approved: true },
@@ -19,10 +14,20 @@ export async function approveUser(userId: string) {
 }
 
 export async function revokeUser(userId: string) {
-  await assertAdmin();
+  await requireAdmin();
   const client = await clerkClient();
   await client.users.updateUserMetadata(userId, {
     publicMetadata: { approved: false },
+  });
+  revalidatePath('/admin');
+}
+
+export async function setUserRole(userId: string, role: string) {
+  const { userId: adminId } = await requireAdmin();
+  if (userId === adminId) throw new Error('Cannot change your own role');
+  const client = await clerkClient();
+  await client.users.updateUserMetadata(userId, {
+    publicMetadata: { role: role || null },
   });
   revalidatePath('/admin');
 }

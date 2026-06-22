@@ -25,6 +25,13 @@
           "label": "Code",
           "placeholder": ""
         }
+      },
+      "email": {
+        "type": "Text",
+        "config": {
+          "label": "Email",
+          "placeholder": ""
+        }
       }
     }
   }

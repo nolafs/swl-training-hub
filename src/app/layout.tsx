@@ -1,10 +1,11 @@
 import type { Metadata, ResolvingMetadata } from 'next';
 import { Roboto } from 'next/font/google';
-import './globals.css';
+import './globals.scss';
 import { PrismicPreview } from '@prismicio/next';
 import { createClient, repositoryName } from '@/prismicio';
 import { RootInnerLayout } from '@/layout/RootInnerLayout';
 import { asText } from '@prismicio/client';
+import { shadcn } from '@clerk/ui/themes';
 
 import { ClerkProvider } from '@clerk/nextjs';
 
@@ -98,15 +99,19 @@ export async function generateMetadata({}: Props, parent: ResolvingMetadata): Pr
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
 
   return (
-    <ClerkProvider afterSignOutUrl="/sign-in">
+    <ClerkProvider
+      afterSignOutUrl="/sign-in"
+      appearance={{
+        theme: shadcn,
+      }}
+    >
       <html lang="en">
         <body className={`${roboto.variable} font-sans antialiased`}>
-            <RootInnerLayout>
-              {children}
-              {/* Prismic preview */}
-              <PrismicPreview repositoryName={repositoryName} />
-            </RootInnerLayout>
-
+          <RootInnerLayout>
+            {children}
+            {/* Prismic preview */}
+            <PrismicPreview repositoryName={repositoryName} />
+          </RootInnerLayout>
         </body>
       </html>
     </ClerkProvider>

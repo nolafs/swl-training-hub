@@ -3,6 +3,9 @@ import dynamic from 'next/dynamic';
 import Notification from '@/components/ui/notification';
 import { type EmbedField, ImageFieldImage } from '@prismicio/client';
 
+const Youtube = dynamic(() => import('./video-players/youtube'), { ssr: false });
+const Vimeo = dynamic(() => import('./video-players/vimeo'), { ssr: false });
+
 export interface ContentVideoProps {
   id: string;
   video?: EmbedField;
@@ -30,8 +33,6 @@ export function VideoPlayer({ id, video, loading, image }: ContentVideoProps) {
   }
 
   if (video.provider_name === 'YouTube') {
-    const Youtube = dynamic(() => import('./video-players/youtube'), { ssr: false });
-
     return (
       <Youtube
         id={id}
@@ -46,8 +47,6 @@ export function VideoPlayer({ id, video, loading, image }: ContentVideoProps) {
   }
 
   if (video.provider_name === 'Vimeo') {
-    const Vimeo = dynamic(() => import('./video-players/vimeo'), { ssr: false });
-
     return (
       <Vimeo
         id={id}

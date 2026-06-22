@@ -2,11 +2,10 @@ import { LessonSlider } from '@/components/features/lesson';
 import { createClient } from "@/prismicio";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { isFilled, asImageSrc } from "@prismicio/client";
+import { isFilled } from "@prismicio/client";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle, ChevronRightIcon } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { PageColorSetter } from "@/components/features/page-color";
-import { ButtonHero } from "@/components/ui/button-hero";
 import { ContinueButton } from '@/components/features/module/continue/continue-button';
 import { AnimatedModuleContent } from '@/components/features/module';
 
@@ -17,6 +16,9 @@ interface ModulePageProps {
 export default async function ModulePage({ params }: ModulePageProps) {
   const { uid } = await params;
   const client = createClient();
+
+  //check if user is logged in
+
 
   const moduleDoc = await client.getByUID('module', uid, {
     fetchLinks: ['lesson.title', 'lesson.type', 'lesson.description', 'lesson.cover_image'],

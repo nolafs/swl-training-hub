@@ -1,7 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import styles from './Detail.module.css';
+import styles from './Detail.module.scss';
+import type { Module } from '@/types/modules.types';
 
 interface ModuleDetailProps {
   module: Module;

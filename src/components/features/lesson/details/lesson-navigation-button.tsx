@@ -4,6 +4,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { LessonMouseTooltip } from './lesson-mouse-tooltip';
 import { useUpdateLessonProgress } from '@/lib/store';
 import cn from 'clsx';
+import type { LessonType } from '@/types/lesson.type';
 
 interface LessonNavigationButtonProps {
   type: 'next' | 'prev';

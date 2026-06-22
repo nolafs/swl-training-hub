@@ -119,25 +119,22 @@ export function createLogger(namespace?: string) {
 
   function debug(...args: unknown[]) {
     if (!shouldLog('debug')) return;
-    /* eslint-disable no-console */
     const safe = args.map((a) => sanitizeArg(a));
     console.debug(prefix, ...safe);
   }
   function info(...args: unknown[]) {
     if (!shouldLog('info')) return;
-    /* eslint-disable no-console */
     const safe = args.map((a) => sanitizeArg(a));
     console.info(prefix, ...safe);
   }
   function warn(...args: unknown[]) {
     if (!shouldLog('warn')) return;
-    /* eslint-disable no-console */
+
     const safe = args.map((a) => sanitizeArg(a));
     console.warn(prefix, ...safe);
   }
   function error(...args: unknown[]) {
     if (!shouldLog('error')) return;
-    /* eslint-disable no-console */
     const safe = args.map((a) => sanitizeArg(a));
     console.error(prefix, ...safe);
   }

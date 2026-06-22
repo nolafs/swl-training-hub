@@ -97,6 +97,31 @@
           }
         }
       }
+    },
+    "Sign in": {
+      "slices2": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {
+            "text": {
+              "type": "SharedSlice"
+            },
+            "media": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      }
+    },
+    "Sign up": {
+      "slices3": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {}
+        }
+      }
     }
   }
 }

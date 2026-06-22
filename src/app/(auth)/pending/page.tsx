@@ -1,6 +1,8 @@
 import { SignOutButton } from '@clerk/nextjs';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
+import { autoApproveIfValidCode } from '@/actions/access-code';
+import { ApprovedRedirect } from '@/components/features/auth/ApprovedRedirect';
 
 export default async function PendingPage() {
   const { userId, sessionClaims } = await auth();
@@ -9,6 +11,16 @@ export default async function PendingPage() {
 
   const approved = (sessionClaims?.metadata as Record<string, unknown>)?.approved;
   if (approved) redirect('/');
+
+  // Check for valid access code cookie and auto-approve
+  const wasApproved = await autoApproveIfValidCode();
+  if (wasApproved) {
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-background px-4">
+        <ApprovedRedirect />
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-background px-4">

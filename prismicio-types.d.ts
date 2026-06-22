@@ -82,6 +82,17 @@ interface ClientAccessCodeDocumentData {
    * - **Documentation**: https://prismic.io/docs/fields/number
    */
   code: prismic.NumberField;
+
+  /**
+   * Email field in *Client Access Code*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: client_access_code.email
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  email: prismic.KeyTextField;
 }
 
 /**
@@ -464,6 +475,10 @@ export interface SettingsDocumentDataSecondaryNavigationItem {
   nav_item: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 }
 
+type SettingsDocumentDataSlices2Slice = TextSlice | MediaSlice;
+
+type SettingsDocumentDataSlices3Slice = never;
+
 /**
  * Content for Settings documents
  */
@@ -574,7 +589,27 @@ interface SettingsDocumentData {
    * - **Tab**: Navigations
    * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
    */
-  secondary_navigation: prismic.GroupField<Simplify<SettingsDocumentDataSecondaryNavigationItem>>;
+  secondary_navigation: prismic.GroupField<
+    Simplify<SettingsDocumentDataSecondaryNavigationItem>
+  >; /**
+   * Slice Zone field in *Settings*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.slices2[]
+   * - **Tab**: Sign in
+   * - **Documentation**: https://prismic.io/docs/slices
+   */
+  slices2: prismic.SliceZone<SettingsDocumentDataSlices2Slice>; /**
+   * Slice Zone field in *Settings*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.slices3[]
+   * - **Tab**: Sign up
+   * - **Documentation**: https://prismic.io/docs/slices
+   */
+  slices3: prismic.SliceZone<SettingsDocumentDataSlices3Slice>;
 }
 
 /**
@@ -1023,6 +1058,8 @@ declare module '@prismicio/client' {
       SettingsDocument,
       SettingsDocumentData,
       SettingsDocumentDataSecondaryNavigationItem,
+      SettingsDocumentDataSlices2Slice,
+      SettingsDocumentDataSlices3Slice,
       AllDocumentTypes,
       HeroSlice,
       HeroSliceDefaultPrimary,

@@ -6,6 +6,7 @@ import { ChevronRightIcon } from 'lucide-react';
 import { useLearnProgressStore } from '@/lib/store';
 import { useShallow } from 'zustand/react/shallow';
 import { useMemo } from 'react';
+import {logger } from '@/lib/logger/logger'
 
 interface Lesson {
   uid: string;
@@ -20,6 +21,7 @@ interface ContinueButtonProps {
 }
 
 export function ContinueButton({ moduleUid, moduleId, lessons, colour }: ContinueButtonProps) {
+
   const lessonProgress = useLearnProgressStore(
     useShallow((state) => state.lessonProgress)
   );
@@ -28,7 +30,7 @@ export function ContinueButton({ moduleUid, moduleId, lessons, colour }: Continu
   const nextUncompletedLesson = useMemo(() => {
     for (const lesson of lessons) {
       const progress = lessonProgress[lesson.id];
-      console.log('Checking lesson:', lesson.uid, 'Progress:', progress);
+      logger.debug('Checking lesson:', lesson.uid, 'Progress:', progress, 'Module Id', moduleId);
 
       // Lesson is uncompleted if no progress record or not completed (progress < 100)
       if (!progress || !progress.completed) {
@@ -39,7 +41,7 @@ export function ContinueButton({ moduleUid, moduleId, lessons, colour }: Continu
 
 
     return null;
-  }, [lessons, lessonProgress]);
+  }, [lessons, lessonProgress, moduleId]);
 
   // Hide button if all lessons are completed
   if (!nextUncompletedLesson) {
