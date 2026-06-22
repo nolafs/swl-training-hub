@@ -11,6 +11,10 @@ export default clerkMiddleware(async (auth, req) => {
   const approved = metadata.approved as boolean | undefined;
   const role = metadata.role as string | undefined;
 
+  console.log('META DATA', metadata);
+  console.log('userId', metadata);
+  console.log('sessionClaims', sessionClaims);
+
   // /sign-in and /sign-up — public, but bounce signed-in users
   if (isPublicRoute(req)) {
     if (userId) {

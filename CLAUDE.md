@@ -72,6 +72,8 @@ Figma design: https://www.figma.com/design/YqYr66XHvNsNR0nUuehJ24/Learning-video
 
 ## Build & Development Commands
 
+it uses yarn as package manager
+
 ```bash
 npm run dev           # Development server at localhost:3000
 npm run build         # Production build

@@ -58,6 +58,48 @@ type ContentRelationshipFieldWithData<
 }[Exclude<TCustomType[number], string>['id']];
 
 /**
+ * Content for Client Access Code documents
+ */
+interface ClientAccessCodeDocumentData {
+  /**
+   * Name field in *Client Access Code*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: client_access_code.name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  name: prismic.KeyTextField;
+
+  /**
+   * Code field in *Client Access Code*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: client_access_code.code
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/number
+   */
+  code: prismic.NumberField;
+}
+
+/**
+ * Client Access Code document from Prismic
+ *
+ * - **API ID**: `client_access_code`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ClientAccessCodeDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<
+  Simplify<ClientAccessCodeDocumentData>,
+  'client_access_code',
+  Lang
+>;
+
+/**
  * Content for Download documents
  */
 interface DownloadDocumentData {
@@ -551,6 +593,7 @@ export type SettingsDocument<Lang extends string = string> = prismic.PrismicDocu
 >;
 
 export type AllDocumentTypes =
+  | ClientAccessCodeDocument
   | DownloadDocument
   | LessonDocument
   | ModuleDocument
@@ -964,6 +1007,8 @@ declare module '@prismicio/client' {
 
   namespace Content {
     export type {
+      ClientAccessCodeDocument,
+      ClientAccessCodeDocumentData,
       DownloadDocument,
       DownloadDocumentData,
       LessonDocument,
