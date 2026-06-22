@@ -4,10 +4,9 @@ import './globals.css';
 import { PrismicPreview } from '@prismicio/next';
 import { createClient, repositoryName } from '@/prismicio';
 import { RootInnerLayout } from '@/layout/RootInnerLayout';
-import { Footer } from '@/layout/footer';
-import { Header } from '@/layout/header';
-import { asText, isFilled } from '@prismicio/client';
-import { LearnProgressStoreProvider, type CourseStructure } from '@/lib/store';
+import { asText } from '@prismicio/client';
+
+import { ClerkProvider } from '@clerk/nextjs';
 
 const roboto = Roboto({
   variable: '--font-roboto',
@@ -97,57 +96,19 @@ export async function generateMetadata({}: Props, parent: ResolvingMetadata): Pr
 }
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const client = createClient();
-  let settings = null;
-
-  try {
-    settings = await client.getSingle('settings');
-  } catch {
-    console.warn('Settings document not found');
-  }
-
-  // Load course structure from CMS for progress tracking
-  let courseStructure: CourseStructure = { modules: [] };
-
-  try {
-    const modules = await client.getAllByType('module', {
-      orderings: [{ field: 'my.module.position', direction: 'asc' }],
-      fetchLinks: ['lesson.title'],
-    });
-
-    courseStructure = {
-      modules: modules.map((module) => ({
-        moduleId: module.id,
-        title: module.data.title ?? '',
-        lessons: (module.data.lesson ?? []).flatMap((item, index) => {
-          if (!isFilled.contentRelationship(item.lesson)) return [];
-          const lesson = item.lesson;
-          return [
-            {
-              lessonId: lesson.id ?? `lesson-${index}`,
-              title: (lesson.data as { title?: string } | undefined)?.title ?? `Lesson ${index + 1}`,
-            },
-          ];
-        }),
-      })),
-    };
-  } catch {
-    console.warn('Could not load course structure');
-  }
 
   return (
-    <html lang="en">
-      <body className={`${roboto.variable} font-sans antialiased`}>
-        <LearnProgressStoreProvider courseStructure={courseStructure}>
-          <RootInnerLayout>
-            <Header settings={settings} />
-            {children}
-            <Footer settings={settings} />
-            {/* Prismic preview */}
-            <PrismicPreview repositoryName={repositoryName} />
-          </RootInnerLayout>
-        </LearnProgressStoreProvider>
-      </body>
-    </html>
+    <ClerkProvider afterSignOutUrl="/sign-in">
+      <html lang="en">
+        <body className={`${roboto.variable} font-sans antialiased`}>
+            <RootInnerLayout>
+              {children}
+              {/* Prismic preview */}
+              <PrismicPreview repositoryName={repositoryName} />
+            </RootInnerLayout>
+
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

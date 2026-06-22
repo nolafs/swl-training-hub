@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { createClient } from '@/prismicio';
 
-export default async function manifest(): Promise<MetadataRoute.Manifest> {
+export default async function proxy(): Promise<MetadataRoute.Manifest> {
   const client = createClient();
   let faviconUrl: string | null = null;
 
