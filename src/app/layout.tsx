@@ -68,11 +68,37 @@ export async function generateMetadata({}: Props, parent: ResolvingMetadata): Pr
         }
       : {
           icon: [
-            { url: '/favicon.png?v=2', type: 'image/png', sizes: '32x32' },
-            { url: '/favicon.png?v=2', type: 'image/png', sizes: '16x16' },
+            {
+              rel: 'icon',
+              type: 'image/png',
+              sizes: '32x32',
+              url: '/icons/favicon-32x32.png',
+            },
+            {
+              rel: 'icon',
+              type: 'image/png',
+              sizes: '48x48',
+              url: '/icons/favicon-48x48.png',
+            },
+            {
+              rel: 'icon',
+              type: 'image/svg+xml',
+              url: '/icons/favicon.svg',
+            },
+            {
+              rel: 'icon',
+              type: 'image/png',
+              sizes: '16x16',
+              url: '/icons/favicon.ico',
+            },
+            {
+              rel: 'apple-touch-icon',
+              sizes: '180x180',
+              url: '/icons/apple-touch-icon.png',
+            },
           ],
-          shortcut: '/favicon.png',
-          apple: '/apple-icon.png',
+          shortcut: '/icons/favicon.png',
+          apple: '/icons/apple-icon.png',
         },
     /*
         verification: {
