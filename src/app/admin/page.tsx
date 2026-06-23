@@ -12,6 +12,7 @@ const UserRow = ({ user }: { user: User }) => {
   const email = user.emailAddresses[0]?.emailAddress ?? '—';
   const name = [user.firstName, user.lastName].filter(Boolean).join(' ') || email;
   const registered = new Date(user.createdAt).toLocaleDateString();
+  const courseProgress = typeof meta?.courseProgress === 'number' ? meta.courseProgress : null;
 
   return (
     <tr key={user.id} className="bg-card hover:bg-muted/50 transition-colors">
@@ -20,6 +21,18 @@ const UserRow = ({ user }: { user: User }) => {
         <div className="text-muted-foreground text-xs">{email}</div>
       </td>
       <td className="text-muted-foreground px-4 py-3">{registered}</td>
+      <td className="px-4 py-3">
+        {courseProgress !== null ? (
+          <div className="flex items-center gap-2">
+            <div className="h-1.5 w-24 rounded-full bg-muted overflow-hidden">
+              <div className="h-full bg-primary rounded-full" style={{ width: `${courseProgress}%` }} />
+            </div>
+            <span className="text-xs text-muted-foreground tabular-nums">{courseProgress}%</span>
+          </div>
+        ) : (
+          <span className="text-xs text-muted-foreground">—</span>
+        )}
+      </td>
       <td className="px-4 py-3 text-center">
         <RoleSelect userId={user.id} role={meta?.role as string | undefined} />
       </td>
@@ -54,6 +67,7 @@ export default async function AdminUsersPage() {
             <tr>
               <th className="px-4 py-3 text-left font-medium">User</th>
               <th className="px-4 py-3 text-left font-medium">Registered</th>
+              <th className="px-4 py-3 text-left font-medium">Progress</th>
               <th className="px-4 py-3 text-center font-medium">Role</th>
               <th className="px-4 py-3 text-right font-medium">Access</th>
             </tr>
