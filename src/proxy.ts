@@ -1,4 +1,4 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { clerkMiddleware, clerkClient, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 
 const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)']);
@@ -8,12 +8,20 @@ const isAdminRoute = createRouteMatcher(['/admin(.*)']);
 export default clerkMiddleware(async (auth, req) => {
   const { userId, sessionClaims } = await auth();
   const metadata = (sessionClaims?.metadata as Record<string, unknown>) ?? {};
-  const approved = metadata.approved as boolean | undefined;
+  let approved = metadata.approved as boolean | undefined;
   const role = metadata.role as string | undefined;
 
-  console.log('META DATA', metadata);
-  console.log('userId', metadata);
-  console.log('sessionClaims', sessionClaims);
+  // JWT claims can be stale — if not approved by JWT, check fresh Clerk data.
+  // This handles the window between approval and token refresh (~60s).
+  if (!approved && userId) {
+    try {
+      const clerk = await clerkClient();
+      const freshUser = await clerk.users.getUser(userId);
+      approved = freshUser.publicMetadata?.approved === true;
+    } catch {
+      // Clerk API unavailable — fall back to JWT value
+    }
+  }
 
   // /sign-in and /sign-up — public, but bounce signed-in users
   if (isPublicRoute(req)) {
