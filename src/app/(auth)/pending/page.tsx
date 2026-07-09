@@ -1,32 +1,25 @@
 import { SignOutButton } from '@clerk/nextjs';
-import { auth } from '@clerk/nextjs/server';
+import { auth, clerkClient } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { autoApproveIfValidCode } from '@/actions/access-code';
-import { ApprovedRedirect } from '@/components/features/auth/ApprovedRedirect';
 
 export default async function PendingPage() {
-  const { userId, sessionClaims } = await auth();
+  const { userId } = await auth();
 
   if (!userId) redirect('/sign-in');
 
-  const approved = (sessionClaims?.metadata as Record<string, unknown>)?.approved;
+  // Use fresh Clerk data, not stale session JWT claims
+  const clerk = await clerkClient();
+  const freshUser = await clerk.users.getUser(userId);
+  const approved = freshUser.publicMetadata?.approved === true;
   if (approved) redirect('/');
 
   // Check for valid access code cookie and auto-approve
   const wasApproved = await autoApproveIfValidCode();
-
-  if (wasApproved) {
-    return (
-      <main className="min-h-screen flex items-center justify-center bg-background px-4">
-        <ApprovedRedirect />
-      </main>
-    );
-  }
+  if (wasApproved) redirect('/');
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-background px-4">
-      {/* Silent poller — redirects to / as soon as Clerk metadata shows approved */}
-      <ApprovedRedirect silent />
       <div className="w-full max-w-md text-center space-y-6">
         <div className="space-y-2">
           <h1 className="text-2xl font-bold text-foreground">Access Pending</h1>
