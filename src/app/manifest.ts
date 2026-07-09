@@ -1,49 +1,47 @@
 import { MetadataRoute } from 'next';
-import { createClient } from '@/prismicio';
 
-export default async function manifest(): Promise<MetadataRoute.Manifest> {
-  const client = createClient();
-  let faviconUrl: string | null = null;
-
-  try {
-    const settings = await client.getSingle('settings');
-    faviconUrl = settings?.data.favicon?.url ?? null;
-  } catch {
-    // Settings not found, use fallback
-  }
-
+export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'SWL Training Hub',
-    short_name: 'SWL Hub',
-    description: 'SWL Training Hub',
+    name: 'SWL Traingin Hub',
+    short_name: 'SWL',
+    description: 'SWL Traingin Hub',
     start_url: '/',
     display: 'standalone',
-    background_color: '#ffffff',
-    theme_color: '#000000',
-    icons: faviconUrl
-      ? [
-          {
-            src: `${faviconUrl}&w=192&h=192`,
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: `${faviconUrl}&w=512&h=512`,
-            sizes: '512x512',
-            type: 'image/png',
-          },
-        ]
-      : [
-          {
-            src: '/favicon.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: '/favicon.png',
-            sizes: '512x512',
-            type: 'image/png',
-          },
-        ],
+    orientation: 'portrait',
+    background_color: '#fff',
+    theme_color: '#000',
+    lang: 'en',
+    icons: [
+      {
+        src: '/icons/android-icon-36x36.png',
+        sizes: '36x36',
+        type: 'image/png',
+      },
+      {
+        src: '/icons/android-icon-48x48.png',
+        sizes: '48x48',
+        type: 'image/png',
+      },
+      {
+        src: '/icons/android-icon-72x72.png',
+        sizes: '72x72',
+        type: 'image/png',
+      },
+      {
+        src: '/icons/android-icon-96x96.png',
+        sizes: '96x96',
+        type: 'image/png',
+      },
+      {
+        src: '/icons/android-icon-144x144.png',
+        sizes: '144x144',
+        type: 'image/png',
+      },
+      {
+        src: '/icons/android-icon-192x192.png',
+        sizes: '192x192',
+        type: 'image/png',
+      },
+    ],
   };
 }

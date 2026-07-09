@@ -1,13 +1,13 @@
 import type { Metadata, ResolvingMetadata } from 'next';
 import { Roboto } from 'next/font/google';
-import './globals.css';
+import './globals.scss';
 import { PrismicPreview } from '@prismicio/next';
 import { createClient, repositoryName } from '@/prismicio';
 import { RootInnerLayout } from '@/layout/RootInnerLayout';
-import { Footer } from '@/layout/footer';
-import { Header } from '@/layout/header';
-import { asText, isFilled } from '@prismicio/client';
-import { LearnProgressStoreProvider, type CourseStructure } from '@/lib/store';
+import { asText } from '@prismicio/client';
+import { shadcn } from '@clerk/ui/themes';
+
+import { ClerkProvider } from '@clerk/nextjs';
 
 const roboto = Roboto({
   variable: '--font-roboto',
@@ -68,11 +68,37 @@ export async function generateMetadata({}: Props, parent: ResolvingMetadata): Pr
         }
       : {
           icon: [
-            { url: '/favicon.png?v=2', type: 'image/png', sizes: '32x32' },
-            { url: '/favicon.png?v=2', type: 'image/png', sizes: '16x16' },
+            {
+              rel: 'icon',
+              type: 'image/png',
+              sizes: '32x32',
+              url: '/icons/favicon-32x32.png',
+            },
+            {
+              rel: 'icon',
+              type: 'image/png',
+              sizes: '48x48',
+              url: '/icons/favicon-48x48.png',
+            },
+            {
+              rel: 'icon',
+              type: 'image/svg+xml',
+              url: '/icons/favicon.svg',
+            },
+            {
+              rel: 'icon',
+              type: 'image/png',
+              sizes: '16x16',
+              url: '/icons/favicon.ico',
+            },
+            {
+              rel: 'apple-touch-icon',
+              sizes: '180x180',
+              url: '/icons/apple-touch-icon.png',
+            },
           ],
-          shortcut: '/favicon.png',
-          apple: '/apple-icon.png',
+          shortcut: '/icons/favicon.png',
+          apple: '/icons/apple-icon.png',
         },
     /*
         verification: {
@@ -97,57 +123,23 @@ export async function generateMetadata({}: Props, parent: ResolvingMetadata): Pr
 }
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const client = createClient();
-  let settings = null;
-
-  try {
-    settings = await client.getSingle('settings');
-  } catch {
-    console.warn('Settings document not found');
-  }
-
-  // Load course structure from CMS for progress tracking
-  let courseStructure: CourseStructure = { modules: [] };
-
-  try {
-    const modules = await client.getAllByType('module', {
-      orderings: [{ field: 'my.module.position', direction: 'asc' }],
-      fetchLinks: ['lesson.title'],
-    });
-
-    courseStructure = {
-      modules: modules.map((module) => ({
-        moduleId: module.id,
-        title: module.data.title ?? '',
-        lessons: (module.data.lesson ?? []).flatMap((item, index) => {
-          if (!isFilled.contentRelationship(item.lesson)) return [];
-          const lesson = item.lesson;
-          return [
-            {
-              lessonId: lesson.id ?? `lesson-${index}`,
-              title: (lesson.data as { title?: string } | undefined)?.title ?? `Lesson ${index + 1}`,
-            },
-          ];
-        }),
-      })),
-    };
-  } catch {
-    console.warn('Could not load course structure');
-  }
 
   return (
-    <html lang="en">
-      <body className={`${roboto.variable} font-sans antialiased`}>
-        <LearnProgressStoreProvider courseStructure={courseStructure}>
+    <ClerkProvider
+      afterSignOutUrl="/sign-in"
+      appearance={{
+        theme: shadcn,
+      }}
+    >
+      <html lang="en">
+        <body className={`${roboto.variable} font-sans antialiased`}>
           <RootInnerLayout>
-            <Header settings={settings} />
             {children}
-            <Footer settings={settings} />
             {/* Prismic preview */}
             <PrismicPreview repositoryName={repositoryName} />
           </RootInnerLayout>
-        </LearnProgressStoreProvider>
-      </body>
-    </html>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

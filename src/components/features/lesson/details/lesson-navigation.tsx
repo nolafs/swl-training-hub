@@ -1,12 +1,11 @@
 'use client';
 
-import { useState, useRef, useCallback, type ReactNode, type MouseEvent } from 'react';
+
 import Link from 'next/link';
 import { ChevronRightIcon, ChevronLeftIcon } from 'lucide-react';
 import { useUpdateLessonProgress } from '@/lib/store';
 import { LessonMouseTooltip } from '@/components/features/lesson/details/lesson-mouse-tooltip';
-
-type LessonType = 'Lesson' | 'Lesson Video' | 'Info' | 'Discussion' | 'Practice' | null;
+import type { LessonType } from '@/types/lesson.type';
 
 interface LessonNavigationProps {
   moduleUid: string;

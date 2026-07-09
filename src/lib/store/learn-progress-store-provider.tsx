@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, useMemo, type ReactNode } from 'react';
+import { createContext, useContext, useRef, useState, useEffect, useMemo, type ReactNode } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import {
@@ -11,6 +11,7 @@ import {
   type CourseProgress,
   type ModuleProgress,
 } from './lean-progress-store';
+import { saveUserCourseProgress } from '@/actions/progress';
 
 const LearnProgressStoreContext = createContext<LearnProgressStore | null>(null);
 
@@ -26,16 +27,43 @@ export function LearnProgressStoreProvider({
   // Create store once with lazy initializer - stable across re-renders
   const [store] = useState(() => createLearnProgressStore(courseStructure));
 
+  // Track previously completed lesson IDs to detect new completions
+  const completedRef = useRef<Set<string>>(new Set());
+
   // Hydrate persisted state on client mount
   useEffect(() => {
     store.persist.rehydrate();
   }, [store]);
 
-
   // Update course structure if it changes (e.g., after CMS update)
   useEffect(() => {
     store.getState().setCourseStructure(courseStructure);
   }, [store, courseStructure]);
+
+  // Save progress to Clerk only when a lesson is newly completed
+  useEffect(() => {
+    return store.subscribe((state) => {
+      const newlyCompleted = Object.values(state.lessonProgress).filter(
+        (l) => l.completed && !completedRef.current.has(l.lessonId)
+      );
+
+      if (newlyCompleted.length === 0) return;
+
+      // Update the ref with all completed lessons
+      for (const l of newlyCompleted) {
+        completedRef.current.add(l.lessonId);
+      }
+
+      // Calculate and save overall progress
+      const overallProgress = state.courseStructure
+        ? store.getState().getCourseProgress().progress
+        : 0;
+
+      saveUserCourseProgress(overallProgress).catch(() => {
+        // Non-critical — progress is still tracked locally
+      });
+    });
+  }, [store]);
 
   return (
     <LearnProgressStoreContext.Provider value={store}>

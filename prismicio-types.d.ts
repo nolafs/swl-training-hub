@@ -58,6 +58,59 @@ type ContentRelationshipFieldWithData<
 }[Exclude<TCustomType[number], string>['id']];
 
 /**
+ * Content for Client Access Code documents
+ */
+interface ClientAccessCodeDocumentData {
+  /**
+   * Name field in *Client Access Code*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: client_access_code.name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  name: prismic.KeyTextField;
+
+  /**
+   * Code field in *Client Access Code*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: client_access_code.code
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/number
+   */
+  code: prismic.NumberField;
+
+  /**
+   * Email field in *Client Access Code*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: client_access_code.email
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  email: prismic.KeyTextField;
+}
+
+/**
+ * Client Access Code document from Prismic
+ *
+ * - **API ID**: `client_access_code`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ClientAccessCodeDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<
+  Simplify<ClientAccessCodeDocumentData>,
+  'client_access_code',
+  Lang
+>;
+
+/**
  * Content for Download documents
  */
 interface DownloadDocumentData {
@@ -422,6 +475,10 @@ export interface SettingsDocumentDataSecondaryNavigationItem {
   nav_item: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 }
 
+type SettingsDocumentDataSlices2Slice = TextSlice | MediaSlice;
+
+type SettingsDocumentDataSlices3Slice = never;
+
 /**
  * Content for Settings documents
  */
@@ -532,7 +589,27 @@ interface SettingsDocumentData {
    * - **Tab**: Navigations
    * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
    */
-  secondary_navigation: prismic.GroupField<Simplify<SettingsDocumentDataSecondaryNavigationItem>>;
+  secondary_navigation: prismic.GroupField<
+    Simplify<SettingsDocumentDataSecondaryNavigationItem>
+  >; /**
+   * Slice Zone field in *Settings*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.slices2[]
+   * - **Tab**: Sign in
+   * - **Documentation**: https://prismic.io/docs/slices
+   */
+  slices2: prismic.SliceZone<SettingsDocumentDataSlices2Slice>; /**
+   * Slice Zone field in *Settings*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.slices3[]
+   * - **Tab**: Sign up
+   * - **Documentation**: https://prismic.io/docs/slices
+   */
+  slices3: prismic.SliceZone<SettingsDocumentDataSlices3Slice>;
 }
 
 /**
@@ -551,6 +628,7 @@ export type SettingsDocument<Lang extends string = string> = prismic.PrismicDocu
 >;
 
 export type AllDocumentTypes =
+  | ClientAccessCodeDocument
   | DownloadDocument
   | LessonDocument
   | ModuleDocument
@@ -964,6 +1042,8 @@ declare module '@prismicio/client' {
 
   namespace Content {
     export type {
+      ClientAccessCodeDocument,
+      ClientAccessCodeDocumentData,
       DownloadDocument,
       DownloadDocumentData,
       LessonDocument,
@@ -978,6 +1058,8 @@ declare module '@prismicio/client' {
       SettingsDocument,
       SettingsDocumentData,
       SettingsDocumentDataSecondaryNavigationItem,
+      SettingsDocumentDataSlices2Slice,
+      SettingsDocumentDataSlices3Slice,
       AllDocumentTypes,
       HeroSlice,
       HeroSliceDefaultPrimary,

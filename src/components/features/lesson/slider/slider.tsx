@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect, useCallback } from 'react';
 import { motion, useAnimation, PanInfo } from 'framer-motion';
 import { LessonCard } from '../card';
 import { SliderNavigation } from '@/components/ui/SliderNavigation';
@@ -102,7 +102,7 @@ export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor, animat
   }, []);
 
   // Calculate offset to center the current card
-  const getCenteredOffset = (index: number) => {
+  const getCenteredOffset = useCallback((index: number) => {
     if (isMobile) {
       // Mobile: simple slide calculation, centered with padding
       return 16 - index * (cardWidth + GAP); // 16px left padding
@@ -111,14 +111,14 @@ export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor, animat
     const centerOffset = (containerWidth - cardWidth) / 2;
     const cardOffset = index * (cardWidth + GAP);
     return centerOffset - cardOffset;
-  };
+  }, [isMobile, cardWidth, containerWidth]);
 
-  const slideTo = (index: number) => {
+  const slideTo = useCallback((index: number) => {
     const newIndex = Math.max(0, Math.min(index, maxIndex));
     setCurrentIndex(newIndex);
     const targetX = getCenteredOffset(newIndex);
     controls.start({ x: targetX, transition: { type: 'spring', stiffness: 300, damping: 30 } });
-  };
+  }, [maxIndex, getCenteredOffset, controls]);
 
   // Initialize position when container width is known
   useLayoutEffect(() => {
@@ -126,7 +126,7 @@ export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor, animat
       const targetX = getCenteredOffset(currentIndex);
       controls.set({ x: targetX });
     }
-  }, [containerWidth, cardWidth, isMobile]);
+  }, [containerWidth, currentIndex, controls, getCenteredOffset]);
 
   // Scroll to first uncompleted lesson on mount
   useEffect(() => {
@@ -156,7 +156,7 @@ export function LessonSlider({ lessons, moduleUid, moduleId, moduleColor, animat
     }, animationDelay + 100);
 
     return () => clearTimeout(timer);
-  }, [isReady, containerWidth, lessons, lessonProgress, hasInitialScrolled, animationDelay]);
+  }, [isReady, containerWidth, lessons, lessonProgress, hasInitialScrolled, animationDelay, slideTo]);
 
   const handlePrev = () => {
     slideTo(currentIndex - 1);
