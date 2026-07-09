@@ -9,17 +9,19 @@ export default clerkMiddleware(async (auth, req) => {
   const { userId, sessionClaims } = await auth();
   const metadata = (sessionClaims?.metadata as Record<string, unknown>) ?? {};
   let approved = metadata.approved as boolean | undefined;
-  const role = metadata.role as string | undefined;
+  let role = metadata.role as string | undefined;
 
-  // JWT claims can be stale — if not approved by JWT, check fresh Clerk data.
-  // This handles the window between approval and token refresh (~60s).
-  if (!approved && userId) {
+  // JWT claims can be stale — if not approved/role by JWT, check fresh Clerk data.
+  // This handles the window between metadata change and token refresh (~60s).
+  if ((!approved || !role) && userId) {
     try {
       const clerk = await clerkClient();
       const freshUser = await clerk.users.getUser(userId);
-      approved = freshUser.publicMetadata?.approved === true;
+      const freshMeta = freshUser.publicMetadata as Record<string, unknown>;
+      if (!approved) approved = freshMeta?.approved === true;
+      if (!role) role = freshMeta?.role as string | undefined;
     } catch {
-      // Clerk API unavailable — fall back to JWT value
+      // Clerk API unavailable — fall back to JWT values
     }
   }
 
