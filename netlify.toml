@@ -3,10 +3,8 @@
   publish = ".next"
 
 [build.environment]
-    SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY"
-
-[build.environment]
   NODE_VERSION = "20"
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY"
 
 # Next.js plugin handles all the routing automatically
 [[plugins]]
