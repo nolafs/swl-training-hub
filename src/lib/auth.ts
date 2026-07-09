@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server';
+import { auth, clerkClient } from '@clerk/nextjs/server';
 
 type AuthMeta = {
   userId: string;
@@ -8,6 +8,7 @@ type AuthMeta = {
 
 /**
  * Returns the current user's auth metadata.
+ * Uses fresh Clerk data so stale JWT claims don't block access.
  * Throws if not signed in.
  */
 export async function getAuthMeta(): Promise<AuthMeta> {
@@ -15,13 +16,24 @@ export async function getAuthMeta(): Promise<AuthMeta> {
 
   if (!userId) throw new Error('Unauthenticated');
 
-  const metadata = (sessionClaims?.metadata as Record<string, unknown>) ?? {};
+  const jwtMeta = (sessionClaims?.metadata as Record<string, unknown>) ?? {};
+  let approved = jwtMeta.approved === true;
+  let role = jwtMeta.role as string | undefined;
 
-  return {
-    userId,
-    approved: metadata.approved === true,
-    role: metadata.role as string | undefined,
-  };
+  // If JWT metadata is missing approved/role, fetch fresh from Clerk
+  if (!approved || !role) {
+    try {
+      const clerk = await clerkClient();
+      const freshUser = await clerk.users.getUser(userId);
+      const freshMeta = freshUser.publicMetadata as Record<string, unknown>;
+      if (!approved) approved = freshMeta.approved === true;
+      if (!role) role = freshMeta.role as string | undefined;
+    } catch {
+      // Fall back to JWT values
+    }
+  }
+
+  return { userId, approved, role };
 }
 
 /**
