@@ -4,7 +4,7 @@ import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-export function ApprovedRedirect() {
+export function ApprovedRedirect({ silent = false }: { silent?: boolean }) {
   const { user } = useUser();
   const router = useRouter();
 
@@ -22,6 +22,8 @@ export function ApprovedRedirect() {
 
     return () => clearInterval(interval);
   }, [user, router]);
+
+  if (silent) return null;
 
   return (
     <div className="text-center space-y-3">

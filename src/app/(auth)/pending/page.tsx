@@ -14,6 +14,7 @@ export default async function PendingPage() {
 
   // Check for valid access code cookie and auto-approve
   const wasApproved = await autoApproveIfValidCode();
+
   if (wasApproved) {
     return (
       <main className="min-h-screen flex items-center justify-center bg-background px-4">
@@ -24,6 +25,8 @@ export default async function PendingPage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-background px-4">
+      {/* Silent poller — redirects to / as soon as Clerk metadata shows approved */}
+      <ApprovedRedirect silent />
       <div className="w-full max-w-md text-center space-y-6">
         <div className="space-y-2">
           <h1 className="text-2xl font-bold text-foreground">Access Pending</h1>
