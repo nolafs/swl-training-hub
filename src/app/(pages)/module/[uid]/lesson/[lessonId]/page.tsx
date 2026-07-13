@@ -233,12 +233,12 @@ export default async function LessonPage({ params }: LessonPageProps) {
           )}
 
           {lessonDoc.data.type === 'Lesson Video' &&
-            isFilled.embed(lessonDoc.data.video) &&
-            lessonDoc.data.video.embed_url && (
+            (isFilled.keyText(lessonDoc.data.bunny_video_id) || (isFilled.embed(lessonDoc.data.video) && lessonDoc.data.video.embed_url)) && (
               <LessonVideoPlayer
                 lessonId={lessonDoc.id}
                 moduleId={moduleDoc.id}
-                videoUrl={lessonDoc.data.video.embed_url}
+                bunnyVideoId={lessonDoc.data.bunny_video_id}
+                videoUrl={lessonDoc.data.video?.embed_url ?? undefined}
               />
             )}
 
