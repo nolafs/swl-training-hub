@@ -1,0 +1,12 @@
+{
+  "repositoryName": "swltaininghub",
+  "libraries": [
+    "./src/slices"
+  ],
+  "routes": [
+    {
+      "type": "page",
+      "path": "/:uid"
+    }
+  ]
+}
