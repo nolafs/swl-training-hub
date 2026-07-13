@@ -1,15 +1,15 @@
 {
-  "type": "SharedSlice",
   "id": "icon_text_highlight",
+  "type": "SharedSlice",
   "name": "IconTextHighlight",
   "variations": [
     {
       "id": "default",
       "name": "Default",
       "description": "Uses a single icon or marker next to a text block to emphasize important information.",
-      "version": "initial",
-      "imageUrl": "",
+      "imageUrl": "https://images.prismic.io/swltaininghub/shared-slices/icon_text_highlight/default/5f0b8d843fe25db008b8c286ff873fd83319619a.png?auto=compress%2Cformat",
       "docURL": "...",
+      "version": "initial",
       "primary": {
         "icon": {
           "type": "Image",
@@ -31,9 +31,9 @@
       "id": "withDownloads",
       "name": "WithDownloads",
       "description": "Uses a single icon or marker next to a text block to emphasize important information.",
-      "version": "initial",
-      "imageUrl": "",
+      "imageUrl": "https://images.prismic.io/slice-machine/621a5ec4-0387-4bc5-9860-2dd46cbc07cd_default_ss.png?auto=compress,format",
       "docURL": "...",
+      "version": "initial",
       "primary": {
         "icon": {
           "type": "Image",

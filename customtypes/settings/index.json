@@ -1,9 +1,7 @@
 {
-  "format": "custom",
   "id": "settings",
   "label": "Settings",
   "repeatable": false,
-  "status": true,
   "json": {
     "Main": {
       "logo": {
@@ -50,8 +48,8 @@
         "config": {
           "label": "Site Description",
           "placeholder": "",
-          "allowTargetBlank": true,
-          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+          "allowTargetBlank": true
         }
       },
       "site_keywords": {
@@ -123,5 +121,7 @@
         }
       }
     }
-  }
+  },
+  "status": true,
+  "format": "custom"
 }

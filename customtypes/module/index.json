@@ -1,9 +1,7 @@
 {
-  "format": "custom",
   "id": "module",
   "label": "Module",
   "repeatable": true,
-  "status": true,
   "json": {
     "Main": {
       "title": {
@@ -51,18 +49,22 @@
               "config": {
                 "label": "Lesson",
                 "select": "document",
-                "repeat": false,
                 "customtypes": [
                   {
                     "id": "lesson",
-                    "fields": ["title"]
+                    "fields": [
+                      "title"
+                    ]
                   }
-                ]
+                ],
+                "repeat": false
               }
             }
           }
         }
       }
     }
-  }
+  },
+  "status": true,
+  "format": "custom"
 }
