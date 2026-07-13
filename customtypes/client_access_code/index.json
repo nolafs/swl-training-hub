@@ -1,9 +1,7 @@
 {
-  "format": "custom",
   "id": "client_access_code",
   "label": "Client Access Code",
   "repeatable": true,
-  "status": true,
   "json": {
     "Main": {
       "uid": {
@@ -34,5 +32,7 @@
         }
       }
     }
-  }
+  },
+  "status": true,
+  "format": "custom"
 }

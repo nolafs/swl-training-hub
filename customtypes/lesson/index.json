@@ -1,9 +1,7 @@
 {
-  "format": "custom",
   "id": "lesson",
   "label": "Lesson",
   "repeatable": true,
-  "status": true,
   "json": {
     "Main": {
       "title": {
@@ -34,6 +32,13 @@
           "thumbnails": []
         }
       },
+      "bunny_video_id": {
+        "type": "Text",
+        "config": {
+          "label": "Bunny Video Id",
+          "placeholder": ""
+        }
+      },
       "video": {
         "type": "Embed",
         "config": {
@@ -46,7 +51,13 @@
         "config": {
           "label": "Type",
           "placeholder": "",
-          "options": ["Lesson", "Lesson Video", "Discussion", "Practice", "Info"]
+          "options": [
+            "Lesson",
+            "Lesson Video",
+            "Discussion",
+            "Practice",
+            "Info"
+          ]
         }
       },
       "duration": {
@@ -61,8 +72,8 @@
         "config": {
           "label": "Body",
           "placeholder": "",
-          "allowTargetBlank": true,
-          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+          "allowTargetBlank": true
         }
       },
       "slices": {
@@ -80,5 +91,7 @@
         }
       }
     }
-  }
+  },
+  "status": true,
+  "format": "custom"
 }
