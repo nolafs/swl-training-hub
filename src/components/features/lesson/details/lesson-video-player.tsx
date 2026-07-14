@@ -3,8 +3,6 @@ import { useCallback, useRef, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import { useUpdateLessonProgress } from '@/lib/store';
 
-const BUNNY_LIB_ID = process.env.NEXT_PUBLIC_BUNNY_LIB_ID;
-
 interface PlayerJSInstance {
   on: (event: string, callback: (data?: { seconds: number; duration: number }) => void) => void;
   off: (event: string) => void;
@@ -14,10 +12,10 @@ interface LessonVideoPlayerProps {
   lessonId: string;
   moduleId: string;
   videoUrl?: string;
-  bunnyVideoId?: string | null;
+  bunnyEmbedUrl?: string;
 }
 
-export function LessonVideoPlayer({ lessonId, moduleId, videoUrl, bunnyVideoId }: LessonVideoPlayerProps) {
+export function LessonVideoPlayer({ lessonId, moduleId, videoUrl, bunnyEmbedUrl }: LessonVideoPlayerProps) {
   const updateLessonProgress = useUpdateLessonProgress();
   const lastSavedProgress = useRef<number>(0);
   const playerRef = useRef<HTMLVideoElement>(null);
@@ -33,7 +31,7 @@ export function LessonVideoPlayer({ lessonId, moduleId, videoUrl, bunnyVideoId }
 
   // Track Bunny player progress via player.js
   useEffect(() => {
-    if (!bunnyVideoId || !iframeRef.current) return;
+    if (!bunnyEmbedUrl || !iframeRef.current) return;
 
     (async () => {
       const m = await import('player.js');
@@ -64,11 +62,11 @@ export function LessonVideoPlayer({ lessonId, moduleId, videoUrl, bunnyVideoId }
       playerInstanceRef.current?.off('ended');
       playerInstanceRef.current = null;
     };
-  }, [bunnyVideoId, lessonId, moduleId, updateLessonProgress]);
+  }, [bunnyEmbedUrl, lessonId, moduleId, updateLessonProgress]);
 
   // Poll progress for YouTube/other embedded players
   useEffect(() => {
-    if (bunnyVideoId) return;
+    if (bunnyEmbedUrl) return;
 
     const checkProgress = () => {
       const player = playerRef.current;
@@ -83,18 +81,18 @@ export function LessonVideoPlayer({ lessonId, moduleId, videoUrl, bunnyVideoId }
 
     intervalRef.current = setInterval(checkProgress, 1000);
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
-  }, [lessonId, moduleId, updateLessonProgress, bunnyVideoId]);
+  }, [lessonId, moduleId, updateLessonProgress, bunnyEmbedUrl]);
 
   const handleEnded = useCallback(() => {
     updateLessonProgress(lessonId, moduleId, 100);
   }, [lessonId, moduleId, updateLessonProgress]);
 
-  if (bunnyVideoId && BUNNY_LIB_ID) {
+  if (bunnyEmbedUrl) {
     return (
       <div className="aspect-video">
         <iframe
           ref={iframeRef}
-          src={`https://iframe.mediadelivery.net/embed/${BUNNY_LIB_ID}/${bunnyVideoId}?autoplay=false&loop=false&muted=false&preload=true`}
+          src={bunnyEmbedUrl}
           loading="lazy"
           allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
           allowFullScreen
