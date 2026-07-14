@@ -5,6 +5,11 @@ import { useUpdateLessonProgress } from '@/lib/store';
 
 const BUNNY_LIB_ID = process.env.NEXT_PUBLIC_BUNNY_LIB_ID;
 
+interface PlayerJSInstance {
+  on: (event: string, callback: (data?: { seconds: number; duration: number }) => void) => void;
+  off: (event: string) => void;
+}
+
 interface LessonVideoPlayerProps {
   lessonId: string;
   moduleId: string;
@@ -18,56 +23,66 @@ export function LessonVideoPlayer({ lessonId, moduleId, videoUrl, bunnyVideoId }
   const playerRef = useRef<HTMLVideoElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const isMounted = useRef(true);
+  const playerInstanceRef = useRef<PlayerJSInstance | null>(null);
 
-  // Track progress via postMessage events from the Bunny player
   useEffect(() => {
-    if (!bunnyVideoId) return;
+    isMounted.current = true;
+    return () => { isMounted.current = false; };
+  }, []);
 
-    const handleMessage = (event: MessageEvent) => {
-      if (event.source !== iframeRef.current?.contentWindow) return;
+  // Track Bunny player progress via player.js
+  useEffect(() => {
+    if (!bunnyVideoId || !iframeRef.current) return;
 
-      const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+    (async () => {
+      const m = await import('player.js');
+      if (!isMounted.current || !iframeRef.current) return;
 
-      if (data.event === 'timeupdate' && data.duration > 0) {
-        const progressPercent = Math.round((data.seconds / data.duration) * 100);
-        if (progressPercent > lastSavedProgress.current) {
-          lastSavedProgress.current = progressPercent;
-          updateLessonProgress(lessonId, moduleId, progressPercent);
-        }
-      }
+      const PlayerJS = m.default || m;
+      const playerInstance: PlayerJSInstance = new PlayerJS.Player(iframeRef.current);
+      playerInstanceRef.current = playerInstance;
 
-      if (data.event === 'ended') {
-        updateLessonProgress(lessonId, moduleId, 100);
-      }
+      playerInstance.on('ready', () => {
+        playerInstance.on('timeupdate', (progress?: { seconds: number; duration: number }) => {
+          if (!progress?.duration) return;
+          const percent = Math.round((progress.seconds / progress.duration) * 100);
+          if (percent > lastSavedProgress.current) {
+            lastSavedProgress.current = percent;
+            updateLessonProgress(lessonId, moduleId, percent);
+          }
+        });
+
+        playerInstance.on('ended', () => {
+          updateLessonProgress(lessonId, moduleId, 100);
+        });
+      });
+    })();
+
+    return () => {
+      playerInstanceRef.current?.off('timeupdate');
+      playerInstanceRef.current?.off('ended');
+      playerInstanceRef.current = null;
     };
-
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
   }, [bunnyVideoId, lessonId, moduleId, updateLessonProgress]);
 
-  // Poll player progress every second for reliable tracking with embedded videos
+  // Poll progress for YouTube/other embedded players
   useEffect(() => {
     if (bunnyVideoId) return;
 
     const checkProgress = () => {
       const player = playerRef.current;
       if (player && player.duration > 0) {
-        const progressPercent = Math.round((player.currentTime / player.duration) * 100);
-
-        if (progressPercent > lastSavedProgress.current) {
-          lastSavedProgress.current = progressPercent;
-          updateLessonProgress(lessonId, moduleId, progressPercent);
+        const percent = Math.round((player.currentTime / player.duration) * 100);
+        if (percent > lastSavedProgress.current) {
+          lastSavedProgress.current = percent;
+          updateLessonProgress(lessonId, moduleId, percent);
         }
       }
     };
 
     intervalRef.current = setInterval(checkProgress, 1000);
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, [lessonId, moduleId, updateLessonProgress, bunnyVideoId]);
 
   const handleEnded = useCallback(() => {
