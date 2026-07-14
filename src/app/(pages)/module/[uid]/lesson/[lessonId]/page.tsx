@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { createClient } from "@/prismicio";
 import { notFound } from "next/navigation";
 import { PageColorSetter } from "@/components/features/page-color";
@@ -18,6 +19,14 @@ import { HomeIcon } from 'lucide-react';
 import Link from 'next/link';
 import { LessonNavigationButton } from '@/components/features/lesson/details/lesson-navigation-button';
 
+
+function getBunnyEmbedUrl(videoId: string): string {
+  const key = process.env.BUNNY_TOKEN_KEY!;
+  const libId = process.env.NEXT_PUBLIC_BUNNY_LIB_ID!;
+  const expires = Math.floor(Date.now() / 1000) + 3600; // 1 hour
+  const token = crypto.createHash('sha256').update(key + videoId + expires).digest('hex');
+  return `https://iframe.mediadelivery.net/embed/${libId}/${videoId}?token=${token}&expires=${expires}&autoplay=true`;
+}
 
 type Params = { uid: string; lessonId: string };
 
@@ -237,7 +246,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
               <LessonVideoPlayer
                 lessonId={lessonDoc.id}
                 moduleId={moduleDoc.id}
-                bunnyVideoId={lessonDoc.data.bunny_video_id}
+                bunnyEmbedUrl={isFilled.keyText(lessonDoc.data.bunny_video_id) ? getBunnyEmbedUrl(lessonDoc.data.bunny_video_id) : undefined}
                 videoUrl={lessonDoc.data.video?.embed_url ?? undefined}
               />
             )}
