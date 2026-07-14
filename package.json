@@ -41,6 +41,7 @@
     "lucide-react": "^0.562.0",
     "mailersend": "^3.0.0",
     "next": "16.1.4",
+    "player.js": "^0.1.0",
     "radix-ui": "^1.6.0",
     "react": "19.2.3",
     "react-cookie-consent": "^10.0.1",
