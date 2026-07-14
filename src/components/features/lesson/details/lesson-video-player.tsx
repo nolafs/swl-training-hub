@@ -58,8 +58,8 @@ export function LessonVideoPlayer({ lessonId, moduleId, videoUrl, bunnyEmbedUrl 
     })();
 
     return () => {
-      playerInstanceRef.current?.off('timeupdate');
-      playerInstanceRef.current?.off('ended');
+      // Don't call off() — player.js tries to postMessage the iframe which is
+      // already removed from the DOM at this point, causing a null contentWindow error.
       playerInstanceRef.current = null;
     };
   }, [bunnyEmbedUrl, lessonId, moduleId, updateLessonProgress]);

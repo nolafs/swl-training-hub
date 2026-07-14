@@ -106,7 +106,7 @@ export function LessonCard({
       >
         <Link
           href={href}
-          className="flex items-center justify-center w-20 h-16 text-white shadow-lg transition-transform hover:scale-110"
+          className="flex h-16 w-20 items-center justify-center text-white shadow-lg transition-transform hover:scale-110"
           style={{ backgroundColor: color }}
         >
           <ArrowRight className="ml-2 h-8 w-8" />
@@ -163,15 +163,15 @@ export function LessonCard({
               y: isHovered ? 0 : 0,
             }}
           >
-            <span className="text-lg font-bold text-white">
+            <span className="text-lg  tracking-tight text-white uppercase">
               {lessonNumber < 10 ? `0${lessonNumber}` : lessonNumber}
             </span>
-            <span className="truncate text-sm font-medium text-white/90">{title}</span>
+            <span className="truncate text-lg font-bold text-white/90 uppercase ">{title}</span>
           </motion.div>
 
           {/* Description - appears below heading on hover */}
           <motion.p
-            className="mt-3 line-clamp-4 text-sm leading-relaxed text-white/80"
+            className="mt-3 line-clamp-4 text-sm leading-relaxed text-white/80 md:text-lg"
             initial={{ opacity: 0, y: 10 }}
             animate={{
               opacity: isHovered ? 1 : 0,

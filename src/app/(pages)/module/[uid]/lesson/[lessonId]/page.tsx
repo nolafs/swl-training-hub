@@ -217,12 +217,12 @@ export default async function LessonPage({ params }: LessonPageProps) {
         moduleUid={uid}
         lessonId={lessonDoc.id}
       >
-        <article className="relative z-10 flex w-full max-w-5xl flex-col px-4 pt-4 pb-8 md:h-full md:max-h-[80vh] md:min-h-214 md:px-8 md:shadow-[0px_0px_5px_5px_rgba(0,0,0,0.10)]">
+        <article className="relative z-10 flex w-full max-w-5xl flex-col px-4 pt-4 pb-8 md:h-full md:max-h-[80vh] md:px-8 md:shadow-[0px_0px_5px_5px_rgba(0,0,0,0.10)]">
           <h1 className="flex items-center gap-x-3">
             <span className="text-2xl font-semibold tracking-tight text-gray-500">
               {lessonIndex < 10 ? `0${lessonIndex}` : lessonIndex}
             </span>{' '}
-            <span className="font-bold">{lessonDoc.data.title}</span>
+            <span className="font-bold uppercase">{lessonDoc.data.title}</span>
           </h1>
 
           {lessonDoc.data.type === 'Info' && isFilled.image(lessonDoc.data.cover_image) && (
